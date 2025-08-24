@@ -5,7 +5,5 @@ A Next.js-based frontend project inspired by https://www.formula1.com/. Built wi
 ## Getting Started
 
 1. Clone the repository:
-   ```bash
    git clone https://github.com/datphannn/project-illit-fomula-one-team-fe.git
    cd project-illit-fomula-one-team-fe
-   ```
