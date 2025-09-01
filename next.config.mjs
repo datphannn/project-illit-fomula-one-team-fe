@@ -1,9 +1,11 @@
-const nextConfig = {
+// next.config.mjs
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./lib/utils/i18n.ts');
+
+export default withNextIntl({
   reactStrictMode: true,
   images: {
-    domains: ['www.formula1.com'],
+    domains: ['example.com'], 
   },
-};
-
-
-export default nextConfig;
+});
