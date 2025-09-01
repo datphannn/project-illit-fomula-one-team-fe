@@ -1,0 +1,40 @@
+{
+  "header": {
+    "home": "Home",
+    "news": "News",
+    "schedule": "Schedule",
+    "results": "Results",
+    "tickets": "Tickets",
+    "store": "Store",
+    "feedback": "Feedback",
+    "signin": "Sign In",
+    "subscribe": "Subscribe"
+  },
+  "footer": {
+    "about_us": "About Us",
+    "our_story": "Our Story",
+    "our_team": "Our Team",
+    "careers": "Careers",
+    "contact": "Contact",
+    "services": "Services",
+    "tickets": "Race Tickets",
+    "hospitality": "Hospitality",
+    "merchandise": "Merchandise",
+    "experiences": "Experiences",
+    "support": "Support",
+    "help_center": "Help Center",
+    "faq": "FAQ",
+    "customer_service": "Customer Service",
+    "feedback": "Feedback",
+    "legal": "Legal",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "cookie_policy": "Cookie Policy",
+    "refund_policy": "Refund Policy",
+    "company_description": "Experience the ultimate F1 racing with top-quality services.",
+    "follow_us": "Follow us for the latest updates",
+    "company_name": "F1 Racing",
+    "all_rights_reserved": "All rights reserved",
+    "powered_by": "Powered by"
+  }
+}
