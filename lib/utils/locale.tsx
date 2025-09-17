@@ -1,13 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 export type Locale = 'en' | 'vi';
+export const locales: Locale[] = ['en', 'vi'];
+export const defaultLocale: Locale = 'en';
 
-type LocaleContextType = {
+interface LocaleContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-};
+}
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
@@ -16,40 +18,54 @@ export function LocaleProvider({
   initialLocale,
 }: {
   children: React.ReactNode;
-  initialLocale?: Locale;
+  initialLocale: Locale;
 }) {
-  const [locale, setLocale] = useState<Locale>(initialLocale ?? 'en');
+  const [locale, setLocale] = useState<Locale>(initialLocale);
 
+  // Khi client mount → đồng bộ với localStorage
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('locale') as Locale | null;
-      if (saved === 'en' || saved === 'vi') {
-        if (saved !== locale) setLocale(saved);
-      } else {
-        localStorage.setItem('locale', locale);
-      }
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('locale', locale);
-    } catch {}
+    const savedLocale = localStorage.getItem('locale') as Locale | null;
+    if (savedLocale && isValidLocale(savedLocale) && savedLocale !== locale) {
+      setLocale(savedLocale);
+    }
+    // Đồng bộ thuộc tính lang cho <html>
+    document.documentElement.lang = locale;
   }, [locale]);
 
-  const updateLocale = (l: Locale) => setLocale(l);
+  const handleSetLocale = (newLocale: Locale) => {
+    setLocale(newLocale);
+    localStorage.setItem('locale', newLocale);
+    document.documentElement.lang = newLocale;
+  };
 
-  return React.createElement(
-    LocaleContext.Provider,
-    { value: { locale, setLocale: updateLocale } },
-    children
+  return (
+    <LocaleContext.Provider value={{ locale, setLocale: handleSetLocale }}>
+      {children}
+    </LocaleContext.Provider>
   );
 }
 
 export function useLocale(): LocaleContextType {
-  const ctx = useContext(LocaleContext);
-  if (!ctx) {
+  const context = useContext(LocaleContext);
+  if (!context) {
     throw new Error('useLocale must be used within a LocaleProvider');
   }
-  return ctx;
+  return context;
 }
+
+// Helper
+export const isValidLocale = (locale: string): locale is Locale => {
+  return locales.includes(locale as Locale);
+};
+
+export const getDefaultLocale = (): Locale => {
+  if (typeof window === 'undefined') return defaultLocale;
+
+  const savedLocale = localStorage.getItem('locale');
+  if (savedLocale && isValidLocale(savedLocale)) return savedLocale;
+
+  const browserLang = navigator.language.split('-')[0];
+  if (isValidLocale(browserLang)) return browserLang;
+
+  return defaultLocale;
+};
