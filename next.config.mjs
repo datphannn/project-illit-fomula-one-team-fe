@@ -1,11 +1,8 @@
-// next.config.mjs
-import createNextIntlPlugin from 'next-intl/plugin';
+import withNextIntl from 'next-intl/plugin';
 
-const withNextIntl = createNextIntlPlugin('./lib/utils/i18n.ts');
+// Khai báo file config i18n ở lib/utils/i18n.ts
+const withIntl = withNextIntl('./lib/utils/i18n.ts');
 
-export default withNextIntl({
-  reactStrictMode: true,
-  images: {
-    domains: ['example.com'], 
-  },
+export default withIntl({
+  reactStrictMode: true
 });

@@ -1,2 +1,7 @@
-// Placeholder for race type
-export type Race = object;
+export interface Team {
+  id: string;
+  name: string;
+  base: string;
+  image_url: string;
+  drivers?: string[];
+}
