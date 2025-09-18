@@ -1,9 +1,12 @@
 export interface Race {
-  id: string;
-  name: string;
-  date: string;
-  status: string;
-  location: string;
-  circuit: string;
-  year: string;
+  id: string;        
+  name: string;      
+  date: string;      
+  location: string;  
+  flag: string;      
+  round: number;     
+  status: "upcoming" | "finished"; 
+  circuit?: string;  
+  laps?: number;     
+  distance?: string; 
 }

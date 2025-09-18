@@ -1,7 +1,8 @@
 export interface Story {
   id: string;
   title: string;
-  description: string;
-  image_url: string;
+  image: string;
   link: string;
+  summary: string;
+  content?: string;
 }

@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
@@ -12,52 +11,27 @@ import {
   FaTimes,
   FaGlobe,
   FaChevronDown,
-  FaPlay,
   FaTicketAlt,
   FaStore,
   FaUserTie,
 } from 'react-icons/fa';
 import { useAuthStore } from '@/lib/store/authStore';
 
-// ✅ Import logo từ assets - Đảm bảo đường dẫn đúng
 import logoLight from '@/assets/images/logo-light.jpg';
 import logoDark from '@/assets/images/logo-dark.jpg';
 
 // Import mock data
 import {
-  mockRaces,
-  mockTeams,
-  mockDrivers,
-  mockNews,
+  mockRacesSimple,
+  mockTeamsSimple,
+  mockDriversSimple,
+  mockNewsSimple,
 } from '@/lib/api/mockData';
-
-// Interface definitions
-interface Race {
-  name: string;
-  date: string;
-  round: number;
-  status: string;
-  flag: string;
-}
-
-interface Team {
-  name: string;
-  logo: string;
-  color: string;
-}
-
-interface Driver {
-  name: string;
-  country: string;
-  number: number;
-  image?: string; // Có thể thêm ảnh mock
-}
-
-interface NewsItem {
-  title: string;
-  image?: string;
-  href: string;
-}
+import { NewsItem } from '@/lib/types/news';
+import { Race } from '@/lib/types/race';
+import { Driver } from '@/lib/types/driver';
+import { Team } from '@/lib/types/team';
+import { FaPlay } from 'react-icons/fa6';
 
 interface DropdownItem {
   key: string;
@@ -101,7 +75,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
       {
         key: '2025 Season',
         href: 'schedule/2025',
-        races: mockRaces,
+        races: mockRacesSimple,
       },
       { key: 'Calendar', href: 'schedule/calendar' },
       { key: 'Race Weekend', href: 'schedule/race-weekend' },
@@ -126,7 +100,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
     dropdown: [
       {
         key: 'Latest News',
-        news: mockNews,
+        news: mockNewsSimple,
       },
     ],
   },
@@ -137,7 +111,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
     dropdown: [
       {
         key: 'All Drivers',
-        drivers: mockDrivers,
+        drivers: mockDriversSimple,
       },
     ],
   },
@@ -149,7 +123,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
       { key: 'All Teams', href: 'teams/all' },
       {
         key: 'teams_grid',
-        teams: mockTeams,
+        teams: mockTeamsSimple,
       },
     ],
   },
@@ -204,7 +178,7 @@ export default function Header() {
     option => option.value === locale
   );
 
-  // Render different dropdown types - ĐÃ SỬA LỖI VÀ TÙY CHỈNH THEO F1
+  // Render different dropdown types
   const renderDropdownContent = (item: NavItem) => {
     const { type, dropdown } = item;
 
