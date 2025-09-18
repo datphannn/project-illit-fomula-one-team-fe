@@ -1,30 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import { drivers } from '@/lib/api/mockData';
-import Button from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
+import { useLocale } from '@/lib/utils/locale';
+import Link from 'next/link';
 
 export default function FantasySection() {
-  const [winner, setWinner] = useState('');
-
-  const handleSubmit = () => {
-    console.log({ winner }); // Push to mockData.fantasyGaming later
-  };
+  const t = useTranslations('main');
+  const { locale } = useLocale();
 
   return (
-    <div className="max-w-md mx-auto bg-white dark:bg-gray-800 p-4 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4 dark:text-white">Predict Winner</h2>
-      <select
-        value={winner}
-        onChange={(e) => setWinner(e.target.value)}
-        className="w-full p-2 mb-4 border rounded dark:bg-gray-700 dark:text-white"
+    <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+        {t('fantasyAndMore')}
+      </h3>
+      <p className="text-gray-600 dark:text-gray-400 mb-4">
+        Join the F1 Fantasy League and predict race outcomes!
+      </p>
+      <Link
+        href={`/${locale}/fantasy`}
+        className="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
       >
-        <option value="">Select Driver</option>
-        {drivers.map((driver) => (
-          <option key={driver.id} value={driver.name}>{driver.name}</option>
-        ))}
-      </select>
-      <Button onClick={handleSubmit}>Submit Prediction</Button>
+        Play Now
+      </Link>
     </div>
   );
 }

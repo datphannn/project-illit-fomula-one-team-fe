@@ -1,7 +1,13 @@
 export interface Team {
   id: string;
   name: string;
-  base: string;
-  image_url: string;
-  drivers?: string[];
+  logo: string;
+  color: string;
+  position: number;
+  points: number;
+  drivers: string[];
+  base?: string;
+  chief?: string;
+  chassis?: string;
+  powerUnit?: string;
 }
