@@ -1299,3 +1299,254 @@ export const mockStoriesDetailed: Story[] = [
     content: "Analysis of Red Bull's approach...",
   },
 ];
+
+// =========================
+// Team Colors
+// =========================
+export const TEAM_COLORS: Record<string, string> = {
+  McLaren: 'bg-orange-500',
+  'Red Bull Racing': 'bg-blue-600',
+  'Scuderia Ferrari': 'bg-red-600',
+  'Mercedes-AMG': 'bg-teal-400',
+  Mercedes: 'bg-teal-400',
+  'Aston Martin': 'bg-green-700',
+  Alpine: 'bg-blue-500',
+  Williams: 'bg-sky-500',
+  'RB (Visa Cash App RB)': 'bg-slate-600',
+  'Stake F1 Team Kick Sauber': 'bg-green-400',
+  'Haas F1 Team': 'bg-gray-400',
+};
+
+// =========================
+// Race Flags
+// =========================
+export const RACE_FLAGS: Record<string, string> = {
+  'Australian Grand Prix': '🇦🇺',
+  'Chinese Grand Prix': '🇨🇳',
+  'Japanese Grand Prix': '🇯🇵',
+  'Bahrain Grand Prix': '🇧🇭',
+  'Saudi Arabian Grand Prix': '🇸🇦',
+  'Miami Grand Prix': '🇺🇸',
+  'Emilia-Romagna Grand Prix': '🇮🇹',
+  'Monaco Grand Prix': '🇲🇨',
+  'Spanish Grand Prix': '🇪🇸',
+  'Canadian Grand Prix': '🇨🇦',
+  'Austrian Grand Prix': '🇦🇹',
+  'British Grand Prix': '🇬🇧',
+  'Belgian Grand Prix': '🇧🇪',
+  'Hungarian Grand Prix': '🇭🇺',
+  'Dutch Grand Prix': '🇳🇱',
+  'Italian Grand Prix': '🇮🇹',
+  'Azerbaijan Grand Prix': '🇦🇿',
+  'Singapore Grand Prix': '🇸🇬',
+  'United States Grand Prix': '🇺🇸',
+  'Mexico City Grand Prix': '🇲🇽',
+  'Brazilian Grand Prix': '🇧🇷',
+  'Las Vegas Grand Prix': '🇺🇸',
+  'Qatar Grand Prix': '🇶🇦',
+  'Abu Dhabi Grand Prix': '🇦🇪',
+};
+
+// =========================
+// Race Results by Year
+// =========================
+export const mockRacesByYear: Record<
+  number,
+  Array<{
+    grandPrix: string;
+    date: string;
+    winner: string;
+    team: string;
+    laps: number;
+    time: string;
+  }>
+> = {
+  2025: [
+    {
+      grandPrix: 'Australian Grand Prix',
+      date: '2025-03-14',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 57,
+      time: '1:42:06.304',
+    },
+    {
+      grandPrix: 'Chinese Grand Prix',
+      date: '2025-03-21',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 56,
+      time: '1:30:55.026',
+    },
+    {
+      grandPrix: 'Japanese Grand Prix',
+      date: '2025-04-04',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 53,
+      time: '1:22:06.983',
+    },
+    {
+      grandPrix: 'Bahrain Grand Prix',
+      date: '2025-04-11',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 57,
+      time: '1:35:39.435',
+    },
+    {
+      grandPrix: 'Saudi Arabian Grand Prix',
+      date: '2025-04-18',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 50,
+      time: '1:21:06.758',
+    },
+    {
+      grandPrix: 'Miami Grand Prix',
+      date: '2025-05-02',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 57,
+      time: '1:28:51.587',
+    },
+    {
+      grandPrix: 'Emilia-Romagna Grand Prix',
+      date: '2025-05-16',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 63,
+      time: '1:31:33.199',
+    },
+    {
+      grandPrix: 'Monaco Grand Prix',
+      date: '2025-05-23',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 78,
+      time: '1:40:33.843',
+    },
+    {
+      grandPrix: 'Spanish Grand Prix',
+      date: '2025-05-30',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 66,
+      time: '1:32:57.375',
+    },
+    {
+      grandPrix: 'Canadian Grand Prix',
+      date: '2025-06-13',
+      winner: 'George Russell',
+      team: 'Mercedes',
+      laps: 70,
+      time: '1:31:52.688',
+    },
+    {
+      grandPrix: 'Austrian Grand Prix',
+      date: '2025-06-27',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 71,
+      time: '1:23:47.693',
+    },
+    {
+      grandPrix: 'British Grand Prix',
+      date: '2025-07-04',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 52,
+      time: '1:37:15.735',
+    },
+    {
+      grandPrix: 'Belgian Grand Prix',
+      date: '2025-07-25',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 44,
+      time: '1:25:22.601',
+    },
+    {
+      grandPrix: 'Hungarian Grand Prix',
+      date: '2025-08-01',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 70,
+      time: '1:35:21.231',
+    },
+    {
+      grandPrix: 'Dutch Grand Prix',
+      date: '2025-08-29',
+      winner: 'Oscar Piastri',
+      team: 'McLaren',
+      laps: 72,
+      time: '1:38:29.849',
+    },
+    {
+      grandPrix: 'Italian Grand Prix',
+      date: '2025-09-05',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 53,
+      time: '1:13:24.325',
+    },
+    {
+      grandPrix: 'Azerbaijan Grand Prix',
+      date: '2025-09-19',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 51,
+      time: '1:33:26.408',
+    },
+    {
+      grandPrix: 'Singapore Grand Prix',
+      date: '2025-10-03',
+      winner: 'George Russell',
+      team: 'Mercedes',
+      laps: 61,
+      time: '1:52:17.065',
+    },
+  ],
+  2024: [
+    {
+      grandPrix: 'Australian Grand Prix',
+      date: '2024-03-24',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 58,
+      time: '1:20:26.843',
+    },
+    {
+      grandPrix: 'Japanese Grand Prix',
+      date: '2024-04-07',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 53,
+      time: '1:54:23.566',
+    },
+    {
+      grandPrix: 'Chinese Grand Prix',
+      date: '2024-04-21',
+      winner: 'Max Verstappen',
+      team: 'Red Bull Racing',
+      laps: 56,
+      time: '1:40:52.554',
+    },
+    {
+      grandPrix: 'Miami Grand Prix',
+      date: '2024-05-05',
+      winner: 'Lando Norris',
+      team: 'McLaren',
+      laps: 57,
+      time: '1:34:08.518',
+    },
+    {
+      grandPrix: 'Monaco Grand Prix',
+      date: '2024-05-26',
+      winner: 'Charles Leclerc',
+      team: 'Scuderia Ferrari',
+      laps: 78,
+      time: '2:23:15.554',
+    },
+  ],
+};
