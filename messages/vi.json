@@ -45,6 +45,8 @@
   "visit": "Truy cập",
   "made_with": "Được tạo với",
   "in_vietnam": "tại Việt Nam"
-}
-
+},
+"schedule": {
+    "title": "Lịch Đua"
+  }
 }
