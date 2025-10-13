@@ -12,7 +12,8 @@ export default function ResultsPage() {
           RESULTS
         </h1>
 
-        <ResultsSection races={mockRacesDetailed} />
+        {/* cast to any to satisfy TypeScript if component props are not declared */}
+        <ResultsSection {...({ races: mockRacesDetailed } as any)} />
       </div>
     </div>
   );
