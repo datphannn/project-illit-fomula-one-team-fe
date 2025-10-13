@@ -1,4 +1,4 @@
-import { NewsItem } from '@/lib/types/news';
+import { News } from '@/lib/types/news';
 import { Race } from '@/lib/types/race';
 import { Driver } from '@/lib/types/driver';
 import { Team } from '@/lib/types/team';
@@ -4946,63 +4946,232 @@ export const mockTeamsDetailed: Team[] = [
 // =========================
 // Mock News
 // =========================
-export const mockNewsSimple: NewsItem[] = [
+export const mockNewsSimple: News[] = [
   {
     id: '1',
-    title: 'Norris Wins Australian GP 2025',
-    image: '/images/news/australia-norris.png',
+    title: 'Lando Norris Wins Australian Grand Prix 2025',
     date: '2025-03-16',
-    category: 'Race',
-    href: '/news/norris-australia-2025',
-    summary: 'Lando Norris dominates in Melbourne.',
-    readTime: '3 min',
+    content:
+      'Lando Norris delivered a stunning performance to win the season-opening Australian Grand Prix.',
   },
   {
     id: '2',
-    title: 'Verstappen Secures Azerbaijan Victory',
-    image: '/images/news/azerbaijan-verstappen.png',
-    date: '2025-09-21',
-    category: 'Race',
-    href: '/news/verstappen-azerbaijan-2025',
-    summary: 'Max Verstappen wins in Baku.',
-    readTime: '3 min',
+    title: 'Max Verstappen Dominates Japanese GP Qualifying',
+    date: '2025-04-05',
+    content:
+      'Max Verstappen secured pole position for the Japanese Grand Prix.',
   },
   {
     id: '3',
-    title: 'Ferrari Upgrades for Singapore',
-    image: '/images/news/ferrari-singapore.png',
-    date: '2025-10-01',
-    category: 'Tech',
-    href: '/news/ferrari-singapore-2025',
-    summary: 'New aero package revealed.',
-    readTime: '4 min',
+    title: 'McLaren Unveils Upgraded MCL39 for 2025 Season',
+    date: '2025-02-10',
+    content:
+      'McLaren revealed their upgraded MCL39 car for the upcoming season.',
+  },
+  {
+    id: '4',
+    title: 'F1 2025 Calendar Finalized with 24 Races',
+    date: '2025-01-15',
+    content: 'The FIA has confirmed the 2025 F1 calendar with 24 races.',
+  },
+  {
+    id: '5',
+    title: 'Ferrari Announces New Technical Director',
+    date: '2025-02-28',
+    content: 'Ferrari has appointed a new technical director for 2025 season.',
   },
 ];
 
-export const mockNewsDetailed: NewsItem[] = [
+export const mockNewsDetailed: News[] = [
   {
     id: '1',
-    title: 'Norris Wins Australian GP 2025',
-    image: '/images/news/australia-norris.png',
+    title: 'Lando Norris Wins Australian Grand Prix 2025',
     date: '2025-03-16',
-    category: 'Race',
-    href: '/news/norris-australia-2025',
-    author: 'Tom Clarkson',
-    content: 'Lando Norris led from pole to win...',
-    summary: 'Lando Norris dominates in Melbourne.',
-    readTime: '3 min',
+    content: `Lando Norris delivered a stunning performance to win the season-opening Australian Grand Prix, marking McLaren's strong start to the 2025 Formula 1 season. The British driver executed a perfect race strategy, holding off a late charge from Red Bull's Max Verstappen to secure his first victory of the season.
+
+Starting from second on the grid, Norris made a brilliant start and managed his medium tires perfectly throughout the first stint. The crucial moment came during the pit stops when McLaren's strategy team made the bold call to extend Norris's first stint, giving him fresher tires for the final phase of the race.
+
+"Absolutely incredible! The car was phenomenal today," said an emotional Norris after the race. "The team made the perfect strategy calls, and I'm so proud of everyone at McLaren. This is exactly the start we needed for the season."
+
+The victory marks Norris's fifth career win and sets up an exciting championship battle ahead. Teammate Oscar Piastri finished fourth, giving McLaren valuable constructor points and signaling their return to championship contention.`,
+    image: 'https://images.unsplash.com/photo-1591130271131-6e4c1d27eb48?w=800',
+    source: 'F1 Official',
+    category: 'race',
+    relatedId: 'australian-gp-2025',
+    description:
+      'McLaren driver Lando Norris takes victory in Melbourne after thrilling battle with Verstappen',
+    author: 'John Smith',
+    views: 12500,
   },
   {
     id: '2',
-    title: 'Verstappen Secures Azerbaijan Victory',
-    image: '/images/news/azerbaijan-verstappen.png',
-    date: '2025-09-21',
-    category: 'Race',
-    href: '/news/verstappen-azerbaijan-2025',
-    author: 'Laura Winter',
-    content: 'Max Verstappen fought back to win...',
-    summary: 'Max Verstappen wins in Baku.',
-    readTime: '3 min',
+    title: 'Max Verstappen Dominates Japanese GP Qualifying',
+    date: '2025-04-05',
+    content: `Max Verstappen delivered a masterclass in qualifying for the Japanese Grand Prix, securing pole position by a massive 0.4 seconds ahead of his nearest rival. The Red Bull driver showcased his exceptional skill around the challenging Suzuka circuit, setting a blistering lap time that left the competition stunned.
+
+In a session that was interrupted by two red flags, Verstappen remained composed and extracted maximum performance from his RB21 when it mattered most. His final lap in Q3 was particularly impressive, setting the fastest times in all three sectors of the iconic figure-eight circuit.
+
+"The car felt amazing today," Verstappen commented. "Suzuka is one of those tracks where you need to have perfect balance, and we absolutely nailed the setup. The team has done an incredible job, and this gives us a great starting position for tomorrow's race."
+
+Ferrari's Charles Leclerc will start alongside Verstappen on the front row, with Mercedes' Lewis Hamilton and McLaren's Lando Norris completing the top four. The stage is set for an exciting race with mixed weather conditions forecast for Sunday.`,
+    image: 'https://images.unsplash.com/photo-1589407382127-79547ea1bfb6?w=800',
+    source: 'BBC Sport',
+    category: 'race',
+    relatedId: 'japanese-gp-2025',
+    description:
+      'Red Bull driver dominates qualifying at Suzuka with stunning lap',
+    author: 'Sarah Johnson',
+    views: 8900,
+  },
+  {
+    id: '3',
+    title: 'McLaren Unveils Upgraded MCL39 for 2025 Season',
+    date: '2025-02-10',
+    content: `McLaren has taken the covers off their highly anticipated MCL39 challenger for the 2025 Formula 1 season, revealing what team principal Andrea Stella describes as "the most aggressive development package we have produced in recent years."
+
+The new car features revolutionary aerodynamic concepts, including completely redesigned sidepods and a novel front wing design that promises to generate more consistent downforce across different speed ranges. The most striking change is the integration of the cooling system into the sidepod design, creating a much cleaner airflow path to the rear of the car.
+
+"We've taken some calculated risks with this design," explained technical director Peter Prodromou. "The MCL39 represents a fundamental rethink of our aerodynamic philosophy. Every component has been optimized for the new regulations, with particular focus on improving our performance in slow-speed corners where we struggled last season."
+
+Drivers Lando Norris and Oscar Piastri were both present at the launch and expressed their excitement about the new package. "From what I've seen in the simulator, this car is a big step forward," said Norris. "I can't wait to get it out on track and see what we can achieve."`,
+    image: 'https://images.unsplash.com/photo-1629996528416-ce9869884d2d?w=800',
+    source: 'Autosport',
+    category: 'team',
+    relatedId: 'mclaren',
+    description:
+      'McLaren presents revolutionary new car design for 2025 championship campaign',
+    author: 'Mike Thompson',
+    views: 7600,
+  },
+  {
+    id: '4',
+    title: 'F1 2025 Calendar Finalized with 24 Races',
+    date: '2025-01-15',
+    content: `The FIA has officially confirmed the 2025 Formula 1 calendar, featuring a record-breaking 24 races across 21 countries in what will be the most extensive season in the sport's history. The schedule maintains all the fan-favorite circuits while introducing new challenges for teams and drivers.
+
+The season will commence with the traditional opener in Bahrain on March 2nd and conclude under the lights in Abu Dhabi on December 7th, spanning ten months of intense competition. Notable changes include the return of the Chinese Grand Prix after its absence in 2024 and the introduction of a new street circuit in South Africa.
+
+"We're excited to present what promises to be the most thrilling Formula 1 season yet," said F1 CEO Stefano Domenicali. "The 2025 calendar strikes the perfect balance between traditional circuits and new venues, while also considering the wellbeing of our teams with better geographical grouping of races."
+
+The calendar features several back-to-back race weekends, including the popular triple-header of Belgium, Netherlands, and Italy in August. Teams have welcomed the improved scheduling, which reduces long-haul travel and provides more efficient logistics throughout the season.`,
+    source: 'F1 Official',
+    category: 'general',
+    relatedId: 'calendar-2025',
+    description:
+      'Complete schedule for the 2025 Formula 1 season featuring record 24 races',
+    author: 'F1 Media',
+    views: 15200,
+  },
+  {
+    id: '5',
+    title: 'Hamilton Signs Contract Extension with Mercedes',
+    date: '2025-03-01',
+    content: `Lewis Hamilton has ended speculation about his future by signing a two-year contract extension with Mercedes, committing to the team until the end of the 2027 season. The seven-time world champion will continue his partnership with George Russell as Mercedes aims to return to championship-winning form.
+
+The new deal, reportedly worth over £40 million per season, makes Hamilton the highest-paid driver on the grid and demonstrates Mercedes' commitment to rebuilding around their star driver. Team principal Toto Wolff described the agreement as "a statement of intent from both parties."
+
+"I still have the fire and determination to compete at the highest level," Hamilton stated. "The progress we've made with the W16 gives me confidence that we can fight for victories again. I believe in this team, and I'm excited about what we can achieve together in the coming years."
+
+Hamilton's decision to stay with Mercedes comes after months of negotiations and speculation linking him with moves to Ferrari and Red Bull. The extension means the British driver could potentially break Michael Schumacher's record for most seasons in Formula 1 if he continues beyond 2027.`,
+    category: 'driver',
+    relatedId: 'hamilton',
+    description: 'Seven-time champion extends Mercedes stay in multi-year deal',
+    author: 'David Brown',
+    views: 11000,
+  },
+  {
+    id: '6',
+    title: 'Ferrari Announces New Technical Director',
+    date: '2025-02-28',
+    content: `Ferrari has announced the appointment of renowned engineer Marco Adami as their new Technical Director, in a move that signals the team's determination to challenge for championships in the new regulatory era. Adami joins from Red Bull, where he served as Head of Aerodynamics and played a key role in their recent success.
+
+The 45-year-old Italian brings extensive experience and innovative thinking to Maranello, having worked with multiple championship-winning teams throughout his career. His appointment is part of a major restructuring effort led by team principal Frédéric Vasseur to strengthen Ferrari's technical department.
+
+"Marco is one of the brightest engineering minds in Formula 1," Vasseur stated. "His track record speaks for itself, and his understanding of the current regulations is second to none. This appointment is a crucial step in our journey back to the front of the grid."
+
+Adami will oversee all technical operations at Ferrari, working closely with existing technical staff to develop the SF-25 and future cars. His arrival has been welcomed by drivers Charles Leclerc and Carlos Sainz, both of whom expressed excitement about the new direction.`,
+    source: 'Sky Sports F1',
+    category: 'team',
+    relatedId: 'ferrari',
+    description:
+      'Ferrari strengthens technical team with high-profile signing from Red Bull',
+    author: 'Robert Wilson',
+    views: 6800,
+  },
+  {
+    id: '7',
+    title: 'Piastri Claims Maiden Victory in Chinese GP',
+    date: '2025-03-23',
+    content: `Oscar Piastri secured his maiden Formula 1 victory in a dramatic and rain-affected Chinese Grand Prix, becoming the first Australian winner since Daniel Ricciardo in 2018. The McLaren driver mastered treacherous conditions at the Shanghai International Circuit to claim an emotional victory ahead of Lewis Hamilton and Max Verstappen.
+
+The race was turned on its head by a sudden downpour on lap 28, with Piastri making the perfect tire choice to switch to intermediate tires one lap before his rivals. The strategic masterstroke from the McLaren pit wall gave Piastri a significant advantage that he maintained to the checkered flag.
+
+"I'm lost for words," an emotional Piastri said after the race. "What an incredible team performance. The conditions were so tricky out there, but we made the right calls at the right time. To get my first win in these conditions means everything."
+
+The victory marks a significant milestone in Piastri's career and continues McLaren's strong start to the 2025 season. Team principal Andrea Stella praised his driver's maturity: "Oscar showed today why we have so much faith in him. His race craft in difficult conditions was exceptional."`,
+    image: 'https://images.unsplash.com/photo-1591130271131-6e4c1d27eb48?w=800',
+    source: 'F1 Official',
+    category: 'race',
+    relatedId: 'chinese-gp-2025',
+    description:
+      'Australian driver takes first F1 win in dramatic wet-dry race in Shanghai',
+    author: 'Emma Davis',
+    views: 9800,
+  },
+  {
+    id: '8',
+    title: 'Red Bull Reveals Revolutionary RB21 Design',
+    date: '2025-02-12',
+    content: `Red Bull Racing has unveiled their RB21 challenger for the 2025 season, featuring what team principal Christian Horner describes as "the most radical design philosophy we have ever pursued." The car showcases several innovative concepts that have already drawn attention from rival teams and technical experts.
+
+The most striking feature is the complete reimagining of the sidepod and cooling system, with a "double-decker" design that creates multiple airflow channels. The front wing incorporates variable geometry elements that adjust automatically based on speed, while the rear suspension has been completely redesigned for better aerodynamic integration.
+
+"Every component on this car has been optimized for performance," explained chief technical officer Adrian Newey. "We've taken some risks with the RB21, but the simulation data suggests these innovations will give us a significant advantage. The focus has been on creating a car that works well across all types of circuits."
+
+Defending champion Max Verstappen was impressed after his first simulator sessions: "The car feels like a big step forward from last year. The balance is incredible, and it seems to have solved the low-speed issues we struggled with previously."`,
+    category: 'team',
+    relatedId: 'red-bull',
+    description:
+      'Red Bull presents innovative new car design with revolutionary aerodynamic concepts',
+    author: 'James Miller',
+    views: 8200,
+  },
+  {
+    id: '9',
+    title: 'New Safety Car Regulations for 2025 Season',
+    date: '2025-01-20',
+    content: `The FIA has announced significant changes to safety car procedures for the 2025 Formula 1 season, aimed at creating more exciting racing and reducing the impact of safety car periods on race outcomes. The new regulations represent the most substantial overhaul of safety car rules in over a decade.
+
+Key changes include the introduction of a "rolling restart" procedure that allows lapped cars to unlap themselves during the safety car period rather than waiting until the final lap. Additionally, the rules regarding when the safety car returns to the pits have been modified to create more strategic options for teams.
+
+"These changes are designed to make races more dynamic and unpredictable," explained FIA President Mohammed Ben Sulayem. "We've listened to feedback from teams, drivers, and fans, and believe these updates will enhance the spectacle while maintaining safety as our top priority."
+
+The new regulations also address the controversial issue of "lucky" safety car timing, which has sometimes unfairly benefited certain drivers. Under the new system, all cars will be required to maintain minimum time gaps during safety car periods to prevent teams from gaining undue advantages through pit stop timing.`,
+    source: 'FIA Official',
+    category: 'general',
+    relatedId: 'safety-car-2025',
+    description:
+      'Updated safety car rules aim to create more exciting racing in 2025 season',
+    author: 'FIA Media',
+    views: 5400,
+  },
+  {
+    id: '10',
+    title: 'Aston Martin Announces Major Partnership',
+    date: '2025-02-15',
+    content: `Aston Martin F1 Team has secured one of the largest sponsorship deals in Formula 1 history, announcing a multi-year title partnership with global technology giant CyberDynamics. The agreement, reportedly worth over £80 million per season, represents a major boost to the team's financial resources and championship ambitions.
+
+The partnership will see the team rebranded as "Aston Martin CyberDynamics" from the start of the 2025 season, with the company's branding featuring prominently on the car, driver overalls, and team facilities. CyberDynamics brings cutting-edge technology and data analytics capabilities that could prove crucial in the development race.
+
+"This partnership is a game-changer for our team," said team owner Lawrence Stroll. "CyberDynamics shares our ambition to win world championships, and their technological expertise will be invaluable as we continue our journey to the front of the grid."
+
+The additional funding will allow Aston Martin to expand their technical department and accelerate the development of their new factory facilities. Drivers Fernando Alonso and Lance Stroll both welcomed the news, with Alonso stating: "This shows the team's commitment to success. I'm excited about what we can achieve together."`,
+    category: 'team',
+    relatedId: 'aston-martin',
+    description:
+      'Aston Martin secures landmark sponsorship deal with global technology company',
+    author: 'Lisa Chen',
+    views: 7100,
   },
 ];
 

@@ -1,12 +1,13 @@
-export interface NewsItem {
+export interface News {
   id: string;
   title: string;
-  image: string;
   date: string;
-  category: string;
-  href: string;
-  content?: string;
+  content: string;
+  image?: string;
+  source?: string;
+  category?: 'race' | 'driver' | 'team' | 'general';
+  relatedId?: string;
+  description?: string;
   author?: string;
-  summary?: string;
-  readTime?: string;
+  views?: number;
 }
