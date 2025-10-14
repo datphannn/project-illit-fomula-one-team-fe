@@ -131,114 +131,161 @@ const ResultsSection: React.FC = () => {
     }
   }, [finishedRaces, selectedRace]);
 
-  // 🏎️ DRIVER STANDINGS - Tính điểm từ kết quả các chặng đua
+  /// 🏎️ DRIVER STANDINGS - Sử dụng trực tiếp từ mockDriversDetailed cho năm 2025
   const driverStandings = useMemo(() => {
-    if (!drivers?.length) return [];
+    if (selectedYear === 2025) {
+      // Năm 2025: dùng trực tiếp từ mockDriversDetailed
+      return mockDriversDetailed
+        .filter(driver => driver.currentStatus === 'active')
+        .map(driver => {
+          const seasonStats = driver.seasonStats;
+          const team = mockTeamsDetailed.find(t => t.id === driver.teamId);
 
-    const driverPointsMap = new Map();
-    const driverWinsMap = new Map();
-    const driverFastestLapsMap = new Map();
+          return {
+            position: seasonStats?.seasonPosition || 0,
+            name: driver.name,
+            team: team?.name || driver.teamId,
+            points: seasonStats?.seasonPoints || 0,
+            wins: seasonStats?.grandPrixWins || 0,
+            fastestLaps: seasonStats?.dhlFastestLaps || 0,
+            podiums: seasonStats?.grandPrixPodiums || 0,
+            teamColor: team?.color,
+          };
+        })
+        .sort((a, b) => b.points - a.points)
+        .map((driver, index) => ({
+          ...driver,
+          position: index + 1,
+        }));
+    } else {
+      // Các năm khác: tính toán từ kết quả các chặng đua (fallback)
+      if (!drivers?.length) return [];
 
-    // Tính điểm từ tất cả các chặng đua đã hoàn thành
-    finishedRaces.forEach(race => {
-      if ('results' in race && Array.isArray(race.results)) {
-        // ✅ Data đầy đủ: Lấy điểm từ results
-        race.results.forEach((result: any) => {
-          const driverName = result.driverName || result.driver;
-          if (!driverName) return;
+      const driverPointsMap = new Map();
+      const driverWinsMap = new Map();
+      const driverFastestLapsMap = new Map();
 
-          // Thêm điểm vị trí
-          const positionPoints = F1_POINTS_SYSTEM[result.position] || 0;
-          const currentPoints = driverPointsMap.get(driverName) || 0;
-          driverPointsMap.set(driverName, currentPoints + positionPoints);
+      // Tính điểm từ tất cả các chặng đua đã hoàn thành
+      finishedRaces.forEach(race => {
+        if ('results' in race && Array.isArray(race.results)) {
+          // ✅ Data đầy đủ: Lấy điểm từ results
+          race.results.forEach((result: any) => {
+            const driverName = result.driverName || result.driver;
+            if (!driverName) return;
 
-          // Đếm số chiến thắng
-          if (result.position === 1) {
-            driverWinsMap.set(
-              driverName,
-              (driverWinsMap.get(driverName) || 0) + 1
-            );
-          }
+            // Thêm điểm vị trí
+            const positionPoints = F1_POINTS_SYSTEM[result.position] || 0;
+            const currentPoints = driverPointsMap.get(driverName) || 0;
+            driverPointsMap.set(driverName, currentPoints + positionPoints);
 
-          // Thêm điểm fastest lap (nếu có và trong top 10)
-          if (result.points > positionPoints && result.position <= 10) {
-            driverFastestLapsMap.set(
-              driverName,
-              (driverFastestLapsMap.get(driverName) || 0) + 1
-            );
-          }
-        });
-      } else if (race.winner) {
-        // ❌ Data thiếu: Chỉ có winner (FALLBACK)
-        const currentPoints = driverPointsMap.get(race.winner) || 0;
-        driverPointsMap.set(race.winner, currentPoints + 25);
-        driverWinsMap.set(
-          race.winner,
-          (driverWinsMap.get(race.winner) || 0) + 1
-        );
-      }
-    });
+            // Đếm số chiến thắng
+            if (result.position === 1) {
+              driverWinsMap.set(
+                driverName,
+                (driverWinsMap.get(driverName) || 0) + 1
+              );
+            }
 
-    const standings = Array.from(driverPointsMap, ([name, points]) => {
-      const driver = drivers.find(d => d.name === name);
-      const team =
-        teams.find(t => t.id === driver?.teamId || t.name === driver?.teamId)
-          ?.name || 'Unknown';
-      const wins = driverWinsMap.get(name) || 0;
-      const fastestLaps = driverFastestLapsMap.get(name) || 0;
+            // Thêm điểm fastest lap (nếu có và trong top 10)
+            if (result.points > positionPoints && result.position <= 10) {
+              driverFastestLapsMap.set(
+                driverName,
+                (driverFastestLapsMap.get(driverName) || 0) + 1
+              );
+            }
+          });
+        } else if (race.winner) {
+          // ❌ Data thiếu: Chỉ có winner (FALLBACK)
+          const currentPoints = driverPointsMap.get(race.winner) || 0;
+          driverPointsMap.set(race.winner, currentPoints + 25);
+          driverWinsMap.set(
+            race.winner,
+            (driverWinsMap.get(race.winner) || 0) + 1
+          );
+        }
+      });
 
-      return {
-        position: 0,
-        name,
-        team,
-        points,
-        wins,
-        fastestLaps,
-      };
-    });
+      const standings = Array.from(driverPointsMap, ([name, points]) => {
+        const driver = drivers.find(d => d.name === name);
+        const team =
+          teams.find(t => t.id === driver?.teamId || t.name === driver?.teamId)
+            ?.name || 'Unknown';
+        const wins = driverWinsMap.get(name) || 0;
+        const fastestLaps = driverFastestLapsMap.get(name) || 0;
 
-    return standings
-      .sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        return b.wins - a.wins;
-      })
-      .map((d, i) => ({ ...d, position: i + 1 }));
-  }, [finishedRaces, drivers, teams]);
+        return {
+          position: 0,
+          name,
+          team,
+          points,
+          wins,
+          fastestLaps,
+        };
+      });
 
-  // 🏁 TEAM STANDINGS - Tính điểm từ driver standings
+      return standings
+        .sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          return b.wins - a.wins;
+        })
+        .map((d, i) => ({ ...d, position: i + 1 }));
+    }
+  }, [finishedRaces, drivers, teams, selectedYear]);
+
+  // 🏁 TEAM STANDINGS - Sử dụng trực tiếp từ mockTeamsDetailed cho năm 2025
   const teamStandings = useMemo(() => {
-    if (!teams?.length) return [];
+    if (selectedYear === 2025) {
+      // Năm 2025: dùng trực tiếp từ mockTeamsDetailed
+      return mockTeamsDetailed
+        .map(team => ({
+          id: team.id,
+          name: team.name,
+          points: team.points || 0,
+          position: team.position || 0,
+          wins: team.raceWins || 0,
+          color: team.color,
+        }))
+        .sort((a, b) => b.points - a.points)
+        .map((team, index) => ({
+          ...team,
+          position: index + 1,
+        }));
+    } else {
+      // Các năm khác: tính toán từ driver standings (fallback)
+      if (!teams?.length) return [];
 
-    const teamPointsMap = new Map();
-    const teamWinsMap = new Map();
+      const teamPointsMap = new Map();
+      const teamWinsMap = new Map();
 
-    // Cộng điểm từ tất cả drivers của team
-    driverStandings.forEach(driver => {
-      const currentPoints = teamPointsMap.get(driver.team) || 0;
-      teamPointsMap.set(driver.team, currentPoints + driver.points);
+      driverStandings.forEach(driver => {
+        const currentPoints = teamPointsMap.get(driver.team) || 0;
+        teamPointsMap.set(driver.team, currentPoints + driver.points);
 
-      const currentWins = teamWinsMap.get(driver.team) || 0;
-      teamWinsMap.set(driver.team, currentWins + driver.wins);
-    });
+        const currentWins = teamWinsMap.get(driver.team) || 0;
+        teamWinsMap.set(driver.team, currentWins + driver.wins);
+      });
 
-    const standings = Array.from(teamPointsMap, ([name, points]) => {
-      const team = teams.find(t => t.name === name);
-      return {
-        id: team?.id || name.toLowerCase(),
-        name: name,
-        points,
-        position: 0,
-        wins: teamWinsMap.get(name) || 0,
-      };
-    });
+      const standings = Array.from(teamPointsMap, ([name, points]) => {
+        const team = teams.find(t => t.name === name);
+        const mockTeam = mockTeamsDetailed.find(t => t.name === name);
+        return {
+          id: team?.id || name.toLowerCase(),
+          name: name,
+          points,
+          position: 0,
+          wins: teamWinsMap.get(name) || 0,
+          color: mockTeam?.color || TEAM_COLORS[name] || '#666666',
+        };
+      });
 
-    return standings
-      .sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        return b.wins - a.wins;
-      })
-      .map((t, i) => ({ ...t, position: i + 1 }));
-  }, [driverStandings, teams]);
+      return standings
+        .sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          return b.wins - a.wins;
+        })
+        .map((t, i) => ({ ...t, position: i + 1 }));
+    }
+  }, [driverStandings, teams, selectedYear]);
 
   // 📊 RACE DETAILS - Chi tiết chặng đua được chọn
   const selectedRaceDetails = useMemo(() => {
@@ -282,8 +329,29 @@ const ResultsSection: React.FC = () => {
   }, [selectedRaceDetails]);
 
   // 🎨 Helpers
-  const getTeamColor = (team?: string) =>
-    TEAM_COLORS[team || ''] || 'bg-gray-500';
+  const getTeamColor = (teamNameOrObject?: string | any) => {
+    if (!teamNameOrObject) return '#666666';
+
+    // Nếu là team object từ mockTeamsDetailed
+    if (typeof teamNameOrObject === 'object' && teamNameOrObject.color) {
+      return teamNameOrObject.color;
+    }
+
+    // Nếu là team name
+    const teamName =
+      typeof teamNameOrObject === 'string' ? teamNameOrObject : '';
+    const team = mockTeamsDetailed.find(t => t.name === teamName);
+    return team?.color || TEAM_COLORS[teamName] || '#666666';
+  };
+
+  // Helper mới để lấy team từ driver
+  const getDriverTeam = (driverName: string) => {
+    const driver = mockDriversDetailed.find(d => d.name === driverName);
+    if (!driver) return null;
+
+    return mockTeamsDetailed.find(t => t.id === driver.teamId);
+  };
+
   const getFlag = (gp: string) => RACE_FLAGS[gp] || '🏁';
   const getRaceName = (race: any) =>
     'name' in race ? race.name : race.grandPrix;
@@ -425,7 +493,12 @@ const ResultsSection: React.FC = () => {
                       </p>
                       <div className="flex items-center space-x-3">
                         <span
-                          className={`w-4 h-4 rounded-full ${getTeamColor(selectedRaceDetails.team || '')} shadow-md`}
+                          className="w-4 h-4 rounded-full shadow-md"
+                          style={{
+                            backgroundColor: getTeamColor(
+                              getDriverTeam(selectedRaceDetails.winner || '')
+                            ),
+                          }}
                         />
                         <div>
                           <p className="font-bold text-lg text-white">
@@ -542,7 +615,12 @@ const ResultsSection: React.FC = () => {
                             <td className="py-4 px-4">
                               <div className="flex items-center space-x-3">
                                 <span
-                                  className={`w-3 h-3 rounded-full ${getTeamColor(race.team || '')}`}
+                                  className="w-3 h-3 rounded-full"
+                                  style={{
+                                    backgroundColor: getTeamColor(
+                                      getDriverTeam(race.winner || '')
+                                    ),
+                                  }}
                                 />
                                 <span className="font-medium text-sm text-white">
                                   {race.winner?.split(' ')[1] ||
@@ -636,7 +714,12 @@ const ResultsSection: React.FC = () => {
                             <td className="py-4 px-4">
                               <div className="flex items-center space-x-3">
                                 <span
-                                  className={`w-3 h-3 rounded-full ${getTeamColor(result.team)} shadow-md`}
+                                  className="w-3 h-3 rounded-full shadow-md"
+                                  style={{
+                                    backgroundColor: getTeamColor(
+                                      getDriverTeam(result.driver || '')
+                                    ),
+                                  }}
                                 />
                                 <span className="font-semibold text-white">
                                   {result.driver}
@@ -715,7 +798,10 @@ const ResultsSection: React.FC = () => {
                   className="flex items-center space-x-3"
                 >
                   <span
-                    className={`w-4 h-4 rounded-full ${getTeamColor(d.team)} shadow-md`}
+                    className="w-4 h-4 rounded-full shadow-md"
+                    style={{
+                      backgroundColor: getTeamColor(getDriverTeam(d.name)),
+                    }}
                   />
                   <span className="font-semibold text-white">{d.name}</span>
                 </div>,
@@ -766,7 +852,8 @@ const ResultsSection: React.FC = () => {
                   className="flex items-center space-x-3"
                 >
                   <span
-                    className={`w-4 h-4 rounded-full ${getTeamColor(t.name)} shadow-md`}
+                    className="w-4 h-4 rounded-full shadow-md"
+                    style={{ backgroundColor: t.color || getTeamColor(t.name) }}
                   />
                   <span className="font-semibold text-white">{t.name}</span>
                 </div>,

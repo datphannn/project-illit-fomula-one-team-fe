@@ -18,7 +18,7 @@ import {
 import { useAuthStore } from '@/lib/store/authStore';
 
 import logoLight from '@/assets/images/logo-light.jpg';
-import logoDark from '@/assets/images/logo-dark.jpg';
+import logoDark from '@/assets/images/dark.png';
 
 // Import mock data
 import {
@@ -27,7 +27,7 @@ import {
   mockDriversSimple,
   mockNewsSimple,
 } from '@/lib/api/mockData';
-import { NewsItem } from '@/lib/types/news';
+import { News } from '@/lib/types/news';
 import { Race } from '@/lib/types/race';
 import { Driver } from '@/lib/types/driver';
 import { Team } from '@/lib/types/team';
@@ -40,7 +40,7 @@ interface DropdownItem {
   races?: Race[];
   teams?: Team[];
   drivers?: Driver[];
-  news?: NewsItem[];
+  news?: News[];
 }
 
 interface NavItem {
@@ -366,10 +366,12 @@ export default function Header() {
         return (
           <div className="w-[600px] p-6 bg-gray-900 text-white shadow-xl rounded-lg">
             <div className="space-y-4">
-              {firstNewsItem.news.map((item: NewsItem) => (
+              {firstNewsItem.news.map((item: News) => (
                 <Link
                   key={item.title}
-                  href={`/${locale}/${item.href}`}
+                  href={`/${locale}/news/${encodeURIComponent(
+                    item.title.toLowerCase().replace(/\s+/g, '-')
+                  )}`}
                   className="flex items-center p-4 hover:bg-gray-800 hover:shadow-md rounded-lg transition-all duration-200"
                 >
                   <div className="w-16 h-12 bg-gray-700 rounded mr-4"></div>{' '}

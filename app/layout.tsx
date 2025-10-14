@@ -10,6 +10,11 @@ export const metadata = {
   title: 'ILLIT - Formula 1 Official Website',
   description:
     'Nguồn thông tin chính thức về tin tức, kết quả, lịch thi đấu Formula 1 và hơn thế nữa.',
+  icons: {
+    icon: 'https://img.icons8.com/ios-filled/512/FFFFFF/formula-1.png',
+    shortcut: 'https://img.icons8.com/ios-filled/512/FFFFFF/formula-1.png',
+    apple: 'https://img.icons8.com/ios-filled/512/FFFFFF/formula-1.png',
+  },
 };
 
 function getTextDirection(locale: string): 'ltr' | 'rtl' {
