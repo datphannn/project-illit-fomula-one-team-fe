@@ -6,9 +6,10 @@ export interface Race {
   flag: string;
   round: number;
   winner?: string;
-  status: 'upcoming' | 'finished';
+  status: 'upcoming' | 'finished' | 'live';
   circuit?: string;
   laps?: number;
+  image?: string;
   team?: string;
   distance?: string;
   time?: string;

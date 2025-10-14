@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------- */
+/* 1. CSS Variables and Defaults */
+/* ---------------------------------------------------- */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -16,6 +19,13 @@
   }
 }
 
+html {
+    /* Đảm bảo chiều rộng Viewport (w-screen) được tính toán chính xác */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,7 +34,100 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    /* Reset margin mặc định */
+    margin: 0;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 html, body, #__next {
+  /* Giữ nguyên chiều cao 100% cho full layout */
   height: 100%;
+}
+
+
+/* ---------------------------------------------------- */
+/* 2. Custom Scrollbar Hidden (Hỗ trợ khối ngang trong Header) */
+/* ---------------------------------------------------- */
+
+.custom-scrollbar-hidden::-webkit-scrollbar {
+    /* Chrome, Safari, Opera */
+    display: none;
+}
+
+.custom-scrollbar-hidden {
+    /* IE and Edge */
+    -ms-overflow-style: none;  
+    /* Firefox */
+    scrollbar-width: none;  
+}@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------- */
+/* 1. CSS Variables and Defaults */
+/* ---------------------------------------------------- */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+html {
+    /* Đảm bảo chiều rộng Viewport (w-screen) được tính toán chính xác */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+    /* Reset margin mặc định */
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html, body, #__next {
+  /* Giữ nguyên chiều cao 100% cho full layout */
+  height: 100%;
+}
+
+
+/* ---------------------------------------------------- */
+/* 2. Custom Scrollbar Hidden (Hỗ trợ khối ngang trong Header) */
+/* ---------------------------------------------------- */
+
+.custom-scrollbar-hidden::-webkit-scrollbar {
+    /* Chrome, Safari, Opera */
+    display: none;
+}
+
+.custom-scrollbar-hidden {
+    /* IE and Edge */
+    -ms-overflow-style: none;  
+    /* Firefox */
+    scrollbar-width: none;  
 }

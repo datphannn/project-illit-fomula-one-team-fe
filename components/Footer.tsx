@@ -16,8 +16,8 @@ import {
 } from 'react-icons/fa6';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 //  Import logo từ assets
-import LogoLight from '@/assets/images/logo-light.jpg';
-import LogoDark from '@/assets/images/logo-dark.jpg';
+import LogoLight from '@/assets/images/dark.png';
+import LogoDark from '@/assets/images/dark.png';
 
 // Social links
 const SOCIAL_LINKS = [

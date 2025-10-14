@@ -6,4 +6,6 @@ export interface Video {
   date: string;
   url?: string;
   description?: string;
+  category?: string;
+  view?: number;
 }
