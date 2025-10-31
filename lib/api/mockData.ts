@@ -4,6 +4,7 @@ import { Driver } from '@/lib/types/driver';
 import { Team } from '@/lib/types/team';
 import { Video } from '@/lib/types/video';
 import { Story } from '@/lib/types/story';
+import { Award, AwardCategory } from '@/lib/types/award';
 
 // =========================
 // Mock Races - Lịch Đua F1 2025 (24 Chặng)
@@ -8299,3 +8300,180 @@ export const mockRacesByYear: Record<
     },
   ],
 };
+export const mockAwardCategories: AwardCategory[] = [
+  {
+    id: 'driver-of-the-year',
+    name: 'Driver of the Year',
+    description:
+      'Awarded to the best performing driver of the Formula 1 season.',
+    icon: '🏁',
+  },
+  {
+    id: 'team-of-the-year',
+    name: 'Team of the Year',
+    description:
+      'Recognizes the team that demonstrated outstanding performance, strategy, and teamwork.',
+    icon: '🚗',
+  },
+  {
+    id: 'rookie-of-the-year',
+    name: 'Rookie of the Year',
+    description:
+      'Awarded to the best performing rookie driver in their debut season.',
+    icon: '🌟',
+  },
+  {
+    id: 'overtake-of-the-year',
+    name: 'Overtake of the Year',
+    description:
+      'Celebrates the most exciting and skilful overtake of the season.',
+    icon: '⚡',
+  },
+  {
+    id: 'action-of-the-year',
+    name: 'Action of the Year',
+    description: 'Recognizes the most thrilling on-track moment voted by fans.',
+    icon: '🔥',
+  },
+  {
+    id: 'most-improved',
+    name: 'Most Improved Driver',
+    description:
+      'Given to the driver who made the biggest performance leap compared to previous seasons.',
+    icon: '📈',
+  },
+];
+
+export const mockAwards: Award[] = [
+  // — Mùa 2024
+  {
+    id: 'award-2024-1',
+    year: 2024,
+    category: 'Driver of the Year',
+    winner: 'Max Verstappen',
+    team: 'Red Bull Racing',
+    description:
+      'Dominated the season with consistent top-results and clinched his 4th consecutive world title. :contentReference[oaicite:0]{index=0}',
+    image: '/images/awards/verstappen-2024.jpg',
+    stats: { wins: 9, podiums: 14, points: 437 }, // 437 điểm mùa 2024 :contentReference[oaicite:1]{index=1}
+  },
+  {
+    id: 'award-2024-2',
+    year: 2024,
+    category: 'Team of the Year',
+    winner: 'McLaren',
+    description:
+      'Ended a 26-year wait to win the Constructors’ Championship (2024), showing major turnaround. :contentReference[oaicite:2]{index=2}',
+    image: '/images/awards/mclaren-2024.jpg',
+    stats: { wins: undefined, podiums: undefined, points: undefined },
+  },
+  {
+    id: 'award-2024-3',
+    year: 2024,
+    category: 'Rookie of the Year',
+    winner: 'Gabriel Bortoleto',
+    team: 'Kick Sauber',
+    description:
+      'Performed impressively in his debut F2-to-F1 pathway and was honoured as Rookie of the Year in the FIA Prize Giving. :contentReference[oaicite:3]{index=3}',
+    image: '/images/awards/bortoleto-2024.jpg',
+    stats: { wins: 0, podiums: 0, points: undefined },
+  },
+  {
+    id: 'award-2024-4',
+    year: 2024,
+    category: 'Overtake of the Year',
+    winner: 'Alex Albon',
+    team: 'Williams',
+    description:
+      'A spectacular overtake in Canada 2024 – down the back straight and between two cars – voted Overtake of the Year. :contentReference[oaicite:4]{index=4}',
+    image: '/images/awards/albon-overtake-2024.jpg',
+  },
+  {
+    id: 'award-2024-5',
+    year: 2024,
+    category: 'Action of the Year',
+    winner: 'Sergio Pérez',
+    team: 'Red Bull Racing',
+    description:
+      'Defining moment: passed multiple cars late in the race and kept composure under pressure at 2024 season. :contentReference[oaicite:5]{index=5}',
+    image: '/images/awards/perez-action-2024.jpg',
+  },
+  {
+    id: 'award-2024-6',
+    year: 2024,
+    category: 'Most Improved Driver',
+    winner: 'Lando Norris',
+    team: 'McLaren',
+    description:
+      'Showed remarkable improvement compared to prior seasons, challenged for title throughout 2024. :contentReference[oaicite:6]{index=6}',
+    image: '/images/awards/norris-improved-2024.jpg',
+    stats: { wins: 2, podiums: 8, points: undefined },
+  },
+
+  // — Mùa 2025 (đến thời điểm hiện tại, chưa chính thức hết mùa)
+  {
+    id: 'award-2025-1',
+    year: 2025,
+    category: 'Driver of the Year',
+    winner: 'Lando Norris',
+    team: 'McLaren',
+    description:
+      'Leading the 2025 championship with outstanding consistency and multiple wins, in a strong McLaren. :contentReference[oaicite:7]{index=7}',
+    image: '/images/awards/norris-2025.jpg',
+    stats: { wins: 6, podiums: 16, points: 357 },
+  },
+  {
+    id: 'award-2025-2',
+    year: 2025,
+    category: 'Team of the Year',
+    winner: 'McLaren',
+    description:
+      'Dominating the 2025 Constructors’ Championship (so far) with strong driver pair and strategy. :contentReference[oaicite:8]{index=8}',
+    image: '/images/awards/mclaren-2025.jpg',
+    stats: { wins: 12, podiums: 29, points: 713 },
+  },
+  {
+    id: 'award-2025-3',
+    year: 2025,
+    category: 'Rookie of the Year',
+    winner: 'Oliver Bearman',
+    team: 'Haas F1 Team',
+    description:
+      'Impressive debut season: scored points, strong qualifying and race pace among rookies. :contentReference[oaicite:9]{index=9}',
+    image: '/images/awards/bearman-2025.jpg',
+    stats: { wins: 0, podiums: 0, points: 32 },
+  },
+  {
+    id: 'award-2025-4',
+    year: 2025,
+    category: 'Overtake of the Year',
+    winner: 'Lando Norris',
+    team: 'McLaren',
+    description:
+      'Pulled off a stunning move on Leclerc at the United States GP, earning fan admiration globally.',
+    image: '/images/awards/norris-overtake-2025.jpg',
+  },
+  {
+    id: 'award-2025-5',
+    year: 2025,
+    category: 'Action of the Year',
+    winner: 'George Russell',
+    team: 'Mercedes',
+    description:
+      'Held off intense attacks in the closing laps at the Hungarian GP to secure a podium and show defensive mastery.',
+    image: '/images/awards/russell-action-2025.jpg',
+  },
+  {
+    id: 'award-2025-6',
+    year: 2025,
+    category: 'Most Improved Driver',
+    winner: 'Oscar Piastri',
+    team: 'McLaren',
+    description:
+      'Made a major leap in performance vs prior season, frequently challenging for wins and qualifying on front row.',
+    image: '/images/awards/piastri-2025.jpg',
+    stats: { wins: 6, podiums: 13, points: 356 },
+  },
+];
+
+export const mockAwardsSimple = mockAwards.slice(0, 6);
