@@ -1,17 +1,10 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { useLocale } from '@/lib/utils/locale';
 import { useRouter } from 'next/navigation';
 import StoriesSection from '@/components/StoriesSection';
 import NewsSection from '@/components/NewsSection';
-import ScheduleSection from '@/components/ScheduleSection';
-import DriversSection from '@/components/DriversSection';
-import TeamsSection from '@/components/TeamsSection';
 import FantasySection from '@/components/FantasySection';
-import VideoPlayer from '@/components/ui/VideoPlayer';
 import Card from '@/components/ui/Card';
-
 import Button from '@/components/ui/Button';
 import {
   mockRacesDetailed,
@@ -23,34 +16,24 @@ import {
 } from '@/lib/api/mockData';
 
 export default function HomePage() {
-  const t = useTranslations('main');
-  const { locale } = useLocale();
   const router = useRouter();
 
   const mockDrivers = mockDriversDetailed;
   const nextRace = mockRacesDetailed[0];
-  const featuredVideo = mockVideosDetailed[0];
-  const topDriver = mockDriversDetailed[0];
-  const topTeam = mockTeamsDetailed[0];
 
-  // Navigation handlers
-  const navigateTo = (path: string) => {
-    router.push(`/${locale}${path}`);
-  };
-
-  const navigateToSchedule = () => navigateTo('/schedule');
-  const navigateToFeedback = () => navigateTo('/feedback');
-  const navigateToStandings = () => navigateTo('/drivers');
-  const navigateToTeams = () => navigateTo('/teams');
-  const navigateToDrivers = () => navigateTo('/drivers');
-  const navigateToNews = () => navigateTo('/news');
-  const navigateToVideos = () => navigateTo('/videos');
-  const navigateToStories = () => navigateTo('/stories');
-  const navigateToTechnology = () => navigateTo('/technology');
-  const navigateToDriverDetail = (id: string) => navigateTo(`/drivers/${id}`);
-  const navigateToVideoDetail = (id: string) => navigateTo(`/videos/${id}`);
-  const navigateToTeamDetail = (id: string) => navigateTo(`/teams/${id}`);
-  const navigateToRaceDetail = (id: string) => navigateTo(`/schedule/${id}`);
+  // Navigation handlers - Fixed routing without locale
+  const navigateToSchedule = () => router.push('/schedule');
+  const navigateToFeedback = () => router.push('/feedback');
+  const navigateToStandings = () => router.push('/drivers');
+  const navigateToTeams = () => router.push('/teams');
+  const navigateToDrivers = () => router.push('/drivers');
+  const navigateToNews = () => router.push('/news');
+  const navigateToVideos = () => router.push('/videos');
+  const navigateToStories = () => router.push('/stories');
+  const navigateToDriverDetail = (id: string) => router.push(`/drivers/${id}`);
+  const navigateToVideoDetail = (id: string) => router.push(`/videos/${id}`);
+  const navigateToTeamDetail = (id: string) => router.push(`/teams/${id}`);
+  const navigateToRaceDetail = (id: string) => router.push(`/schedule/${id}`);
 
   // Component Drivers đơn giản
   const SimpleDriversGrid = ({
@@ -60,31 +43,37 @@ export default function HomePage() {
   }) => {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {drivers.slice(0, 8).map(driver => (
-          <div
-            key={driver.id}
-            className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer group text-center"
-            onClick={() => navigateToDriverDetail(driver.id)}
-          >
-            <div className="w-14 h-14 bg-gradient-to-br from-gray-600 to-gray-400 rounded-full flex items-center justify-center text-white font-bold text-base mx-auto mb-3">
-              #{driver.number}
+        {drivers.slice(0, 8).map(driver => {
+          const driverTeam = mockTeamsDetailed.find(team =>
+            team.drivers.includes(driver.id)
+          );
+
+          return (
+            <div
+              key={driver.id}
+              className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-red-500 transition-colors duration-300 cursor-pointer group text-center"
+              onClick={() => navigateToDriverDetail(driver.id)}
+            >
+              <div className="w-14 h-14 bg-gradient-to-br from-gray-600 to-gray-400 rounded-full flex items-center justify-center text-white font-bold text-base mx-auto mb-3">
+                #{driver.number}
+              </div>
+              <h3 className="font-semibold text-sm text-white group-hover:text-red-400 transition-colors duration-300 line-clamp-1 mb-1">
+                {driver.name.split(' ')[0]}
+              </h3>
+              <p className="text-xs text-gray-400 line-clamp-1 mb-2">
+                {driverTeam?.name || 'Unknown Team'}
+              </p>
+              <div className="flex justify-center items-center gap-1">
+                <span className="text-xs bg-gray-700 px-2 py-1 rounded">
+                  P{driver.seasonStats?.seasonPosition || '-'}
+                </span>
+                <span className="text-xs bg-red-600 px-2 py-1 rounded">
+                  {driver.seasonStats?.seasonPoints || 0} PTS
+                </span>
+              </div>
             </div>
-            <h3 className="font-semibold text-sm text-white group-hover:text-red-400 transition-colors line-clamp-1 mb-1">
-              {driver.name.split(' ')[0]}
-            </h3>
-            <p className="text-xs text-gray-400 line-clamp-1 mb-2">
-              {driver.teamId}
-            </p>
-            <div className="flex justify-center items-center gap-1">
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">
-                P{driver.seasonStats?.seasonPosition || '-'}
-              </span>
-              <span className="text-xs bg-red-600 px-2 py-1 rounded">
-                {driver.seasonStats?.seasonPoints || 0} PTS
-              </span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   };
@@ -96,7 +85,7 @@ export default function HomePage() {
         {teams.slice(0, 4).map(team => (
           <div
             key={team.id}
-            className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer group"
+            className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors duration-300 cursor-pointer group"
             onClick={() => navigateToTeamDetail(team.id)}
           >
             <div className="flex items-center gap-3">
@@ -110,12 +99,10 @@ export default function HomePage() {
                   .join('')}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors line-clamp-1 text-sm">
+                <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors duration-300 line-clamp-1 text-sm">
                   {team.name}
                 </h3>
-                <p className="text-xs text-gray-400 mb-1">
-                  {team.base}, {team.base}
-                </p>
+                <p className="text-xs text-gray-400 mb-1">{team.base}</p>
                 <div className="flex items-center gap-2">
                   <span className="text-xs bg-gray-700 px-2 py-1 rounded">
                     P{team.position}
@@ -139,13 +126,13 @@ export default function HomePage() {
         {races.slice(0, 3).map(race => (
           <Card
             key={race.id}
-            className="bg-gray-750 p-4 border border-gray-700 hover:border-green-500 transition-colors cursor-pointer group"
+            className="bg-gray-750 p-4 border border-gray-700 hover:border-green-500 transition-all duration-300 cursor-pointer group"
             onClick={() => navigateToRaceDetail(race.id)}
           >
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="text-2xl mb-1">{race.flag}</div>
-                <h3 className="font-semibold text-white group-hover:text-green-400 transition-colors line-clamp-1">
+                <h3 className="font-semibold text-white group-hover:text-green-400 transition-colors duration-300 line-clamp-1">
                   {race.name}
                 </h3>
                 <p className="text-xs text-gray-400">{race.circuit}</p>
@@ -156,7 +143,7 @@ export default function HomePage() {
                     ? 'bg-green-600 text-white'
                     : race.status === 'live'
                       ? 'bg-red-600 text-white'
-                      : 'bg-yellow-600 text-white'
+                      : 'bg-gray-600 text-white'
                 }`}
               >
                 {race.status.toUpperCase()}
@@ -177,7 +164,7 @@ export default function HomePage() {
       {/* Hero Banner Section */}
       <section className="relative h-[70vh] min-h-[600px] max-h-[800px] overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
               "url('/assets/images/GettyImages-2222748122-1920x1080-Cropped.jpg')",
@@ -262,8 +249,8 @@ export default function HomePage() {
       {/* Stories Section */}
       <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <div>
+          <div className="flex items-start justify-between mb-12 gap-4">
+            <div className="flex-1">
               <h2 className="text-3xl font-bold mb-2">Latest Stories</h2>
               <p className="text-gray-400">
                 Exclusive content and behind-the-scenes features
@@ -272,7 +259,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 flex-shrink-0"
               onClick={navigateToStories}
             >
               View All Stories
@@ -281,7 +268,6 @@ export default function HomePage() {
           <StoriesSection stories={mockStoriesDetailed.slice(0, 4)} />
         </div>
       </section>
-
       {/* Spotlight Section */}
       <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-4">
@@ -327,11 +313,11 @@ export default function HomePage() {
                   <div className="flex justify-between items-center mt-8">
                     <Button
                       variant="ghost"
-                      className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-all group-hover:translate-x-2"
+                      className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-all duration-300 group-hover:translate-x-2"
                     >
                       Race Details →
                     </Button>
-                    <div className="text-6xl font-bold opacity-20 group-hover:opacity-30 transition-opacity">
+                    <div className="text-6xl font-bold opacity-20 group-hover:opacity-30 transition-opacity duration-300">
                       F1
                     </div>
                   </div>
@@ -379,7 +365,7 @@ export default function HomePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full mt-4 text-red-400 hover:text-red-300 justify-center"
+                  className="w-full mt-4 text-red-400 hover:text-red-300 justify-center transition-colors duration-300"
                   onClick={navigateToDrivers}
                 >
                   View All Drivers →
@@ -422,7 +408,7 @@ export default function HomePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full mt-4 text-blue-400 hover:text-blue-300 justify-center"
+                  className="w-full mt-4 text-blue-400 hover:text-blue-300 justify-center transition-colors duration-300"
                   onClick={navigateToTeams}
                 >
                   View All Teams →
@@ -446,7 +432,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
               onClick={navigateToNews}
             >
               View All News
@@ -467,13 +453,13 @@ export default function HomePage() {
             <Button
               variant="outline"
               size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
               onClick={navigateToSchedule}
             >
               Full Schedule
             </Button>
           </div>
-          <SimpleRacesGrid races={mockRacesDetailed} />
+          <SimpleRacesGrid races={mockRacesDetailed.slice(0, 3)} />
         </div>
       </section>
 
@@ -493,7 +479,7 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
                   onClick={navigateToDrivers}
                 >
                   View All
@@ -514,7 +500,7 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
                   onClick={navigateToTeams}
                 >
                   View All
@@ -539,7 +525,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
               onClick={navigateToVideos}
             >
               View All Videos
@@ -559,9 +545,9 @@ export default function HomePage() {
                     alt={video.title}
                     className="w-full h-40 object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
                       <svg
                         className="w-6 h-6 text-white ml-0.5"
                         fill="currentColor"
@@ -576,7 +562,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="p-4">
-                  <h4 className="font-semibold mb-2 text-sm line-clamp-2 group-hover:text-red-400 transition-colors">
+                  <h4 className="font-semibold mb-2 text-sm line-clamp-2 group-hover:text-red-400 transition-colors duration-300">
                     {video.title}
                   </h4>
                   <p className="text-gray-400 text-xs flex items-center">
@@ -609,12 +595,12 @@ export default function HomePage() {
               </div>
 
               <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
                   <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
                     <span className="text-xl">🎤</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors">
+                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
                       Exclusive Interviews
                     </h4>
                     <p className="text-sm text-gray-400">
@@ -623,24 +609,24 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
                   <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
                     <span className="text-xl">📊</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors">
+                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
                       Live Data
                     </h4>
                     <p className="text-sm text-gray-400">Real-time telemetry</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
                   <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
                     <span className="text-xl">⭐</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors">
+                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
                       Premium Content
                     </h4>
                     <p className="text-sm text-gray-400">Unlock all features</p>
@@ -691,13 +677,13 @@ export default function HomePage() {
                     </thead>
                     <tbody>
                       {mockDrivers
-                        .slice() // Tạo bản copy để không ảnh hưởng đến array gốc
+                        .slice()
                         .sort((a, b) => {
                           const pointsA = a.seasonStats?.seasonPoints || 0;
                           const pointsB = b.seasonStats?.seasonPoints || 0;
-                          return pointsB - pointsA; // Sắp xếp giảm dần theo points
+                          return pointsB - pointsA;
                         })
-                        .slice(0, 5) // Lấy top 5
+                        .slice(0, 5)
                         .map((driver, index) => {
                           const driverTeam = mockTeamsDetailed.find(team =>
                             team.drivers.includes(driver.id)
@@ -706,7 +692,7 @@ export default function HomePage() {
                           return (
                             <tr
                               key={driver.id}
-                              className="border-b border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer"
+                              className="border-b border-gray-700 hover:bg-gray-750 transition-colors duration-300 cursor-pointer"
                               onClick={() => navigateToDriverDetail(driver.id)}
                             >
                               <td className="py-4 px-4 font-bold text-lg">
@@ -730,7 +716,7 @@ export default function HomePage() {
                 <div className="mt-6 text-center">
                   <Button
                     variant="outline"
-                    className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
                     onClick={navigateToStandings}
                   >
                     View Full Standings
@@ -754,11 +740,12 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              className="bg-red-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:translate-y-[-3px] hover:shadow-lg transform transition-all duration-300 ease-in-out"
+              className="bg-red-500 text-white hover:bg-red-600 font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               onClick={navigateToFeedback}
             >
               📋 Take Our Survey
             </Button>
+
             <Button
               variant="outline"
               className="border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg transition-all duration-300"

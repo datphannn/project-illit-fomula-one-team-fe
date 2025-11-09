@@ -71,16 +71,21 @@ interface TopNavItem {
 
 // Top navigation items
 const TOP_NAV_ITEMS: TopNavItem[] = [
-  { key: 'authentic', label: 'Authentic', href: 'authentic', icon: null },
-  { key: 'store', label: 'Store', href: 'store', icon: FaStore },
-  { key: 'tickets', label: 'Tickets', href: 'tickets', icon: FaTicketAlt },
+  { key: 'authentic', label: 'Authentic', href: '/authentic', icon: null },
+  { key: 'store', label: 'Store', href: '/store', icon: FaStore },
+  { key: 'tickets', label: 'Tickets', href: '/tickets', icon: FaTicketAlt },
   {
     key: 'hospitality',
     label: 'Hospitality',
-    href: 'hospitality',
+    href: '/hospitality',
     icon: FaUserTie,
   },
-  { key: 'experiences', label: 'Experiences', href: 'experiences', icon: null },
+  {
+    key: 'experiences',
+    label: 'Experiences',
+    href: '/experiences',
+    icon: null,
+  },
 ];
 
 // Enhanced navigation items with rich dropdown content
@@ -88,55 +93,55 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'schedule',
     label: 'Schedule',
-    href: 'schedule',
+    href: '/schedule',
     type: 'races',
     icon: FaCalendar,
     dropdown: [
       {
         key: '2025-season',
         label: '2025 Season',
-        href: 'schedule/2025',
+        href: '/schedule/2025',
         races: mockRacesSimple,
       },
-      { key: 'calendar', label: 'Calendar', href: 'schedule/calendar' },
+      { key: 'calendar', label: 'Calendar', href: '/schedule/calendar' },
       {
         key: 'race-weekend',
         label: 'Race Weekend',
-        href: 'schedule/race-weekend',
+        href: '/schedule/race-weekend',
       },
     ],
   },
   {
     key: 'results',
     label: 'Results',
-    href: 'results',
+    href: '/results',
     type: 'tabs',
     icon: FaTrophy,
     dropdown: [
       {
         key: '2025-season',
         label: '2025 Season',
-        href: 'results/2025',
+        href: '/results/2025',
         active: true,
       },
       {
         key: 'driver-standings',
         label: 'Driver Standings',
-        href: 'results/driver-standings',
+        href: '/results/driver-standings',
       },
       {
         key: 'team-standings',
         label: 'Team Standings',
-        href: 'results/team-standings',
+        href: '/results/team-standings',
       },
-      { key: 'archive', label: 'Archive 1950-2024', href: 'results/archive' },
-      { key: 'f1-awards', label: 'F1 Awards', href: 'awards' },
+      { key: 'archive', label: 'Archive 1950-2024', href: '/results/archive' },
+      { key: 'f1-awards', label: 'F1 Awards', href: '/awards' },
     ],
   },
   {
     key: 'news',
     label: 'News',
-    href: 'news',
+    href: '/news',
     type: 'news',
     icon: FaNewspaper,
     dropdown: [
@@ -150,7 +155,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'drivers',
     label: 'Drivers',
-    href: 'drivers',
+    href: '/drivers',
     type: 'drivers',
     icon: FaUser,
     dropdown: [
@@ -164,11 +169,11 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'teams',
     label: 'Teams',
-    href: 'teams',
+    href: '/teams',
     type: 'teams',
     icon: FaUsers,
     dropdown: [
-      { key: 'all-teams', label: 'All Teams', href: 'teams/all' },
+      { key: 'all-teams', label: 'All Teams', href: '/teams/all' },
       {
         key: 'teams_grid',
         label: 'Teams Grid',
@@ -179,7 +184,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'awards',
     label: 'Awards',
-    href: 'awards',
+    href: '/awards',
     type: 'awards',
     icon: FaTrophy,
     dropdown: [
@@ -193,19 +198,19 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'gaming',
     label: 'Gaming',
-    href: 'gaming',
+    href: '/gaming',
     type: 'simple',
     icon: FaGamepad,
     dropdown: [
-      { key: 'fantasy', label: 'Fantasy & Gaming', href: 'gaming/fantasy' },
-      { key: 'manager', label: 'F1 Manager', href: 'gaming/manager' },
-      { key: 'mobile', label: 'F1 Mobile Racing', href: 'gaming/mobile' },
-      { key: 'esports', label: 'Esports', href: 'gaming/esports' },
+      { key: 'fantasy', label: 'Fantasy & Gaming', href: '/gaming/fantasy' },
+      { key: 'manager', label: 'F1 Manager', href: '/gaming/manager' },
+      { key: 'mobile', label: 'F1 Mobile Racing', href: '/gaming/mobile' },
+      { key: 'esports', label: 'Esports', href: '/gaming/esports' },
     ],
   },
 ];
 
-// Locale options
+// Locale options (kept for UI, but not used in routing)
 const LOCALE_OPTIONS = [
   { value: 'en', label: 'English', flag: '🇺🇸' },
   { value: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
@@ -227,28 +232,14 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  useEffect(() => {
-    // Get locale from pathname
-    const pathLocale = pathname?.split('/')[1];
-    if (pathLocale === 'en' || pathLocale === 'vi') {
-      setLocale(pathLocale);
-    }
-  }, [pathname]);
-
   const isNavItemActive = (href: string) => {
-    return pathname?.includes(`/${locale}/${href}`);
+    return pathname?.includes(href);
   };
 
   const handleChangeLocale = (newLocale: 'en' | 'vi') => {
     setLocale(newLocale);
-    const segments = pathname?.split('/') ?? [];
-    if (segments.length > 1) {
-      segments[1] = newLocale;
-      router.push(segments.join('/'));
-    } else {
-      router.push(`/${newLocale}`);
-    }
     setIsLocaleDropdownOpen(false);
+    // In a real app, you might store this in localStorage or context
   };
 
   const toggleMobileMenu = () => {
@@ -286,7 +277,7 @@ export default function Header() {
     }, 200);
   };
 
-  // --- RENDER FUNCTIONS --- (MAX 5 ITEMS)
+  // --- RENDER FUNCTIONS ---
 
   const renderRacesContent = (dropdown: DropdownItem[]) => (
     <div className="flex flex-col gap-6">
@@ -303,38 +294,32 @@ export default function Header() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        {' '}
-        {/* Changed to 5 columns */}
-        {dropdown[0]?.races?.slice(0, 5).map(
-          (
-            race: Race // Max 5 races
-          ) => (
-            <Link
-              key={race.name}
-              href={`/${locale}/schedule/${race.round}`}
-              className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300 overflow-hidden hover:shadow-lg hover:shadow-red-500/10"
-            >
-              <div className="h-32 bg-gradient-to-br from-gray-700 to-gray-800 relative">
-                <div className="absolute top-3 left-3">
-                  <span className="text-xs font-bold bg-red-600 text-white px-2 py-1 rounded">
-                    ROUND {race.round}
-                  </span>
-                </div>
+        {dropdown[0]?.races?.slice(0, 5).map((race: Race) => (
+          <Link
+            key={race.name}
+            href={`/schedule/${race.round}`}
+            className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300 overflow-hidden hover:shadow-lg hover:shadow-red-500/10"
+          >
+            <div className="h-32 bg-gradient-to-br from-gray-700 to-gray-800 relative">
+              <div className="absolute top-3 left-3">
+                <span className="text-xs font-bold bg-red-600 text-white px-2 py-1 rounded">
+                  ROUND {race.round}
+                </span>
               </div>
-              <div className="p-4">
-                <h4 className="font-bold text-white group-hover:text-red-400 transition-colors mb-2">
-                  {race.name}
-                </h4>
-                <p className="text-sm text-gray-400">{race.date}</p>
-              </div>
-            </Link>
-          )
-        )}
+            </div>
+            <div className="p-4">
+              <h4 className="font-bold text-white group-hover:text-red-400 transition-colors mb-2">
+                {race.name}
+              </h4>
+              <p className="text-sm text-gray-400">{race.date}</p>
+            </div>
+          </Link>
+        ))}
       </div>
 
       <div className="flex items-center gap-3 pt-4 border-t border-gray-800">
         <Link
-          href={`/${locale}/schedule/full`}
+          href="/schedule"
           className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-bold transition-colors"
         >
           Full Schedule
@@ -353,15 +338,15 @@ export default function Header() {
     return (
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {' '}
-          {/* Changed to 5 columns */}
-          {drivers.slice(0, 5).map(
-            (
-              driver // Max 5 drivers
-            ) => (
+          {drivers.slice(0, 5).map(driver => {
+            // Get last name only for URL
+            const nameParts = driver.name.split(' ');
+            const lastName = nameParts[nameParts.length - 1].toLowerCase();
+
+            return (
               <Link
                 key={driver.name}
-                href={`/${locale}/drivers/${driver.name.toLowerCase().replace(/ /g, '-')}`}
+                href={`/drivers/${lastName}`}
                 className="group flex items-center gap-3 p-3 bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300"
               >
                 <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -374,19 +359,19 @@ export default function Header() {
                   <p className="text-xs text-gray-400">{driver.teamId}</p>
                 </div>
               </Link>
-            )
-          )}
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-3 pt-4 border-t border-gray-800">
           <Link
-            href={`/${locale}/drivers/all`}
+            href="/drivers"
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-bold transition-colors"
           >
             All Drivers
           </Link>
           <Link
-            href={`/${locale}/drivers/hall-of-fame`}
+            href="/drivers/hall-of-fame"
             className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm font-bold transition-colors"
           >
             Hall of Fame
@@ -403,15 +388,18 @@ export default function Header() {
     return (
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          {' '}
-          {/* Changed to 5 columns */}
-          {teamsGrid.teams.slice(0, 5).map(
-            (
-              team: Team // Max 5 teams
-            ) => (
+          {teamsGrid.teams.slice(0, 5).map((team: Team) => {
+            // Get only the last word of team name
+            // "Red Bull Racing" -> "racing"
+            // "Scuderia Ferrari" -> "ferrari"
+            // "Mercedes" -> "mercedes"
+            const nameParts = team.name.toLowerCase().split(' ');
+            const teamSlug = nameParts[nameParts.length - 1];
+
+            return (
               <Link
                 key={team.name}
-                href={`/${locale}/teams/${team.name.toLowerCase().replace(/ /g, '-')}`}
+                href={`/teams/${teamSlug}`}
                 className="group text-center p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300"
               >
                 <div
@@ -430,13 +418,13 @@ export default function Header() {
                   P{team.position} • {team.points} PTS
                 </p>
               </Link>
-            )
-          )}
+            );
+          })}
         </div>
 
         <div className="flex justify-center pt-4 border-t border-gray-800">
           <Link
-            href={`/${locale}/teams/all`}
+            href="/teams"
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded text-sm font-bold transition-colors"
           >
             View All Teams
@@ -453,34 +441,28 @@ export default function Header() {
     return (
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {' '}
-          {/* Changed to 5 columns */}
-          {news.slice(0, 5).map(
-            (
-              item: News // Max 5 news
-            ) => (
-              <Link
-                key={item.title}
-                href={`/${locale}/news/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}
-                className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300 p-4"
-              >
-                <h4 className="font-bold text-white group-hover:text-red-400 transition-colors text-sm mb-3 line-clamp-2">
-                  {item.title}
-                </h4>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-400">{item.date}</span>
-                  <span className="bg-red-600/20 text-red-300 px-2 py-1 rounded">
-                    {item.category}
-                  </span>
-                </div>
-              </Link>
-            )
-          )}
+          {news.slice(0, 5).map((item: News) => (
+            <Link
+              key={item.title}
+              href={`/news/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}
+              className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-red-500 transition-all duration-300 p-4"
+            >
+              <h4 className="font-bold text-white group-hover:text-red-400 transition-colors text-sm mb-3 line-clamp-2">
+                {item.title}
+              </h4>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-gray-400">{item.date}</span>
+                <span className="bg-red-600/20 text-red-300 px-2 py-1 rounded">
+                  {item.category}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
 
         <div className="flex justify-center pt-4 border-t border-gray-800">
           <Link
-            href={`/${locale}/news`}
+            href="/news"
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded text-sm font-bold transition-colors"
           >
             View All News
@@ -497,85 +479,79 @@ export default function Header() {
     return (
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {' '}
-          {/* Changed to 5 columns */}
-          {awards.slice(0, 5).map(
-            (
-              award: Award // Max 5 awards
-            ) => (
-              <Link
-                key={award.id}
-                href={`/${locale}/awards/${award.id}`}
-                className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-yellow-500 transition-all duration-300 overflow-hidden hover:shadow-lg hover:shadow-yellow-500/10"
-              >
-                <div className="bg-gradient-to-br from-yellow-600 to-yellow-800 p-4 relative">
-                  <div className="flex items-center gap-2 mb-2">
-                    <FaTrophy className="text-2xl text-yellow-200" />
-                    <span className="text-xs font-bold text-white/90 uppercase tracking-wider">
-                      {award.year}
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-white text-sm">
-                    {award.category}
-                  </h4>
+          {awards.slice(0, 5).map((award: Award) => (
+            <Link
+              key={award.id}
+              href={`/awards/${award.id}`}
+              className="group bg-gray-800 rounded-lg border border-gray-700 hover:border-yellow-500 transition-all duration-300 overflow-hidden hover:shadow-lg hover:shadow-yellow-500/10"
+            >
+              <div className="bg-gradient-to-br from-yellow-600 to-yellow-800 p-4 relative">
+                <div className="flex items-center gap-2 mb-2">
+                  <FaTrophy className="text-2xl text-yellow-200" />
+                  <span className="text-xs font-bold text-white/90 uppercase tracking-wider">
+                    {award.year}
+                  </span>
                 </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <FaMedal className="text-yellow-500" />
-                    <span className="text-xs text-gray-400 uppercase">
-                      Winner
-                    </span>
-                  </div>
-                  <h5 className="font-bold text-white group-hover:text-yellow-400 transition-colors mb-1">
-                    {award.winner}
-                  </h5>
-                  {award.team && (
-                    <p className="text-xs text-gray-400">{award.team}</p>
-                  )}
-                  {award.stats && (
-                    <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-700">
-                      {award.stats.wins !== undefined && (
-                        <div className="text-center">
-                          <p className="text-sm font-bold text-red-400">
-                            {award.stats.wins}
-                          </p>
-                          <p className="text-xs text-gray-500">Wins</p>
-                        </div>
-                      )}
-                      {award.stats.podiums !== undefined && (
-                        <div className="text-center">
-                          <p className="text-sm font-bold text-orange-400">
-                            {award.stats.podiums}
-                          </p>
-                          <p className="text-xs text-gray-500">Podiums</p>
-                        </div>
-                      )}
-                      {award.stats.points !== undefined && (
-                        <div className="text-center">
-                          <p className="text-sm font-bold text-blue-400">
-                            {award.stats.points}
-                          </p>
-                          <p className="text-xs text-gray-500">Points</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                <h4 className="font-bold text-white text-sm">
+                  {award.category}
+                </h4>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <FaMedal className="text-yellow-500" />
+                  <span className="text-xs text-gray-400 uppercase">
+                    Winner
+                  </span>
                 </div>
-              </Link>
-            )
-          )}
+                <h5 className="font-bold text-white group-hover:text-yellow-400 transition-colors mb-1">
+                  {award.winner}
+                </h5>
+                {award.team && (
+                  <p className="text-xs text-gray-400">{award.team}</p>
+                )}
+                {award.stats && (
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-700">
+                    {award.stats.wins !== undefined && (
+                      <div className="text-center">
+                        <p className="text-sm font-bold text-red-400">
+                          {award.stats.wins}
+                        </p>
+                        <p className="text-xs text-gray-500">Wins</p>
+                      </div>
+                    )}
+                    {award.stats.podiums !== undefined && (
+                      <div className="text-center">
+                        <p className="text-sm font-bold text-orange-400">
+                          {award.stats.podiums}
+                        </p>
+                        <p className="text-xs text-gray-500">Podiums</p>
+                      </div>
+                    )}
+                    {award.stats.points !== undefined && (
+                      <div className="text-center">
+                        <p className="text-sm font-bold text-blue-400">
+                          {award.stats.points}
+                        </p>
+                        <p className="text-xs text-gray-500">Points</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
 
         <div className="flex items-center gap-3 pt-4 border-t border-gray-800">
           <Link
-            href={`/${locale}/awards`}
+            href="/awards"
             className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white px-6 py-2 rounded text-sm font-bold transition-colors flex items-center gap-2"
           >
             <FaCrown />
             View All Awards
           </Link>
           <Link
-            href={`/${locale}/awards/hall-of-fame`}
+            href="/awards/hall-of-fame"
             className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm font-bold transition-colors"
           >
             Hall of Fame
@@ -591,25 +567,19 @@ export default function Header() {
     return (
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {' '}
-          {/* Changed to 5 columns */}
-          {item.dropdown.slice(0, 5).map(
-            (
-              tab: DropdownItem // Max 5 tabs
-            ) => (
-              <Link
-                key={tab.key}
-                href={`/${locale}/${tab.href}`}
-                className={`p-4 rounded-lg text-center transition-all duration-300 border-2 ${
-                  tab.active
-                    ? 'bg-red-600 text-white border-red-600 shadow-lg'
-                    : 'bg-gray-800 text-gray-200 border-gray-700 hover:border-red-500 hover:bg-gray-750'
-                }`}
-              >
-                <div className="font-bold text-sm">{tab.label}</div>
-              </Link>
-            )
-          )}
+          {item.dropdown.slice(0, 5).map((tab: DropdownItem) => (
+            <Link
+              key={tab.key}
+              href={tab.href || '/'}
+              className={`p-4 rounded-lg text-center transition-all duration-300 border-2 ${
+                tab.active
+                  ? 'bg-red-600 text-white border-red-600 shadow-lg'
+                  : 'bg-gray-800 text-gray-200 border-gray-700 hover:border-red-500 hover:bg-gray-750'
+              }`}
+            >
+              <div className="font-bold text-sm">{tab.label}</div>
+            </Link>
+          ))}
         </div>
       </div>
     );
@@ -697,7 +667,7 @@ export default function Header() {
             {/* Left side */}
             <div className="flex items-center space-x-6">
               <Link
-                href={`/${locale}/fia-race-series`}
+                href="/fia-race-series"
                 className="text-gray-300 hover:text-white transition-colors text-xs font-bold flex items-center gap-2 pr-4 border-r border-gray-700"
               >
                 <span className="text-red-600 font-bold">FIA</span> Race Series
@@ -707,7 +677,7 @@ export default function Header() {
               {TOP_NAV_ITEMS.map(({ key, label, href, icon: Icon }) => (
                 <Link
                   key={key}
-                  href={`/${locale}/${href}`}
+                  href={href}
                   className="hidden md:flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-xs font-medium uppercase"
                 >
                   {Icon && <Icon className="text-xs" />}
@@ -719,7 +689,7 @@ export default function Header() {
             {/* Right side */}
             <div className="flex items-center space-x-4">
               <Link
-                href={`/${locale}/f1tv`}
+                href="/f1tv"
                 className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-white font-bold text-xs transition-colors uppercase"
               >
                 <FaPlay className="text-xs" />
@@ -727,7 +697,7 @@ export default function Header() {
               </Link>
 
               <Link
-                href={`/${locale}/subscribe`}
+                href="/subscribe"
                 className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-white font-bold text-xs transition-colors uppercase"
               >
                 Subscribe
@@ -779,7 +749,7 @@ export default function Header() {
                 </button>
               ) : (
                 <Link
-                  href={`/${locale}/signin`}
+                  href="/signin"
                   className="hidden md:block text-gray-300 hover:text-white transition-colors text-xs uppercase font-medium"
                 >
                   Sign In
@@ -794,7 +764,7 @@ export default function Header() {
       <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 transition-all duration-300 sticky top-10 z-40 shadow-md">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - Fixed sizing */}
+            {/* Logo */}
             <Link
               href="/"
               className="flex items-center hover:opacity-80 transition-opacity flex-shrink-0"
@@ -834,7 +804,7 @@ export default function Header() {
                       onMouseLeave={handleMouseLeave}
                     >
                       <Link
-                        href={`/${locale}/${href}`}
+                        href={href}
                         className={`flex items-center gap-2 hover:text-red-600 dark:hover:text-red-400 font-bold text-sm uppercase tracking-wide transition-colors py-6 border-b-2 ${
                           isActive || isDropdownActive
                             ? 'text-red-600 dark:text-red-400 border-red-600'
@@ -868,9 +838,9 @@ export default function Header() {
               )}
 
               <Link
-                href={`/${locale}/members`}
+                href="/members"
                 className={`flex items-center gap-2 hover:text-yellow-600 dark:hover:text-yellow-400 font-bold text-sm uppercase tracking-wide transition-colors py-6 border-b-2 ${
-                  isNavItemActive('members')
+                  isNavItemActive('/members')
                     ? 'text-yellow-600 dark:text-yellow-400 border-yellow-600'
                     : 'text-gray-900 dark:text-gray-100 border-transparent hover:border-yellow-600'
                 }`}
@@ -934,7 +904,7 @@ export default function Header() {
                 </div>
               ) : (
                 <Link
-                  href={`/${locale}/signin`}
+                  href="/signin"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-3 rounded-lg font-bold transition-colors"
                 >
@@ -956,7 +926,7 @@ export default function Header() {
                     >
                       <div className="flex items-center justify-between">
                         <Link
-                          href={`/${locale}/${href}`}
+                          href={href}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={`flex-1 py-3 text-base font-bold uppercase flex items-center gap-3 ${
                             isActive
@@ -983,20 +953,16 @@ export default function Header() {
 
                       {dropdown && isOpen && (
                         <div className="ml-4 mt-2 space-y-2">
-                          {dropdown.slice(0, 5).map(
-                            (
-                              item: DropdownItem // Max 5 in mobile too
-                            ) => (
-                              <Link
-                                key={item.key}
-                                href={`/${locale}/${item.href ?? href}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-                              >
-                                {item.label}
-                              </Link>
-                            )
-                          )}
+                          {dropdown.slice(0, 5).map((item: DropdownItem) => (
+                            <Link
+                              key={item.key}
+                              href={item.href || href}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="block py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -1005,10 +971,10 @@ export default function Header() {
               )}
 
               <Link
-                href={`/${locale}/members`}
+                href="/members"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`block py-3 text-base font-bold uppercase border-b border-gray-200 dark:border-gray-700 flex items-center gap-3 ${
-                  isNavItemActive('members')
+                  isNavItemActive('/members')
                     ? 'text-yellow-600 dark:text-yellow-400'
                     : 'text-gray-900 dark:text-gray-100'
                 }`}
@@ -1024,7 +990,7 @@ export default function Header() {
                 {TOP_NAV_ITEMS.map(({ key, label, href, icon: Icon }) => (
                   <Link
                     key={key}
-                    href={`/${locale}/${href}`}
+                    href={href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-900 dark:text-white transition-colors"
                   >

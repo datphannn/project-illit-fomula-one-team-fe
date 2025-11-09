@@ -4,5 +4,9 @@ export interface Story {
   image: string;
   link: string;
   summary: string;
-  content?: string;
+  content: string;
+  category?: string;
+  publishedAt?: string;
+  author?: string;
+  readTime?: number;
 }
