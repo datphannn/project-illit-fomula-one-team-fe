@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import ScheduleSection from '@/components/ScheduleSection';
 const ScheduleSectionAny: any = ScheduleSection;
 import {
@@ -110,7 +109,6 @@ const getCircuitFromGrandPrix = (grandPrix: string) => {
 };
 
 export default function SchedulePage() {
-  const t = useTranslations('schedule');
   const [selectedYear, setSelectedYear] = useState('2025');
 
   // Combine mockRacesDetailed and mockRacesByYear
@@ -213,11 +211,11 @@ export default function SchedulePage() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex-1">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
-                {t('title')}{' '}
+                Race Schedule{' '}
                 <span className="text-red-500">{selectedYear}</span>
               </h1>
               <p className="text-gray-400 text-lg">
-                {t('subtitle')} - {raceStats.total} {t('races')}
+                Formula 1 Season - {raceStats.total} races
               </p>
             </div>
           </div>
@@ -237,10 +235,10 @@ export default function SchedulePage() {
             <div className="max-w-md mx-auto">
               <div className="text-6xl mb-4">🏎️</div>
               <h3 className="text-2xl font-bold text-gray-300 mb-2">
-                {t('noRacesTitle')}
+                No Races Scheduled
               </h3>
               <p className="text-gray-400 mb-6">
-                {t('noRacesDescription')} {selectedYear}
+                No races found for the season {selectedYear}
               </p>
               <div className="flex gap-3 justify-center flex-wrap">
                 {availableYears.map(year => (

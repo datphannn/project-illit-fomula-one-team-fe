@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import StoriesSection from '@/components/StoriesSection';
 import NewsSection from '@/components/NewsSection';
 import FantasySection from '@/components/FantasySection';
@@ -17,11 +18,16 @@ import {
 
 export default function HomePage() {
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const mockDrivers = mockDriversDetailed;
   const nextRace = mockRacesDetailed[0];
 
-  // Navigation handlers - Fixed routing without locale
+  // Navigation handlers
   const navigateToSchedule = () => router.push('/schedule');
   const navigateToFeedback = () => router.push('/feedback');
   const navigateToStandings = () => router.push('/drivers');
@@ -36,14 +42,10 @@ export default function HomePage() {
   const navigateToRaceDetail = (id: string) => router.push(`/schedule/${id}`);
 
   // Component Drivers đơn giản
-  const SimpleDriversGrid = ({
-    drivers,
-  }: {
-    drivers: typeof mockDriversDetailed;
-  }) => {
+  const SimpleDriversGrid = () => {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {drivers.slice(0, 8).map(driver => {
+        {mockDrivers.slice(0, 8).map(driver => {
           const driverTeam = mockTeamsDetailed.find(team =>
             team.drivers.includes(driver.id)
           );
@@ -51,10 +53,10 @@ export default function HomePage() {
           return (
             <div
               key={driver.id}
-              className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-red-500 transition-colors duration-300 cursor-pointer group text-center"
+              className="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-red-500 transition-colors duration-300 cursor-pointer group text-center"
               onClick={() => navigateToDriverDetail(driver.id)}
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-gray-600 to-gray-400 rounded-full flex items-center justify-center text-white font-bold text-base mx-auto mb-3">
+              <div className="w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-600 rounded-full flex items-center justify-center text-white font-bold text-base mx-auto mb-3">
                 #{driver.number}
               </div>
               <h3 className="font-semibold text-sm text-white group-hover:text-red-400 transition-colors duration-300 line-clamp-1 mb-1">
@@ -79,19 +81,19 @@ export default function HomePage() {
   };
 
   // Component Teams đơn giản
-  const SimpleTeamsGrid = ({ teams }: { teams: typeof mockTeamsDetailed }) => {
+  const SimpleTeamsGrid = () => {
     return (
       <div className="grid grid-cols-2 gap-4">
-        {teams.slice(0, 4).map(team => (
+        {mockTeamsDetailed.slice(0, 4).map(team => (
           <div
             key={team.id}
-            className="bg-gray-750 p-4 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors duration-300 cursor-pointer group"
+            className="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors duration-300 cursor-pointer group"
             onClick={() => navigateToTeamDetail(team.id)}
           >
             <div className="flex items-center gap-3">
               <div
                 className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm border-2 border-white/20"
-                style={{ backgroundColor: team.color }}
+                style={{ backgroundColor: team.color || '#3B82F6' }}
               >
                 {team.name
                   .split(' ')
@@ -120,22 +122,22 @@ export default function HomePage() {
   };
 
   // Component Races đơn giản
-  const SimpleRacesGrid = ({ races }: { races: typeof mockRacesDetailed }) => {
+  const SimpleRacesGrid = () => {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {races.slice(0, 3).map(race => (
-          <Card
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {mockRacesDetailed.slice(0, 3).map(race => (
+          <div
             key={race.id}
-            className="bg-gray-750 p-4 border border-gray-700 hover:border-green-500 transition-all duration-300 cursor-pointer group"
+            className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-green-500 transition-all duration-300 cursor-pointer group"
             onClick={() => navigateToRaceDetail(race.id)}
           >
-            <div className="flex items-start justify-between mb-3">
+            <div className="flex items-start justify-between mb-4">
               <div>
-                <div className="text-2xl mb-1">{race.flag}</div>
-                <h3 className="font-semibold text-white group-hover:text-green-400 transition-colors duration-300 line-clamp-1">
+                <div className="text-2xl mb-2">{race.flag}</div>
+                <h3 className="font-semibold text-white group-hover:text-green-400 transition-colors duration-300 line-clamp-1 text-lg">
                   {race.name}
                 </h3>
-                <p className="text-xs text-gray-400">{race.circuit}</p>
+                <p className="text-sm text-gray-400 mt-1">{race.circuit}</p>
               </div>
               <span
                 className={`text-xs font-bold px-2 py-1 rounded ${
@@ -149,15 +151,24 @@ export default function HomePage() {
                 {race.status.toUpperCase()}
               </span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-sm mt-4 pt-4 border-t border-gray-700">
               <span className="text-gray-300">{race.date}</span>
               <span className="text-gray-400">{race.laps} Laps</span>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     );
   };
+
+  // Nếu chưa phải client, hiển thị loading
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <main className="bg-gray-950 text-white min-h-screen">
@@ -167,49 +178,50 @@ export default function HomePage() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
-              "url('/assets/images/GettyImages-2222748122-1920x1080-Cropped.jpg')",
+              "url('https://images.unsplash.com/photo-1596727147705-61a532a659bd?auto=format&fit=crop&w=1920')",
+            backgroundPosition: 'center 30%',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 h-full flex items-end pb-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-2xl">
+        <div className="relative z-10 h-full flex items-end pb-20">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 text-sm font-bold mb-6 rounded-full">
                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 {nextRace?.status === 'live'
                   ? 'LIVE COVERAGE'
                   : 'UPCOMING RACE'}
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
                 {nextRace
                   ? `All the build-up to the ${nextRace.name}`
                   : 'Welcome to F1 2025 Season'}
               </h1>
-              <p className="text-xl text-gray-300 mb-8 max-w-lg">
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl">
                 {nextRace
                   ? `Follow all the action from ${nextRace.circuit} and get ready for the season opener`
                   : 'Follow all the action from the 2025 Formula 1 season'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-red-600/30 font-semibold"
+                <button
                   onClick={navigateToSchedule}
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-red-600/30 font-semibold text-lg flex items-center justify-center gap-2"
                 >
-                  🎬{' '}
+                  <span>🎬</span>
                   {nextRace?.status === 'live'
                     ? 'Watch Live Now'
                     : 'View Schedule'}
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg transition-all duration-300"
+                </button>
+                <button
                   onClick={navigateToSchedule}
+                  className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg transition-all duration-300 text-lg flex items-center justify-center gap-2"
                 >
-                  📅 Full Calendar
-                </Button>
+                  <span>📅</span>
+                  Full Calendar
+                </button>
               </div>
             </div>
           </div>
@@ -217,29 +229,29 @@ export default function HomePage() {
       </section>
 
       {/* Quick Stats Bar */}
-      <section className="bg-gray-900 border-b border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-6">
+      <section className="bg-gray-900 border-y border-gray-800">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">
+              <div className="text-3xl font-bold text-red-600">
                 {mockRacesDetailed.length}
               </div>
               <div className="text-sm text-gray-400">Races</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">
+              <div className="text-3xl font-bold text-red-600">
                 {mockTeamsDetailed.length}
               </div>
               <div className="text-sm text-gray-400">Teams</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">
+              <div className="text-3xl font-bold text-red-600">
                 {mockDriversDetailed.length}
               </div>
               <div className="text-sm text-gray-400">Drivers</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">1</div>
+              <div className="text-3xl font-bold text-red-600">1</div>
               <div className="text-sm text-gray-400">Champion</div>
             </div>
           </div>
@@ -248,52 +260,57 @@ export default function HomePage() {
 
       {/* Stories Section */}
       <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="flex items-start justify-between mb-12 gap-4">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row items-start justify-between mb-12 gap-4">
             <div className="flex-1">
-              <h2 className="text-3xl font-bold mb-2">Latest Stories</h2>
-              <p className="text-gray-400">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                Latest Stories
+              </h2>
+              <p className="text-gray-400 text-lg">
                 Exclusive content and behind-the-scenes features
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 flex-shrink-0"
+            <button
               onClick={navigateToStories}
+              className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
             >
               View All Stories
-            </Button>
+            </button>
           </div>
           <StoriesSection stories={mockStoriesDetailed.slice(0, 4)} />
         </div>
       </section>
+
       {/* Spotlight Section */}
       <section className="py-16 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">Spotlight</h2>
+        <div className="container mx-auto px-4 md:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+            Spotlight
+          </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Spotlight */}
             <div className="lg:col-span-2">
-              <Card
-                className="bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white p-8 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer group"
+              <div
+                className="bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white p-8 rounded-2xl h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer group"
                 onClick={navigateToSchedule}
               >
                 <div className="flex flex-col h-full">
                   <div className="flex-1">
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">🏆</span>
+                        <span className="text-3xl">🏆</span>
                       </div>
                       <div>
-                        <div className="text-sm opacity-90">NEXT RACE</div>
-                        <div className="text-2xl font-bold">
+                        <div className="text-sm opacity-90 uppercase tracking-wider">
+                          NEXT RACE
+                        </div>
+                        <div className="text-2xl md:text-3xl font-bold">
                           {nextRace?.name || 'Bahrain Grand Prix'}
                         </div>
                       </div>
                     </div>
-                    <h3 className="text-4xl font-bold mb-4">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4">
                       GRAND PRIX WEEKEND
                     </h3>
                     <p className="text-xl mb-6 opacity-90">
@@ -301,34 +318,31 @@ export default function HomePage() {
                         ? `Season opener at ${nextRace.circuit}`
                         : 'Season opener at Bahrain International Circuit'}
                     </p>
-                    <div className="flex items-center gap-4 text-sm">
-                      <span className="bg-white/20 px-3 py-1 rounded-full">
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <span className="bg-white/20 px-4 py-2 rounded-full">
                         {nextRace?.date || 'March 1-3, 2025'}
                       </span>
-                      <span className="bg-white/20 px-3 py-1 rounded-full">
+                      <span className="bg-white/20 px-4 py-2 rounded-full">
                         {nextRace?.laps || 57} Laps
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mt-8">
-                    <Button
-                      variant="ghost"
-                      className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-all duration-300 group-hover:translate-x-2"
-                    >
+                  <div className="flex justify-between items-center mt-8 pt-8 border-t border-white/20">
+                    <button className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-all duration-300 font-semibold group-hover:translate-x-2">
                       Race Details →
-                    </Button>
-                    <div className="text-6xl font-bold opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+                    </button>
+                    <div className="text-5xl md:text-6xl font-bold opacity-20 group-hover:opacity-30 transition-opacity duration-300">
                       F1
                     </div>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
 
             {/* Side Content */}
             <div className="space-y-6">
-              <Card
-                className="bg-gray-750 p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-700 cursor-pointer group"
+              <div
+                className="bg-gray-800 p-6 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-700 cursor-pointer group"
                 onClick={navigateToDrivers}
               >
                 <div className="flex items-center gap-4 mb-4">
@@ -346,7 +360,7 @@ export default function HomePage() {
                   {mockDrivers.slice(0, 3).map((driver, index) => (
                     <div
                       key={driver.id}
-                      className="flex items-center justify-between"
+                      className="flex items-center justify-between py-2"
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-bold w-6">
@@ -356,24 +370,22 @@ export default function HomePage() {
                           {driver.name.split(' ')[0]}
                         </span>
                       </div>
-                      <span className="text-sm bg-gray-700 px-2 py-1 rounded">
+                      <span className="text-sm bg-gray-700 px-3 py-1 rounded">
                         {driver.seasonStats?.seasonPoints || 0} PTS
                       </span>
                     </div>
                   ))}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full mt-4 text-red-400 hover:text-red-300 justify-center transition-colors duration-300"
+                <button
                   onClick={navigateToDrivers}
+                  className="w-full mt-4 text-red-400 hover:text-red-300 transition-colors duration-300 text-sm font-medium py-2"
                 >
                   View All Drivers →
-                </Button>
-              </Card>
+                </button>
+              </div>
 
-              <Card
-                className="bg-gray-750 p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-700 cursor-pointer group"
+              <div
+                className="bg-gray-800 p-6 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-700 cursor-pointer group"
                 onClick={navigateToTeams}
               >
                 <div className="flex items-center gap-4 mb-4">
@@ -391,7 +403,7 @@ export default function HomePage() {
                   {mockTeamsDetailed.slice(0, 3).map((team, index) => (
                     <div
                       key={team.id}
-                      className="flex items-center justify-between"
+                      className="flex items-center justify-between py-2"
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-bold w-6">
@@ -399,21 +411,19 @@ export default function HomePage() {
                         </span>
                         <span className="text-sm font-medium">{team.name}</span>
                       </div>
-                      <span className="text-sm bg-gray-700 px-2 py-1 rounded">
+                      <span className="text-sm bg-gray-700 px-3 py-1 rounded">
                         {team.points} PTS
                       </span>
                     </div>
                   ))}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full mt-4 text-blue-400 hover:text-blue-300 justify-center transition-colors duration-300"
+                <button
                   onClick={navigateToTeams}
+                  className="w-full mt-4 text-blue-400 hover:text-blue-300 transition-colors duration-300 text-sm font-medium py-2"
                 >
                   View All Teams →
-                </Button>
-              </Card>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -421,22 +431,22 @@ export default function HomePage() {
 
       {/* Latest News Section */}
       <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Latest News</h2>
-              <p className="text-gray-400">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                Latest News
+              </h2>
+              <p className="text-gray-400 text-lg">
                 Breaking news and official announcements
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
+            <button
               onClick={navigateToNews}
+              className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
             >
               View All News
-            </Button>
+            </button>
           </div>
           <NewsSection news={mockNewsDetailed.slice(0, 6)} />
         </div>
@@ -444,69 +454,71 @@ export default function HomePage() {
 
       {/* Upcoming Races Section */}
       <section className="py-16 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Upcoming Races</h2>
-              <p className="text-gray-400">Next events on the 2025 calendar</p>
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                Upcoming Races
+              </h2>
+              <p className="text-gray-400 text-lg">
+                Next events on the 2025 calendar
+              </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
+            <button
               onClick={navigateToSchedule}
+              className="border border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
             >
               Full Schedule
-            </Button>
+            </button>
           </div>
-          <SimpleRacesGrid races={mockRacesDetailed.slice(0, 3)} />
+          <SimpleRacesGrid />
         </div>
       </section>
 
       {/* Drivers & Teams Combined Section */}
       <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Drivers */}
             <div>
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-3xl font-bold mb-2">2025 Drivers</h2>
-                  <p className="text-gray-400">
+              <div className="flex flex-col md:flex-row items-start justify-between mb-8 gap-4">
+                <div className="flex-1">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                    2025 Drivers
+                  </h2>
+                  <p className="text-gray-400 text-lg">
                     Meet the championship contenders
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
+                <button
                   onClick={navigateToDrivers}
+                  className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
                 >
                   View All
-                </Button>
+                </button>
               </div>
-              <SimpleDriversGrid drivers={mockDriversDetailed} />
+              <SimpleDriversGrid />
             </div>
 
             {/* Teams */}
             <div>
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-3xl font-bold mb-2">2025 Teams</h2>
-                  <p className="text-gray-400">
+              <div className="flex flex-col md:flex-row items-start justify-between mb-8 gap-4">
+                <div className="flex-1">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                    2025 Teams
+                  </h2>
+                  <p className="text-gray-400 text-lg">
                     Constructor championship standings
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300"
+                <button
                   onClick={navigateToTeams}
+                  className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
                 >
                   View All
-                </Button>
+                </button>
               </div>
-              <SimpleTeamsGrid teams={mockTeamsDetailed} />
+              <SimpleTeamsGrid />
             </div>
           </div>
         </div>
@@ -514,42 +526,45 @@ export default function HomePage() {
 
       {/* Latest Videos Section */}
       <section className="py-16 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Featured Videos</h2>
-              <p className="text-gray-400">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                Featured Videos
+              </h2>
+              <p className="text-gray-400 text-lg">
                 Highlights, interviews and analysis
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
+            <button
               onClick={navigateToVideos}
+              className="border border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
             >
               View All Videos
-            </Button>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockVideosDetailed.slice(0, 4).map(video => (
-              <Card
+              <div
                 key={video.id}
-                className="bg-gray-750 overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl group cursor-pointer border border-gray-700"
+                className="bg-gray-800 rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl group cursor-pointer border border-gray-700"
                 onClick={() => navigateToVideoDetail(video.id)}
               >
-                <div className="relative">
+                <div className="relative h-48">
                   <img
-                    src={video.thumbnail}
+                    src={
+                      video.thumbnail ||
+                      'https://images.unsplash.com/photo-1596727147705-61a532a659bd?auto=format&fit=crop&w=500'
+                    }
                     alt={video.title}
-                    className="w-full h-40 object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
                       <svg
-                        className="w-6 h-6 text-white ml-0.5"
+                        className="w-6 h-6 text-white ml-1"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -557,20 +572,20 @@ export default function HomePage() {
                       </svg>
                     </div>
                   </div>
-                  <div className="absolute bottom-2 right-2 bg-black/90 px-2 py-1 text-xs rounded text-white">
+                  <div className="absolute bottom-3 right-3 bg-black/90 px-3 py-1 text-xs rounded text-white">
                     {video.duration}
                   </div>
                 </div>
-                <div className="p-4">
-                  <h4 className="font-semibold mb-2 text-sm line-clamp-2 group-hover:text-red-400 transition-colors duration-300">
+                <div className="p-5">
+                  <h4 className="font-semibold mb-3 text-base line-clamp-2 group-hover:text-red-400 transition-colors duration-300">
                     {video.title}
                   </h4>
-                  <p className="text-gray-400 text-xs flex items-center">
-                    <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
+                  <p className="text-gray-400 text-sm flex items-center gap-2">
+                    <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
                     {video.date}
                   </p>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </div>
@@ -578,7 +593,7 @@ export default function HomePage() {
 
       {/* Fantasy & F1 Unlocked Combined Section */}
       <section className="py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Fantasy Section */}
             <div>
@@ -586,21 +601,23 @@ export default function HomePage() {
             </div>
 
             {/* F1 Unlocked */}
-            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-2xl p-8 border border-purple-500/30">
+            <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-2xl p-8 border border-purple-500/30 backdrop-blur-sm">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">F1 Unlocked</h2>
-                <p className="text-gray-300">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  F1 Unlocked
+                </h2>
+                <p className="text-gray-300 text-lg">
                   Exclusive content and premium features
                 </p>
               </div>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
-                    <span className="text-xl">🎤</span>
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl">🎤</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
+                    <h4 className="font-semibold text-lg group-hover:text-purple-300 transition-colors duration-300">
                       Exclusive Interviews
                     </h4>
                     <p className="text-sm text-gray-400">
@@ -610,11 +627,11 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
-                    <span className="text-xl">📊</span>
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl">📊</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
+                    <h4 className="font-semibold text-lg group-hover:text-purple-300 transition-colors duration-300">
                       Live Data
                     </h4>
                     <p className="text-sm text-gray-400">Real-time telemetry</p>
@@ -622,11 +639,11 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer group">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
-                    <span className="text-xl">⭐</span>
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl">⭐</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold group-hover:text-purple-300 transition-colors duration-300">
+                    <h4 className="font-semibold text-lg group-hover:text-purple-300 transition-colors duration-300">
                       Premium Content
                     </h4>
                     <p className="text-sm text-gray-400">Unlock all features</p>
@@ -634,9 +651,10 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg transition-all duration-300 hover:scale-105 font-semibold">
-                🔓 Subscribe to Unlock
-              </Button>
+              <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-4 rounded-lg transition-all duration-300 hover:scale-105 font-semibold text-lg flex items-center justify-center gap-2">
+                <span>🔓</span>
+                Subscribe to Unlock
+              </button>
             </div>
           </div>
         </div>
@@ -644,33 +662,33 @@ export default function HomePage() {
 
       {/* Championship Standings Preview */}
       <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Championship Standings
               </h2>
-              <p className="text-gray-400">
+              <p className="text-gray-400 text-lg">
                 Current driver championship positions
               </p>
             </div>
 
-            <Card className="bg-gray-800 border border-gray-700">
+            <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-700">
-                        <th className="text-left py-4 px-4 text-gray-400 font-semibold">
+                        <th className="text-left py-4 px-6 text-gray-400 font-semibold text-sm">
                           Pos
                         </th>
-                        <th className="text-left py-4 px-4 text-gray-400 font-semibold">
+                        <th className="text-left py-4 px-6 text-gray-400 font-semibold text-sm">
                           Driver
                         </th>
-                        <th className="text-left py-4 px-4 text-gray-400 font-semibold">
+                        <th className="text-left py-4 px-6 text-gray-400 font-semibold text-sm">
                           Team
                         </th>
-                        <th className="text-right py-4 px-4 text-gray-400 font-semibold">
+                        <th className="text-right py-4 px-6 text-gray-400 font-semibold text-sm">
                           Points
                         </th>
                       </tr>
@@ -695,16 +713,16 @@ export default function HomePage() {
                               className="border-b border-gray-700 hover:bg-gray-750 transition-colors duration-300 cursor-pointer"
                               onClick={() => navigateToDriverDetail(driver.id)}
                             >
-                              <td className="py-4 px-4 font-bold text-lg">
+                              <td className="py-4 px-6 font-bold text-lg">
                                 {index + 1}
                               </td>
-                              <td className="py-4 px-4 font-medium">
+                              <td className="py-4 px-6 font-medium">
                                 {driver.name}
                               </td>
-                              <td className="py-4 px-4 text-gray-300">
+                              <td className="py-4 px-6 text-gray-300">
                                 {driverTeam?.name || 'Unknown Team'}
                               </td>
-                              <td className="py-4 px-4 text-right font-bold text-lg">
+                              <td className="py-4 px-6 text-right font-bold text-lg">
                                 {driver.seasonStats?.seasonPoints || 0}
                               </td>
                             </tr>
@@ -713,46 +731,46 @@ export default function HomePage() {
                     </tbody>
                   </table>
                 </div>
-                <div className="mt-6 text-center">
-                  <Button
-                    variant="outline"
-                    className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300"
+                <div className="mt-8 text-center">
+                  <button
                     onClick={navigateToStandings}
+                    className="border border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-300 px-8 py-3 rounded-lg font-medium"
                   >
                     View Full Standings
-                  </Button>
+                  </button>
                 </div>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-red-600 to-orange-600">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-20 bg-gradient-to-r from-red-600 via-red-700 to-orange-600">
+        <div className="container mx-auto px-4 md:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Help Shape the F1 Website
           </h2>
-          <p className="text-xl mb-12 max-w-2xl mx-auto text-white/90">
+          <p className="text-xl mb-12 max-w-3xl mx-auto text-white/90">
             Your feedback is important to us. Share your thoughts and help
             improve your F1 experience.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              className="bg-red-500 text-white hover:bg-red-600 font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            <button
               onClick={navigateToFeedback}
+              className="bg-red-500 text-white hover:bg-red-600 font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg flex items-center justify-center gap-2"
             >
-              📋 Take Our Survey
-            </Button>
+              <span>📋</span>
+              Take Our Survey
+            </button>
 
-            <Button
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg transition-all duration-300"
+            <button
               onClick={navigateToFeedback}
+              className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg transition-all duration-300 text-lg flex items-center justify-center gap-2"
             >
-              💬 Give Feedback
-            </Button>
+              <span>💬</span>
+              Give Feedback
+            </button>
           </div>
         </div>
       </section>

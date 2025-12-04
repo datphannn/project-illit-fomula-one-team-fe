@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useRouter, usePathname } from 'next/navigation';
+import { logout } from '@/lib/services/authService';
 import {
   FaBars,
   FaTimes,
@@ -389,10 +390,6 @@ export default function Header() {
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {teamsGrid.teams.slice(0, 5).map((team: Team) => {
-            // Get only the last word of team name
-            // "Red Bull Racing" -> "racing"
-            // "Scuderia Ferrari" -> "ferrari"
-            // "Mercedes" -> "mercedes"
             const nameParts = team.name.toLowerCase().split(' ');
             const teamSlug = nameParts[nameParts.length - 1];
 
@@ -689,7 +686,7 @@ export default function Header() {
             {/* Right side */}
             <div className="flex items-center space-x-4">
               <Link
-                href="/f1tv"
+                href={`/${locale}/f1tv`}
                 className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-white font-bold text-xs transition-colors uppercase"
               >
                 <FaPlay className="text-xs" />
@@ -697,7 +694,7 @@ export default function Header() {
               </Link>
 
               <Link
-                href="/subscribe"
+                href={`/${locale}/subscribe`}
                 className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-white font-bold text-xs transition-colors uppercase"
               >
                 Subscribe
@@ -739,10 +736,12 @@ export default function Header() {
               <div className="hidden md:block">
                 <ThemeToggle />
               </div>
-
               {user ? (
                 <button
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    router.push('/');
+                  }}
                   className="hidden md:block text-gray-300 hover:text-white transition-colors text-xs uppercase font-medium"
                 >
                   Logout

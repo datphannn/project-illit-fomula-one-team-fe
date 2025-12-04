@@ -445,7 +445,7 @@ export const mockRacesDetailed: Race[] = [
     circuit: 'Shanghai International Circuit',
     laps: 56,
     distance: '305.066 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:30:55.026',
     pole_sitter: 'Oscar Piastri',
@@ -853,7 +853,7 @@ export const mockRacesDetailed: Race[] = [
     circuit: 'Bahrain International Circuit',
     laps: 57,
     distance: '308.238 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:31:45.112',
     pole_sitter: 'Oscar Piastri',
@@ -1261,7 +1261,7 @@ export const mockRacesDetailed: Race[] = [
     circuit: 'Miami International Autodrome',
     laps: 57,
     distance: '308.326 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:31:22.845',
     pole_sitter: 'Oscar Piastri',
@@ -1465,7 +1465,7 @@ export const mockRacesDetailed: Race[] = [
     circuit: 'Autodromo Enzo e Dino Ferrari',
     laps: 63,
     distance: '309.049 km',
-    winner: 'Max Verstappen', // P1, 25 điểm
+    winner: 'Max Verstappen',
     team: 'Red Bull Racing',
     time: '1:28:15.332',
     pole_sitter: 'Max Verstappen',
@@ -2469,7 +2469,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNF',
         points: 0,
         status: 'Retired',
-      }, // Verstappen không tham dự
+      },
     ],
   },
 
@@ -2982,7 +2982,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: '+29.050s',
         points: 2,
         status: 'Finished',
-      }, // Verstappen P9, 2 điểm
+      },
       {
         position: 10,
         driverName: 'Kimi Antonelli',
@@ -4040,7 +4040,8 @@ export const mockDriversSimple: Driver[] = [
     name: 'George Russell',
     country: 'UK',
     teamId: 'mercedes',
-    image: '/images/drivers/russell.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/mercedes/georus01/2025mercedesgeorus01right.webp',
   },
   {
     id: 'antonelli',
@@ -4156,7 +4157,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Lando Norris',
     country: 'United Kingdom',
     teamId: 'mclaren',
-    image: '/images/drivers/norris.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp',
     number: 4,
     description:
       'Ngôi sao trẻ người Anh của McLaren, nổi tiếng với phong cách đua quyết đoán và kỹ năng vượt trội trong điều kiện ướt.',
@@ -4204,7 +4206,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Oscar Piastri',
     country: 'Australia',
     teamId: 'mclaren',
-    image: '/images/drivers/piastri.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp',
     number: 81,
     description:
       'Tay đua trẻ tài năng người Úc, vô địch F2 2021 và là một trong những gương mặt triển vọng của tương lai F1.',
@@ -4254,7 +4257,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Max Verstappen',
     country: 'Netherlands',
     teamId: 'redbull',
-    image: '/images/drivers/verstappen.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp',
     number: 1,
     description:
       'Nhà vô địch thế giới 4 lần, được xem là một trong những tay đua toàn diện nhất mọi thời đại.',
@@ -4302,7 +4306,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Yuki Tsunoda',
     country: 'Japan',
     teamId: 'redbull',
-    image: '/images/drivers/tsunoda.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/redbullracing/yuktsu01/2025redbullracingyuktsu01right.webp',
     number: 22,
     description:
       'Tay đua Nhật Bản đầu tiên trong kỷ nguyên hiện đại giành podium, nổi bật nhờ phong cách mạnh mẽ và sự tiến bộ ổn định.',
@@ -4352,7 +4357,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Charles Leclerc',
     country: 'Monaco',
     teamId: 'ferrari',
-    image: '/images/drivers/leclerc.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/ferrari/chalec01/2025ferrarichalec01right.webp',
     number: 16,
     description:
       'Tay đua nhanh nhẹn và ổn định của Ferrari, nổi tiếng với khả năng bứt phá trong vòng phân hạng.',
@@ -4400,7 +4406,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Lewis Hamilton',
     country: 'United Kingdom',
     teamId: 'ferrari',
-    image: '/images/drivers/hamilton.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/ferrari/lewham01/2025ferrarilewham01right.webp',
     number: 44,
     description:
       'Huyền thoại F1 với 7 danh hiệu vô địch thế giới, chuyển đến Ferrari trong mùa giải 2025 để tìm thử thách mới.',
@@ -4450,7 +4457,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'George Russell',
     country: 'United Kingdom',
     teamId: 'mercedes',
-    image: '/images/drivers/russell.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/mercedes/georus01/2025mercedesgeorus01right.webp',
     number: 63,
     description:
       'Tay đua trẻ người Anh của Mercedes, được đánh giá cao về sự kiên định và tốc độ.',
@@ -4498,7 +4506,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Andrea Kimi Antonelli',
     country: 'Italy',
     teamId: 'mercedes',
-    image: '/images/drivers/antonelli.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/mercedes/andant01/2025mercedesandant01right.webp',
     number: 9,
     description:
       'Tân binh người Ý của Mercedes, tài năng trẻ triển vọng được xem là người kế nhiệm Hamilton.',
@@ -4548,7 +4557,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Fernando Alonso',
     country: 'Spain',
     teamId: 'astonmartin',
-    image: '/images/drivers/alonso.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/astonmartin/feralo01/2025astonmartinferalo01right.webp',
     number: 14,
     description:
       'Cựu vô địch thế giới 2 lần, vẫn giữ phong độ ấn tượng dù đã hơn 40 tuổi.',
@@ -4596,7 +4606,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Lance Stroll',
     country: 'Canada',
     teamId: 'astonmartin',
-    image: '/images/drivers/stroll.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/astonmartin/lanstr01/2025astonmartinlanstr01right.webp',
     number: 18,
     description:
       'Tay đua người Canada với phong cách lái mạnh mẽ, là con trai của chủ sở hữu đội Aston Martin.',
@@ -4646,7 +4657,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Alexander Albon',
     country: 'Thailand',
     teamId: 'williams',
-    image: '/images/drivers/albon.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/williams/alealb01/2025williamsalealb01right.webp',
     number: 23,
     description:
       'Tay đua người Thái gốc Anh, đã giúp Williams lấy lại vị thế trong nhóm giữa bảng xếp hạng.',
@@ -4694,7 +4706,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Carlos Sainz',
     country: 'Spain',
     teamId: 'williams',
-    image: '/images/drivers/sainz.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/williams/carsai01/2025williamscarsai01right.webp',
     number: 55,
     description:
       'Cựu tay đua Ferrari chuyển sang Williams trong năm 2025 để dẫn dắt đội với kinh nghiệm dày dặn.',
@@ -4744,7 +4757,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Liam Lawson',
     country: 'New Zealand',
     teamId: 'rb',
-    image: '/images/drivers/lawson.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/racingbulls/lialaw01/2025racingbullslialaw01right.webp',
     number: 30,
     description:
       'Tay đua người New Zealand trở lại F1 trong năm 2025 sau khi thể hiện ấn tượng ở Super Formula.',
@@ -4792,7 +4806,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Isack Hadjar',
     country: 'France',
     teamId: 'rb',
-    image: '/images/drivers/hadjar.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/racingbulls/isahad01/2025racingbullsisahad01right.webp',
     number: 21,
     description:
       'Tay đua trẻ người Pháp, tốt nghiệp từ Học viện Red Bull, có màn ra mắt F1 trong năm 2025.',
@@ -4842,7 +4857,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Nico Hülkenberg',
     country: 'Germany',
     teamId: 'sauber',
-    image: '/images/drivers/hulkenberg.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/kicksauber/nichul01/2025kicksaubernichul01right.webp',
     number: 27,
     description:
       'Tay đua kỳ cựu người Đức, nổi tiếng với phong độ ổn định và khả năng lái chính xác.',
@@ -4890,7 +4906,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Gabriel Bortoleto',
     country: 'Brazil',
     teamId: 'sauber',
-    image: '/images/drivers/bortoleto.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/kicksauber/gabbor01/2025kicksaubergabbor01right.webp',
     number: 12,
     description:
       'Tay đua người Brazil, vô địch F3 2023, gia nhập Sauber trong mùa giải 2025.',
@@ -4940,7 +4957,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Esteban Ocon',
     country: 'France',
     teamId: 'haas',
-    image: '/images/drivers/ocon.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/haas/estoco01/2025haasestoco01right.webp',
     number: 31,
     description:
       'Tay đua người Pháp từng giành chiến thắng ở Hungary 2021, chuyển sang Haas năm 2025.',
@@ -4988,7 +5006,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Oliver Bearman',
     country: 'United Kingdom',
     teamId: 'haas',
-    image: '/images/drivers/bearman.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/haas/olibea01/2025haasolibea01right.webp',
     number: 50,
     description:
       'Tân binh người Anh gây ấn tượng với màn ra mắt Ferrari ở Saudi Arabia 2024, chính thức đua cho Haas từ 2025.',
@@ -5038,7 +5057,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Pierre Gasly',
     country: 'France',
     teamId: 'alpine',
-    image: '/images/drivers/gasly.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/alpine/piegas01/2025alpinepiegas01right.webp',
     number: 10,
     description:
       'Tay đua người Pháp từng vô địch chặng đua Monza 2020, hiện là trụ cột của Alpine.',
@@ -5086,7 +5106,8 @@ export const mockDriversDetailed: Driver[] = [
     name: 'Franco Colapinto',
     country: 'Argentina',
     teamId: 'alpine',
-    image: '/images/drivers/colapinto.png',
+    image:
+      'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/alpine/fracol01/2025alpinefracol01right.webp',
     number: 43,
     description:
       'Tay đua người Argentina, tốt nghiệp từ Williams Academy, gia nhập Alpine trong mùa giải 2025.',

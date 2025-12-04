@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-// Đảm bảo import useRouter từ Next.js App Router
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import {
   FaUsers,
   FaNewspaper,
@@ -23,11 +20,101 @@ import {
   FaBars,
   FaFilter,
   FaDownload,
-  FaUpload, // Giữ lại FaUpload dù không dùng
+  FaArrowUp,
+  FaArrowDown,
 } from 'react-icons/fa';
 
-// Mock data for different sections (UNCHANGED)
+// Mock data for different sections
 const sectionData = {
+  dashboard: {
+    title: 'Dashboard Overview',
+    description: 'Key metrics and recent activity',
+    stats: {
+      totalUsers: 15420,
+      pageViews: 450000,
+      totalSales: 987,
+      serverLoad: '25%',
+    },
+    trends: {
+      totalUsers: 12.5,
+      pageViews: 8.3,
+      totalSales: 5.8,
+      serverLoad: -2.1,
+    },
+  },
+  content: {
+    title: 'Content Management',
+    description: 'Manage articles, videos, and media content',
+    stats: {
+      totalArticles: 540,
+      pendingReview: 12,
+      publishedVideos: 89,
+      drafts: 45,
+    },
+    trends: {
+      totalArticles: 5.2,
+      pendingReview: -8.7,
+      publishedVideos: 15.3,
+      drafts: 12.1,
+    },
+    columns: [
+      'ID',
+      'Title',
+      'Type',
+      'Status',
+      'Views',
+      'Author',
+      'Date',
+      'Actions',
+    ],
+    items: [
+      {
+        id: 1,
+        title: 'Verstappen Wins Monaco GP in Thrilling Finish',
+        type: 'news',
+        status: 'published',
+        views: 15420,
+        date: '2024-05-26',
+        author: 'John Doe',
+      },
+      {
+        id: 2,
+        title: 'Ferrari Technical Analysis: New Aerodynamic Package',
+        type: 'article',
+        status: 'draft',
+        views: 0,
+        date: '2024-05-25',
+        author: 'Sarah Smith',
+      },
+      {
+        id: 3,
+        title: 'Summer Break Schedule and Team Updates',
+        type: 'schedule',
+        status: 'published',
+        views: 8920,
+        date: '2024-05-24',
+        author: 'Mike Johnson',
+      },
+      {
+        id: 4,
+        title: 'New Mercedes-AMG Team Merchandise Collection',
+        type: 'store',
+        status: 'published',
+        views: 4320,
+        date: '2024-05-23',
+        author: 'Admin',
+      },
+      {
+        id: 5,
+        title: 'F1 2024 Season Preview and Predictions',
+        type: 'article',
+        status: 'draft',
+        views: 0,
+        date: '2024-05-22',
+        author: 'Sarah Smith',
+      },
+    ],
+  },
   users: {
     title: 'User Management',
     description: 'Manage users, permissions, and roles',
@@ -36,6 +123,12 @@ const sectionData = {
       active: 13250,
       newToday: 45,
       banned: 87,
+    },
+    trends: {
+      total: 12.5,
+      active: 8.3,
+      newToday: -15.2,
+      banned: 3.4,
     },
     columns: [
       'ID',
@@ -53,7 +146,7 @@ const sectionData = {
         email: 'john@example.com',
         role: 'User',
         status: 'Active',
-        joinDate: '2024-01-15',
+        joindate: '2024-01-15',
         avatar: 'JD',
       },
       {
@@ -62,7 +155,7 @@ const sectionData = {
         email: 'sarah@example.com',
         role: 'Premium',
         status: 'Active',
-        joinDate: '2024-02-20',
+        joindate: '2024-02-20',
         avatar: 'SS',
       },
       {
@@ -71,7 +164,7 @@ const sectionData = {
         email: 'mike@example.com',
         role: 'Admin',
         status: 'Active',
-        joinDate: '2024-03-10',
+        joindate: '2024-03-10',
         avatar: 'MJ',
       },
       {
@@ -80,7 +173,7 @@ const sectionData = {
         email: 'banned@example.com',
         role: 'User',
         status: 'Banned',
-        joinDate: '2024-04-05',
+        joindate: '2024-04-05',
         avatar: 'BU',
       },
     ],
@@ -93,6 +186,12 @@ const sectionData = {
       upcoming: 3,
       completed: 18,
       cancelled: 1,
+    },
+    trends: {
+      totalRaces: 0,
+      upcoming: 50.0,
+      completed: 28.6,
+      cancelled: -50.0,
     },
     columns: ['Race', 'Circuit', 'Date', 'Sessions', 'Status', 'Actions'],
     items: [
@@ -130,6 +229,12 @@ const sectionData = {
       lowStock: 8,
       totalOrders: 892,
       revenue: 1254300,
+    },
+    trends: {
+      totalProducts: 12.3,
+      lowStock: -25.0,
+      totalOrders: 15.2,
+      revenue: 18.7,
     },
     columns: [
       'Product',
@@ -179,6 +284,12 @@ const sectionData = {
       predictions: 28900,
       prizes: 50000,
     },
+    trends: {
+      activePlayers: 8.4,
+      totalLeagues: 12.2,
+      predictions: 25.7,
+      prizes: 15.0,
+    },
     columns: [
       'Game',
       'Type',
@@ -195,8 +306,8 @@ const sectionData = {
         type: 'Prediction',
         participants: 4200,
         status: 'Active',
-        prizePool: 10000,
-        endDate: '2024-05-25',
+        prizepool: 10000,
+        enddate: '2024-05-25',
       },
       {
         id: 2,
@@ -204,8 +315,8 @@ const sectionData = {
         type: 'Fantasy',
         participants: 3200,
         status: 'Active',
-        prizePool: 25000,
-        endDate: '2024-12-15',
+        prizepool: 25000,
+        enddate: '2024-12-15',
       },
     ],
   },
@@ -217,6 +328,12 @@ const sectionData = {
       ticketsSold: 89250,
       revenue: 8450000,
       available: 12500,
+    },
+    trends: {
+      totalEvents: 0,
+      ticketsSold: 22.5,
+      revenue: 18.3,
+      available: -15.7,
     },
     columns: [
       'Event',
@@ -231,7 +348,7 @@ const sectionData = {
       {
         id: 1,
         event: 'Monaco Grand Prix',
-        ticketType: 'Grandstand',
+        tickettype: 'Grandstand',
         price: 450,
         sold: 8500,
         available: 500,
@@ -240,7 +357,7 @@ const sectionData = {
       {
         id: 2,
         event: 'Canadian Grand Prix',
-        ticketType: 'General Admission',
+        tickettype: 'General Admission',
         price: 120,
         sold: 12500,
         available: 2500,
@@ -258,27 +375,6 @@ const sectionData = {
       lastBackup: '2024-05-24',
     },
   },
-  // Thêm mock data cho dashboard và content để không bị lỗi
-  dashboard: {
-    title: 'Dashboard Overview',
-    description: 'Key metrics and recent activity',
-    stats: {
-      totalUsers: 15420,
-      pageViews: 450000,
-      totalSales: 987,
-      serverLoad: '25%',
-    },
-  },
-  content: {
-    title: 'Content Management',
-    description: 'Manage articles, videos, and media',
-    stats: {
-      totalArticles: 540,
-      pendingReview: 12,
-      publishedVideos: 89,
-      drafts: 45,
-    },
-  },
 };
 
 const navigationItems = [
@@ -294,77 +390,231 @@ const navigationItems = [
 
 type SectionKey = keyof typeof sectionData;
 
-interface SectionPageProps {
-  params: {
-    locale: string;
-    section: SectionKey | string;
-  };
-}
-
-export default function SectionPage({ params }: SectionPageProps) {
-  // Đã sửa lỗi: Lấy locale từ params để dùng trong router.push
-  const { section, locale } = params;
-  const router = useRouter();
+export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
+  const [notifications, setNotifications] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentSection, setCurrentSection] = useState<SectionKey>('content');
+  const itemsPerPage = 10;
 
-  // SỬA LỖI LOGIC: Không cần activeTab state, dùng trực tiếp params.section
-  const currentSectionKey: SectionKey | string = section;
-
-  // Lấy data sử dụng useMemo để tránh re-calculation
   const sectionInfo = useMemo(() => {
     return (
-      sectionData[currentSectionKey as SectionKey] || {
+      sectionData[currentSection] || {
         title: 'Section Not Found',
         description: 'The requested section does not exist',
+        stats: {},
       }
     );
-  }, [currentSectionKey]);
+  }, [currentSection]);
 
-  const StatCard = ({ title, value, icon: Icon, color }: any) => (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-xl hover:shadow-red-500/10">
+  // Filter and search functionality
+  const filteredContent = useMemo(() => {
+    if (!('items' in sectionInfo)) {
+      return [];
+    }
+
+    let items = [...sectionInfo.items];
+
+    // Search filter
+    if (searchTerm) {
+      items = items.filter((item: any) => {
+        const searchableFields = Object.values(item).join(' ').toLowerCase();
+        return searchableFields.includes(searchTerm.toLowerCase());
+      });
+    }
+
+    // Type filter (for content section)
+    if (currentSection === 'content' && filterType !== 'all') {
+      items = items.filter((item: any) => item.type === filterType);
+    }
+
+    return items;
+  }, [currentSection, sectionInfo, searchTerm, filterType]);
+
+  // Pagination
+  const paginatedContent = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredContent.slice(startIndex, endIndex);
+  }, [filteredContent, currentPage]);
+
+  const totalPages = Math.ceil(filteredContent.length / itemsPerPage);
+
+  const StatCard = ({ title, value, trend, icon: Icon, color }: any) => (
+    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            {title}
+        <div className="flex-1">
+          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {typeof value === 'number' && value > 1000
+              ? value.toLocaleString()
+              : value}
           </p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">
-            {typeof value === 'number' ? value.toLocaleString() : value}
-          </p>
+          {trend !== undefined && (
+            <div
+              className={`flex items-center gap-1 mt-2 text-sm font-semibold ${
+                trend > 0 ? 'text-green-600' : 'text-red-600'
+              }`}
+            >
+              {trend > 0 ? (
+                <FaArrowUp className="text-xs" />
+              ) : (
+                <FaArrowDown className="text-xs" />
+              )}
+              <span>{Math.abs(trend)}%</span>
+              <span className="text-gray-500 font-normal ml-1">
+                vs last month
+              </span>
+            </div>
+          )}
         </div>
-        <div className={`p-3 rounded-lg ${color} bg-opacity-80`}>
+        <div className={`p-3 rounded-lg ${color}`}>
           <Icon className="text-white text-xl" />
         </div>
       </div>
     </div>
   );
 
-  const handleSidebarClick = (id: string) => {
-    // SỬA LỖI LOGIC: Sử dụng router.push để thay đổi URL và đồng bộ trạng thái
-    router.push(`/${locale}/admin/${id}`);
+  const handleSectionChange = (section: SectionKey) => {
+    setCurrentSection(section);
+    setSearchTerm('');
+    setFilterType('all');
+    setCurrentPage(1);
     if (window.innerWidth < 1024) {
-      // Đóng sidebar trên mobile
       setSidebarOpen(false);
     }
   };
 
-  const renderSectionContent = () => {
-    if (!sectionData[currentSectionKey as SectionKey]) {
-      return (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-          <div className="text-center py-12">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              Section Not Found
+  const handleAction = (action: string, item: any) => {
+    const itemName =
+      item.title ||
+      item.username ||
+      item.product ||
+      item.game ||
+      item.race ||
+      item.event ||
+      'Item';
+
+    switch (action) {
+      case 'view':
+        alert(`Viewing: ${itemName}`);
+        break;
+      case 'edit':
+        alert(`Editing: ${itemName}`);
+        break;
+      case 'delete':
+        if (confirm(`Are you sure you want to delete "${itemName}"?`)) {
+          alert(`Deleted: ${itemName}`);
+        }
+        break;
+    }
+  };
+
+  const handleExport = () => {
+    alert('Exporting data...');
+  };
+
+  const handleAddNew = () => {
+    alert(`Adding new ${currentSection} item...`);
+  };
+
+  const renderDashboardContent = () => (
+    <>
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl lg:text-3xl font-extrabold text-gray-900 mb-2">
+          Welcome back, Admin! 👋
+        </h2>
+        <p className="text-gray-600 text-sm lg:text-base">
+          Here's what's happening with your F1 platform today. You have{' '}
+          {notifications} new notifications.
+        </p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
+        <StatCard
+          title="Total Users"
+          value={15420}
+          trend={12.5}
+          icon={FaUsers}
+          color="bg-blue-600"
+          onClick={() => handleSectionChange('users')}
+        />
+        <StatCard
+          title="Active Content"
+          value={287}
+          trend={-3.2}
+          icon={FaNewspaper}
+          color="bg-green-600"
+          onClick={() => handleSectionChange('content')}
+        />
+        <StatCard
+          title="Pending Approvals"
+          value={12}
+          trend={5.8}
+          icon={FaBell}
+          color="bg-yellow-600"
+        />
+        <StatCard
+          title="Revenue"
+          value="$1,254K"
+          trend={8.3}
+          icon={FaChartBar}
+          color="bg-purple-600"
+        />
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-xl p-4 lg:p-6 shadow-lg mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg lg:text-xl font-bold text-white mb-2">
+              Quick Actions
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              The requested admin section **{section}** does not exist.
+            <p className="text-red-100 text-sm">
+              Jump to frequently used sections
             </p>
           </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => handleSectionChange('content')}
+              className="bg-white text-red-600 hover:bg-red-50 px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-lg transition-all duration-200 text-sm lg:text-base"
+            >
+              <FaPlus /> New Content
+            </button>
+            <button
+              onClick={() => handleSectionChange('users')}
+              className="bg-white/10 text-white hover:bg-white/20 px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 backdrop-blur-sm transition-all duration-200 text-sm lg:text-base"
+            >
+              <FaUsers /> Manage Users
+            </button>
+            <button
+              onClick={() => handleSectionChange('schedule')}
+              className="bg-white/10 text-white hover:bg-white/20 px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 backdrop-blur-sm transition-all duration-200 text-sm lg:text-base"
+            >
+              <FaCalendar /> Schedule
+            </button>
+            <button
+              onClick={() => handleSectionChange('store')}
+              className="bg-white/10 text-white hover:bg-white/20 px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 backdrop-blur-sm transition-all duration-200 text-sm lg:text-base"
+            >
+              <FaStore /> Store
+            </button>
+          </div>
         </div>
-      );
+      </div>
+    </>
+  );
+
+  const renderSectionContent = () => {
+    if (currentSection === 'dashboard') {
+      return renderDashboardContent();
     }
 
-    // Dữ liệu đã được kiểm tra an toàn ở trên
-    const data = sectionData[currentSectionKey as SectionKey];
+    const data = sectionData[currentSection];
 
     return (
       <div className="space-y-6">
@@ -373,13 +623,13 @@ export default function SectionPage({ params }: SectionPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {Object.entries(data.stats).map(([key, value], index) => {
               const colors = [
-                'bg-red-600', // Red for primary actions
-                'bg-blue-600', // Blue
-                'bg-green-600', // Green
-                'bg-yellow-600', // Yellow
+                'bg-red-600',
+                'bg-blue-600',
+                'bg-green-600',
+                'bg-yellow-600',
               ];
               const icons = [FaChartBar, FaCalendar, FaBell, FaUsers];
-              const titles = {
+              const titles: Record<string, string> = {
                 total: 'Total',
                 active: 'Active',
                 newToday: 'New Today',
@@ -413,21 +663,21 @@ export default function SectionPage({ params }: SectionPageProps) {
                 drafts: 'Drafts',
               };
 
+              const trendData = (data as any).trends;
+              const trend = trendData ? trendData[key] : undefined;
+
               return (
                 <StatCard
                   key={key}
-                  title={titles[key as keyof typeof titles] || key}
+                  title={titles[key] || key}
                   value={
-                    key === 'revenue'
+                    key === 'revenue' || key === 'prizes'
                       ? `$${Number(value).toLocaleString()}`
-                      : key === 'prizes'
-                        ? `$${Number(value).toLocaleString()}`
-                        : key === 'ticketsSold' ||
-                            key === 'revenue' ||
-                            key === 'totalSales'
-                          ? `$${Number(value).toLocaleString()}`
-                          : value
+                      : typeof value === 'number'
+                        ? value.toLocaleString()
+                        : value
                   }
+                  trend={trend}
                   icon={icons[index % icons.length]}
                   color={colors[index % colors.length]}
                 />
@@ -438,14 +688,14 @@ export default function SectionPage({ params }: SectionPageProps) {
 
         {/* Data Table */}
         {'items' in data && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-gray-900">
                   {data.title} List
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Manage and review all {section} items
+                <p className="text-sm text-gray-600 mt-1">
+                  Manage and review all {currentSection} items
                 </p>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
@@ -453,19 +703,43 @@ export default function SectionPage({ params }: SectionPageProps) {
                   <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder={`Search ${section}...`}
-                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
+                    placeholder={`Search ${currentSection}...`}
+                    value={searchTerm}
+                    onChange={e => {
+                      setSearchTerm(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
                   />
                 </div>
-                <button className="flex items-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                  <FaFilter />
-                  Filter
-                </button>
-                <button className="flex items-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                {currentSection === 'content' && (
+                  <select
+                    value={filterType}
+                    onChange={e => {
+                      setFilterType(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    <option value="all">All Types</option>
+                    <option value="news">News</option>
+                    <option value="article">Article</option>
+                    <option value="schedule">Schedule</option>
+                    <option value="store">Store</option>
+                    <option value="gaming">Gaming</option>
+                  </select>
+                )}
+                <button
+                  onClick={handleExport}
+                  className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                >
                   <FaDownload />
                   Export
                 </button>
-                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md shadow-red-500/30 transition-all duration-200 hover:shadow-lg">
+                <button
+                  onClick={handleAddNew}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md shadow-red-500/30 transition-all duration-200"
+                >
                   <FaPlus />
                   Add New
                 </button>
@@ -473,14 +747,14 @@ export default function SectionPage({ params }: SectionPageProps) {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="overflow-x-auto rounded-lg border border-gray-200">
               <table className="w-full min-w-max">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+                <thead className="bg-gray-50">
                   <tr>
                     {data.columns.map((column: string) => (
                       <th
                         key={column}
-                        className="text-left py-3 px-4 text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider"
+                        className="text-left py-3 px-4 text-sm font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200"
                       >
                         {column}
                       </th>
@@ -488,167 +762,151 @@ export default function SectionPage({ params }: SectionPageProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.items.map((item: any) => (
-                    <tr
-                      key={item.id}
-                      className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                    >
-                      {data.columns.map((column: string) => {
-                        const key = column.toLowerCase().replace(' ', '');
-                        const value = item[key];
+                  {paginatedContent.length > 0 ? (
+                    paginatedContent.map((item: any) => (
+                      <tr
+                        key={item.id}
+                        className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors"
+                      >
+                        {data.columns.map((column: string) => {
+                          const key = column.toLowerCase().replace(/\s+/g, '');
+                          const value = item[key];
 
-                        if (column === 'Actions') {
-                          return (
-                            <td key={column} className="py-3 px-4">
-                              <div className="flex items-center gap-2">
-                                <button className="p-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                                  <FaEye />
-                                </button>
-                                <button className="p-1 text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition-colors">
-                                  <FaEdit />
-                                </button>
-                                <button className="p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors">
-                                  <FaTrash />
-                                </button>
-                              </div>
-                            </td>
-                          );
-                        }
-
-                        if (column === 'Status') {
-                          const statusColors = {
-                            Active:
-                              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                            Banned:
-                              'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                            Completed:
-                              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-                            Upcoming:
-                              'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                            'In Stock':
-                              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                            'Low Stock':
-                              'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-                            'Out of Stock':
-                              'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                            'Almost Sold Out':
-                              'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                            Available:
-                              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                          };
-
-                          return (
-                            <td key={column} className="py-3 px-4">
-                              <span
-                                className={`text-xs font-medium px-2 py-1 rounded-full ${
-                                  statusColors[
-                                    item.status as keyof typeof statusColors
-                                  ] ||
-                                  'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                                }`}
-                              >
-                                {item.status}
-                              </span>
-                            </td>
-                          );
-                        }
-
-                        if (column === 'Username' && item.avatar) {
-                          return (
-                            <td key={column} className="py-3 px-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
-                                  {item.avatar}
+                          if (column === 'Actions') {
+                            return (
+                              <td key={column} className="py-3 px-4">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
+                                    onClick={() => handleAction('view', item)}
+                                    title="View"
+                                  >
+                                    <FaEye />
+                                  </button>
+                                  <button
+                                    className="p-1 text-green-600 hover:text-green-800 transition-colors"
+                                    onClick={() => handleAction('edit', item)}
+                                    title="Edit"
+                                  >
+                                    <FaEdit />
+                                  </button>
+                                  <button
+                                    className="p-1 text-red-600 hover:text-red-800 transition-colors"
+                                    onClick={() => handleAction('delete', item)}
+                                    title="Delete"
+                                  >
+                                    <FaTrash />
+                                  </button>
                                 </div>
-                                <span className="text-sm text-gray-900 dark:text-white">
-                                  {item[key]}
+                              </td>
+                            );
+                          }
+
+                          if (column === 'Status') {
+                            const statusColors: Record<string, string> = {
+                              published: 'bg-green-100 text-green-800',
+                              draft: 'bg-yellow-100 text-yellow-800',
+                              Active: 'bg-green-100 text-green-800',
+                              Banned: 'bg-red-100 text-red-800',
+                              Completed: 'bg-blue-100 text-blue-800',
+                              Upcoming: 'bg-yellow-100 text-yellow-800',
+                              'In Stock': 'bg-green-100 text-green-800',
+                              'Low Stock': 'bg-orange-100 text-orange-800',
+                              'Out of Stock': 'bg-red-100 text-red-800',
+                              'Almost Sold Out': 'bg-red-100 text-red-800',
+                              Available: 'bg-green-100 text-green-800',
+                            };
+
+                            return (
+                              <td key={column} className="py-3 px-4">
+                                <span
+                                  className={`text-xs font-medium px-2 py-1 rounded-full ${
+                                    statusColors[item.status] ||
+                                    'bg-gray-100 text-gray-800'
+                                  }`}
+                                >
+                                  {item.status}
                                 </span>
-                              </div>
+                              </td>
+                            );
+                          }
+
+                          if (column === 'Username' && item.avatar) {
+                            return (
+                              <td key={column} className="py-3 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                                    {item.avatar}
+                                  </div>
+                                  <span className="text-sm text-gray-900">
+                                    {value}
+                                  </span>
+                                </div>
+                              </td>
+                            );
+                          }
+
+                          // Format prices and numbers
+                          const displayValue =
+                            key.includes('price') && typeof value === 'number'
+                              ? `$${value.toFixed(2)}`
+                              : typeof value === 'number' && key !== 'id'
+                                ? value.toLocaleString()
+                                : value || '-';
+
+                          return (
+                            <td
+                              key={column}
+                              className="py-3 px-4 text-sm text-gray-800"
+                            >
+                              {displayValue}
                             </td>
                           );
-                        }
-
-                        // Định dạng giá tiền
-                        const displayValue =
-                          key.includes('price') && typeof value === 'number'
-                            ? `$${value.toFixed(2)}`
-                            : typeof value === 'number' && key !== 'id'
-                              ? value.toLocaleString()
-                              : value;
-
-                        return (
-                          <td
-                            key={column}
-                            className="py-3 px-4 text-sm text-gray-800 dark:text-gray-300"
-                          >
-                            {displayValue}
-                          </td>
-                        );
-                      })}
+                        })}
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={data.columns.length}
+                        className="py-8 px-4 text-center text-gray-500"
+                      >
+                        No items found. Try adjusting your search or filters.
+                      </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
-          </div>
-        )}
 
-        {/* Settings Section */}
-        {section === 'settings' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                General Settings
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Site Name
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"
-                    placeholder="Enter site name"
-                  />
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-6">
+                <div className="text-sm text-gray-600">
+                  Page {currentPage} of {totalPages}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Admin Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"
-                    placeholder="admin@example.com"
-                  />
-                </div>
-                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold shadow-md shadow-red-500/30 transition-all duration-200">
-                  Save Settings
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                System Information
-              </h3>
-              <div className="space-y-3">
-                {Object.entries(data.stats).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600 last:border-b-0"
+                <div className="flex gap-2">
+                  <button
+                    onClick={() =>
+                      setCurrentPage(prev => Math.max(1, prev - 1))
+                    }
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    <span className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}:
-                    </span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {typeof value === 'number'
-                        ? value.toLocaleString()
-                        : String(value)}
-                    </span>
-                  </div>
-                ))}
+                    Previous
+                  </button>
+                  <button
+                    onClick={() =>
+                      setCurrentPage(prev => Math.min(totalPages, prev + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
@@ -656,41 +914,46 @@ export default function SectionPage({ params }: SectionPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
               >
-                <FaBars className="text-gray-600 dark:text-gray-400" />
+                <FaBars className="text-gray-600" />
               </button>
-              <h1 className="text-2xl font-extrabold text-red-600 dark:text-red-400">
-                F1 Admin
+              <h1 className="text-2xl font-extrabold text-red-600">
+                F1 Admin Dashboard
               </h1>
-              <span className="text-gray-500 dark:text-gray-400 font-light hidden sm:inline">
-                /
-              </span>
-              <span className="text-lg font-semibold text-gray-700 dark:text-gray-300 capitalize">
-                {section}
+              <span className="text-gray-500 font-light">/</span>
+              <span className="text-lg font-semibold text-gray-700 capitalize">
+                {currentSection}
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <div className="relative hidden sm:block">
+              <div className="relative">
                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200 w-64"
                 />
               </div>
-              <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+              <button
+                className="relative p-2 text-gray-600 hover:text-red-600 transition-colors"
+                onClick={() => setNotifications(0)}
+                title="Notifications"
+              >
                 <FaBell />
+                {notifications > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full"></span>
+                )}
               </button>
-              <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
+              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0 cursor-pointer hover:bg-red-700 transition-colors">
                 A
               </div>
             </div>
@@ -699,28 +962,29 @@ export default function SectionPage({ params }: SectionPageProps) {
       </div>
 
       <div className="flex">
-        {/* Sidebar */}
+        {/* Desktop Sidebar */}
         <div
-          className={`h-screen sticky top-[4.5rem] overflow-y-auto z-20 
-          bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 flex-shrink-0
-          ${sidebarOpen ? 'w-64' : 'w-0 -ml-16 lg:w-20 lg:ml-0'}`}
+          className={`hidden lg:block h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto z-20 
+          bg-white border-r border-gray-200 transition-all duration-300 flex-shrink-0
+          ${sidebarOpen ? 'w-64' : 'w-20'}`}
         >
           <div className="p-4 space-y-2">
             {navigationItems.map(item => (
               <button
                 key={item.id}
-                // SỬ DỤNG currentSectionKey (từ params) để kiểm tra active
-                onClick={() => handleSidebarClick(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors whitespace-nowrap overflow-hidden ${
-                  currentSectionKey === item.id
+                onClick={() => handleSectionChange(item.id as SectionKey)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 whitespace-nowrap overflow-hidden group ${
+                  currentSection === item.id
                     ? 'bg-red-600 text-white shadow-md shadow-red-500/20'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-red-600'
                 }`}
                 title={!sidebarOpen ? item.label : undefined}
               >
-                <item.icon />
+                <item.icon
+                  className={`${currentSection === item.id ? 'text-white' : 'text-gray-500 group-hover:text-red-600'} transition-colors flex-shrink-0`}
+                />
                 <span
-                  className={`${sidebarOpen ? 'opacity-100' : 'opacity-0 lg:hidden'}`}
+                  className={`${sidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'} transition-all duration-300 font-medium`}
                 >
                   {item.label}
                 </span>
@@ -730,15 +994,13 @@ export default function SectionPage({ params }: SectionPageProps) {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-6 transition-all duration-300">
+        <div className="flex-1 p-6 transition-all duration-300 min-h-[calc(100vh-73px)]">
           {/* Section Header */}
           <div className="mb-6">
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-extrabold text-gray-900">
               {sectionInfo.title}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {sectionInfo.description}
-            </p>
+            <p className="text-gray-600 mt-1">{sectionInfo.description}</p>
           </div>
 
           {renderSectionContent()}

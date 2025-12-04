@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import React from 'react';
 
 type Race = any;
@@ -17,8 +16,6 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   availableYears,
   onYearChange,
 }) => {
-  const t = useTranslations('schedule');
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -44,11 +41,11 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   const getStatusText = (status: string) => {
     switch (status) {
       case 'finished':
-        return t('finished');
+        return 'Finished';
       case 'live':
-        return t('live');
+        return 'Live';
       case 'upcoming':
-        return t('upcoming');
+        return 'Upcoming';
       default:
         return status;
     }
@@ -60,10 +57,10 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
         <div className="max-w-md mx-auto">
           <div className="text-6xl mb-4">🏎️</div>
           <h3 className="text-2xl font-bold text-gray-300 mb-2">
-            {t('noRacesTitle')}
+            No Races Scheduled
           </h3>
           <p className="text-gray-400 mb-6">
-            {t('noRacesDescription')} {selectedYear}
+            No races found for the season {selectedYear}
           </p>
         </div>
       </div>
@@ -76,7 +73,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
       <div className="flex justify-end">
         <div className="flex items-center gap-3">
           <span className="text-gray-400 text-sm font-medium cursor-default">
-            {t('season')}:
+            Season:
           </span>
           <select
             value={selectedYear}
@@ -89,7 +86,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
           >
             {availableYears.map(year => (
               <option key={year} value={year}>
-                {year} {t('season')}
+                {year} Season
               </option>
             ))}
           </select>
@@ -217,7 +214,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                 <div className="pt-4 border-t border-gray-700/50">
                   <div className="bg-gradient-to-r from-emerald-500/10 to-transparent p-4 rounded-xl border border-emerald-500/20 hover:border-emerald-500/40 transition-colors duration-200">
                     <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3 text-center cursor-default">
-                      {t('winner') || 'WINNER'}
+                      WINNER
                     </p>
                     <div className="space-y-3">
                       <div className="text-center">
@@ -250,7 +247,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                 <div className="pt-4 border-t border-gray-700/50">
                   <div className="bg-gradient-to-r from-blue-500/10 to-transparent p-4 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition-colors duration-200">
                     <p className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2 text-center cursor-default">
-                      {t('upcoming') || 'UPCOMING'}
+                      UPCOMING
                     </p>
                     <p className="text-white font-medium text-center">
                       Starting {formatDate(race.date)}
@@ -266,7 +263,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                     <div className="flex items-center justify-center gap-3">
                       <div className="text-center">
                         <p className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-1 cursor-default">
-                          {t('liveNow') || 'LIVE NOW'}
+                          LIVE NOW
                         </p>
                         <p className="text-white font-medium">
                           Race in Progress
