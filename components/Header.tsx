@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useRouter, usePathname } from 'next/navigation';
-import { logout } from '@/lib/services/authService';
 import {
   FaBars,
   FaTimes,
@@ -220,6 +219,7 @@ const LOCALE_OPTIONS = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLocaleDropdownOpen, setIsLocaleDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(
     null
@@ -228,10 +228,17 @@ export default function Header() {
 
   const router = useRouter();
   const pathname = usePathname();
-  const { user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
+
+  // Mock user data - Mặc định đã đăng nhập
+  const user = {
+    id: 'john_doe',
+    name: 'John Doe',
+  };
 
   const isNavItemActive = (href: string) => {
     return pathname?.includes(href);
@@ -240,12 +247,22 @@ export default function Header() {
   const handleChangeLocale = (newLocale: 'en' | 'vi') => {
     setLocale(newLocale);
     setIsLocaleDropdownOpen(false);
-    // In a real app, you might store this in localStorage or context
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setMobileDropdownOpen(null);
+  };
+
+  const toggleUserDropdown = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+    setIsUserDropdownOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   const currentLocaleOption = LOCALE_OPTIONS.find(
@@ -649,6 +666,13 @@ export default function Header() {
       ) {
         setActiveDropdown(null);
       }
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target as Node) &&
+        !(event.target as HTMLElement).closest('.user-dropdown-trigger')
+      ) {
+        setIsUserDropdownOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -736,24 +760,37 @@ export default function Header() {
               <div className="hidden md:block">
                 <ThemeToggle />
               </div>
-              {user ? (
+
+              {/* User section - Mặc định đã đăng nhập */}
+              <div className="relative" ref={userDropdownRef}>
                 <button
-                  onClick={() => {
-                    logout();
-                    router.push('/');
-                  }}
-                  className="hidden md:block text-gray-300 hover:text-white transition-colors text-xs uppercase font-medium"
+                  onClick={toggleUserDropdown}
+                  className="user-dropdown-trigger flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
                 >
-                  Logout
+                  <div className="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center">
+                    <FaUser className="text-xs" />
+                  </div>
                 </button>
-              ) : (
-                <Link
-                  href="/signin"
-                  className="hidden md:block text-gray-300 hover:text-white transition-colors text-xs uppercase font-medium"
-                >
-                  Sign In
-                </Link>
-              )}
+
+                {isUserDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-gray-800 border border-gray-700 rounded shadow-lg py-1 z-50">
+                    <div className="px-3 py-2 border-b border-gray-700">
+                      <p className="font-medium text-white text-sm">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-gray-400">{user.id}</p>
+                    </div>
+                    <div className="py-1">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-white"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -851,6 +888,18 @@ export default function Header() {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-4">
+              {/* User section cho mobile */}
+              <div className="relative">
+                <button
+                  onClick={toggleUserDropdown}
+                  className="flex items-center gap-2"
+                >
+                  <div className="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center">
+                    <FaUser className="text-xs text-white" />
+                  </div>
+                </button>
+              </div>
+
               {/* Mobile locale and theme toggle */}
               <div className="flex items-center gap-2">
                 <div className="relative">
@@ -886,30 +935,25 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 top-26 bg-white dark:bg-gray-900 text-gray-900 dark:text-white z-50 overflow-y-auto">
           <div className="p-6 space-y-4">
-            {/* User section */}
+            {/* User section cho mobile */}
             <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
-              {user ? (
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold">Welcome, {user.id}</span>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-red-600 hover:text-red-700 text-sm font-medium"
-                  >
-                    Logout
-                  </button>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                  <FaUser className="text-lg text-white" />
                 </div>
-              ) : (
-                <Link
-                  href="/signin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-3 rounded-lg font-bold transition-colors"
-                >
-                  Sign In
-                </Link>
-              )}
+                <div>
+                  <h3 className="font-bold">{user.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {user.id}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg text-sm font-bold"
+              >
+                Logout
+              </button>
             </div>
 
             <nav className="space-y-2">
@@ -957,7 +1001,7 @@ export default function Header() {
                               key={item.key}
                               href={item.href || href}
                               onClick={() => setIsMobileMenuOpen(false)}
-                              className="block py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                              className="block py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400"
                             >
                               {item.label}
                             </Link>
@@ -991,7 +1035,7 @@ export default function Header() {
                     key={key}
                     href={href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-900 dark:text-white transition-colors"
+                    className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-900 dark:text-white"
                   >
                     {Icon && <Icon className="text-xs" />}
                     {label}
