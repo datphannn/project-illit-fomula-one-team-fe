@@ -7,6 +7,7 @@ import NewsSection from '@/components/NewsSection';
 import FantasySection from '@/components/FantasySection';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import AIChatbox from '@/components/ui/AIChatbox';
 import {
   mockRacesDetailed,
   mockNewsDetailed,
@@ -774,6 +775,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* Thêm Chatbox AI vào cuối trang */}
+      <AIChatbox />
     </main>
   );
 }
