@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { login } from '@/lib/services/authService';
+import { FaEye, FaEyeSlash, FaCrown } from 'react-icons/fa';
+import { useAuthStore } from '@/lib/store/authStore';
 import logoLight from '@/assets/images/dark.png';
 import logoDark from '@/assets/images/dark.png';
 
@@ -19,27 +19,79 @@ export default function SignInPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const { login, isAuthenticated, checkAuth } = useAuthStore();
+
+  // Check auth status on mount
+  useEffect(() => {
+    checkAuth();
+    // Nếu đã đăng nhập, redirect về trang tương ứng
+    if (isAuthenticated) {
+      const userJson = localStorage.getItem('f1_current_user');
+      if (userJson) {
+        try {
+          const user = JSON.parse(userJson);
+          if (user.email === 'admin@f1.com') {
+            router.push('/admin');
+          } else {
+            router.push('/');
+          }
+        } catch {
+          router.push('/');
+        }
+      } else {
+        router.push('/');
+      }
+    }
+  }, [isAuthenticated, router, checkAuth]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
+      // Sử dụng login từ authStore
       await login(formData.email, formData.password);
 
-      router.push('/');
+      // Lấy user từ localStorage để check role
+      const userJson = localStorage.getItem('f1_current_user');
+      if (userJson) {
+        const user = JSON.parse(userJson);
+
+        // Redirect dựa trên email (admin hay user thường)
+        if (user.email === 'admin@f1.com') {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
+      } else {
+        router.push('/');
+      }
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        setError('Invalid email or password');
-      } else if (err.response?.status === 404) {
-        setError('Account not found');
-      } else if (err.message) {
-        setError(err.message);
+      console.error('Login error:', err);
+
+      // Xử lý lỗi cụ thể hơn
+      if (err.message === 'Invalid email or password') {
+        setError('Invalid email or password. Please try again.');
+      } else if (err.message?.includes('network')) {
+        setError('Network error. Please check your connection.');
       } else {
         setError('Login failed. Please try again.');
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Test credentials button
+  const handleTestLogin = (
+    email: string,
+    password: string,
+    isAdmin = false
+  ) => {
+    setFormData({ email, password });
+    if (isAdmin) {
+      setError(''); // Clear error for admin login
     }
   };
 
@@ -86,9 +138,65 @@ export default function SignInPage() {
 
           {error && (
             <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-              {error}
+              <p className="font-medium">Error</p>
+              <p>{error}</p>
             </div>
           )}
+
+          {/* Test Credentials Section */}
+          <div className="mb-6 space-y-4">
+            {/* Admin Account */}
+            <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <FaCrown className="text-yellow-600" />
+                <p className="text-sm font-bold text-purple-900">
+                  Admin Account:
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  handleTestLogin('admin@f1.com', 'admin123', true)
+                }
+                className="text-sm text-purple-700 hover:text-purple-900 hover:underline font-medium"
+              >
+                admin@f1.com / admin123
+              </button>
+              <p className="text-xs text-purple-600 mt-2">
+                • Redirect to Admin Dashboard
+              </p>
+            </div>
+
+            {/* Regular User Accounts */}
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm font-medium text-blue-900 mb-2">
+                <strong>Regular User Accounts:</strong> (Click to autofill)
+              </p>
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleTestLogin('john@example.com', 'password123')
+                  }
+                  className="text-sm text-blue-700 hover:text-blue-900 hover:underline"
+                >
+                  • john@example.com / password123
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleTestLogin('jane@example.com', 'password123')
+                  }
+                  className="text-sm text-blue-700 hover:text-blue-900 hover:underline"
+                >
+                  • jane@example.com / password123
+                </button>
+              </div>
+              <p className="text-xs text-blue-600 mt-2">
+                • Redirect to Homepage
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Address */}
@@ -106,7 +214,7 @@ export default function SignInPage() {
                 onChange={e =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
                 required
                 disabled={isLoading}
@@ -179,6 +287,26 @@ export default function SignInPage() {
               </Link>
             </div>
           </form>
+
+          {/* Debug Info */}
+          <div className="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
+            <p className="font-medium mb-1">Login Logic:</p>
+            <p>• admin@f1.com → /admin (Admin Dashboard)</p>
+            <p>• Other emails → / (Homepage)</p>
+            <p>• User data saved to localStorage</p>
+            <button
+              onClick={() => {
+                const user = localStorage.getItem('f1_current_user');
+                console.log(
+                  'Current User:',
+                  user ? JSON.parse(user) : 'No user'
+                );
+              }}
+              className="mt-2 text-xs text-blue-600 hover:text-blue-800 underline"
+            >
+              Check Current User
+            </button>
+          </div>
         </div>
       </main>
     </div>
