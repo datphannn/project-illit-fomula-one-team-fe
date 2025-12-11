@@ -81,7 +81,7 @@ export default async function DriverDetailPage({
                 <img
                   src={driver.image}
                   alt={driver.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
                 {/* Driver Number */}
                 {driver.number && (

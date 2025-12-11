@@ -73,7 +73,12 @@ interface TopNavItem {
 // Top navigation items
 const TOP_NAV_ITEMS: TopNavItem[] = [
   { key: 'authentic', label: 'Authentic', href: '/authentic', icon: null },
-  { key: 'store', label: 'Store', href: '/store', icon: FaStore },
+  {
+    key: 'store',
+    label: 'Store',
+    href: 'https://f1store.formula1.com/en',
+    icon: FaStore,
+  },
   { key: 'tickets', label: 'Tickets', href: '/tickets', icon: FaTicketAlt },
   {
     key: 'hospitality',
@@ -671,16 +676,29 @@ export default function Header() {
                 <FaChevronDown className="text-xs opacity-70" />
               </Link>
 
-              {TOP_NAV_ITEMS.map(({ key, label, href, icon: Icon }) => (
-                <Link
-                  key={key}
-                  href={href}
-                  className="hidden md:flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-xs font-medium uppercase"
-                >
-                  {Icon && <Icon className="text-xs" />}
-                  {label}
-                </Link>
-              ))}
+              {TOP_NAV_ITEMS.map(({ key, label, href, icon: Icon }) =>
+                href.startsWith('http') ? (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden md:flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-xs font-medium uppercase"
+                  >
+                    {Icon && <Icon className="text-xs" />}
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    key={key}
+                    href={href}
+                    className="hidden md:flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-xs font-medium uppercase"
+                  >
+                    {Icon && <Icon className="text-xs" />}
+                    {label}
+                  </Link>
+                )
+              )}
             </div>
 
             {/* Right side */}

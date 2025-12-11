@@ -2790,8 +2790,8 @@ export const mockRacesDetailed: Race[] = [
       },
       {
         position: 11,
-        driverName: 'Oliver Bearman',
-        teamName: 'Haas F1 Team',
+        driverName: 'Fernando Alonso',
+        teamName: 'Aston Martin',
         lapsCompleted: 44,
         timeOrGap: '+37.100s',
         points: 0,
@@ -3279,9 +3279,9 @@ export const mockRacesDetailed: Race[] = [
       }, // Norris DNF
       {
         position: 20,
-        driverName: 'Lewis Hamilton',
-        teamName: 'Ferrari',
-        lapsCompleted: 55,
+        driverName: 'Oliver Bearman',
+        teamName: 'Haas F1 Team',
+        lapsCompleted: 62,
         timeOrGap: 'DNF',
         points: 0,
         status: 'Retired',
@@ -4710,7 +4710,7 @@ export const mockDriversDetailed: Driver[] = [
       'https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/williams/carsai01/2025williamscarsai01right.webp',
     number: 55,
     description:
-      'Cựu tay đua Ferrari chuyển sang Williams trong năm 2025 để dẫn dắt đội với kinh nghiệm dày dặn.',
+      'Cựu tay đua Ferrari chuyển sang Williams trong năm 2025 để dẫn dắt đội với kinh nghiệm dày dạn.',
     dateOfBirth: '1994-09-01',
     debutYear: 2015,
     currentStatus: 'active',
@@ -5247,7 +5247,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'mclaren',
     name: 'McLaren F1 Team',
-    logo: '/images/teams/mclaren.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/mclaren/2025mclarencarright.webp',
     color: '#FF8000',
     position: 1,
     points: 650,
@@ -5295,7 +5295,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'mercedes',
     name: 'Mercedes-AMG Petronas F1 Team',
-    logo: '/images/teams/mercedes.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/mercedes/2025mercedescarright.webp',
     color: '#27F4D2',
     position: 2,
     points: 325,
@@ -5343,7 +5343,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'ferrari',
     name: 'Scuderia Ferrari',
-    logo: '/images/teams/ferrari.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/ferrari/2025ferraricarright.webp',
     color: '#E8002D',
     position: 3,
     points: 298,
@@ -5391,7 +5391,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'redbull',
     name: 'Oracle Red Bull Racing',
-    logo: '/images/teams/redbull.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/redbullracing/2025redbullracingcarright.webp',
     color: '#3671C6',
     position: 4,
     points: 290,
@@ -5439,7 +5439,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'williams',
     name: 'Williams Racing',
-    logo: '/images/teams/williams.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/williams/2025williamscarright.webp',
     color: '#00A0DE',
     position: 5,
     points: 102,
@@ -5487,7 +5487,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'rb',
     name: 'Visa Cash App RB Formula One Team',
-    logo: '/images/teams/rb.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/racingbulls/2025racingbullscarright.webp',
     color: '#2B4562',
     position: 6,
     points: 72,
@@ -5535,7 +5535,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'astonmartin',
     name: 'Aston Martin Aramco F1 Team',
-    logo: '/images/teams/astonmartin.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/astonmartin/2025astonmartincarright.webp',
     color: '#006F62',
     position: 7,
     points: 68,
@@ -5583,7 +5583,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'sauber',
     name: 'Stake F1 Team Kick Sauber',
-    logo: '/images/teams/sauber.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/kicksauber/2025kicksaubercarright.webp',
     color: '#52E252',
     position: 8,
     points: 55,
@@ -5631,7 +5631,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'haas',
     name: 'MoneyGram Haas F1 Team',
-    logo: '/images/teams/haas.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/haasf1team/2025haasf1teamcarright.webp',
     color: '#B6BABD',
     position: 9,
     points: 46,
@@ -5679,7 +5679,7 @@ export const mockTeamsDetailed: Team[] = [
   {
     id: 'alpine',
     name: 'BWT Alpine F1 Team',
-    logo: '/images/teams/alpine.png',
+    logo: 'https://media.formula1.com/image/upload/c_lfill,h_224/q_auto/d_common:f1:2025:fallback:car:2025fallbackcarright.webp/v1740000000/common/f1/2025/alpine/2025alpinecarright.webp',
     color: '#0090FF',
     position: 10,
     points: 20,
@@ -5956,7 +5956,6 @@ The additional funding will allow Aston Martin to expand their technical departm
     views: 7100,
   },
 ];
-
 // =========================
 // Videos
 // =========================

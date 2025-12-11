@@ -116,18 +116,17 @@ export default function SchedulePage() {
     const detailedRaces = mockRacesDetailed;
     const byYearRaces = Object.values(mockRacesByYear).flat();
 
-    // Create a map to avoid duplicates
     const raceMap = new Map();
 
-    // Add detailed races first (năm 2025)
+    // Thêm detailed races (2025) vào map trước
     detailedRaces.forEach(race => {
       raceMap.set(race.id, {
         ...race,
         status: race.status || 'upcoming',
+        flag: getFlagFromGrandPrix(race.grandPrix || race.name || ''),
       });
     });
 
-    // Add byYear races (năm 2024 và các năm khác)
     byYearRaces.forEach((race, index) => {
       const raceId =
         race.grandPrix?.toLowerCase().replace(/ /g, '-') || `race-${index}`;
@@ -137,11 +136,11 @@ export default function SchedulePage() {
           id: raceId,
           name: race.grandPrix,
           date: race.date,
-          location: getLocationFromGrandPrix(race.grandPrix),
-          flag: getFlagFromGrandPrix(race.grandPrix),
+          location: getLocationFromGrandPrix(race.grandPrix || ''),
+          flag: getFlagFromGrandPrix(race.grandPrix || ''),
           round: index + 1,
           status: race.status || 'finished',
-          circuit: getCircuitFromGrandPrix(race.grandPrix),
+          circuit: getCircuitFromGrandPrix(race.grandPrix || ''),
           laps: race.laps,
           distance: race.race_distance,
           winner: race.winner,
