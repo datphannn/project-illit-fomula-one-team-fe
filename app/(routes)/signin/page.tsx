@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaEye, FaEyeSlash, FaCrown } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuthStore } from '@/lib/store/authStore';
 import logoLight from '@/assets/images/dark.png';
-import logoDark from '@/assets/images/dark.png';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -83,18 +82,6 @@ export default function SignInPage() {
     }
   };
 
-  // Test credentials button
-  const handleTestLogin = (
-    email: string,
-    password: string,
-    isAdmin = false
-  ) => {
-    setFormData({ email, password });
-    if (isAdmin) {
-      setError(''); // Clear error for admin login
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header */}
@@ -142,61 +129,6 @@ export default function SignInPage() {
               <p>{error}</p>
             </div>
           )}
-
-          {/* Test Credentials Section */}
-          <div className="mb-6 space-y-4">
-            {/* Admin Account */}
-            <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <FaCrown className="text-yellow-600" />
-                <p className="text-sm font-bold text-purple-900">
-                  Admin Account:
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() =>
-                  handleTestLogin('admin@f1.com', 'admin123', true)
-                }
-                className="text-sm text-purple-700 hover:text-purple-900 hover:underline font-medium"
-              >
-                admin@f1.com / admin123
-              </button>
-              <p className="text-xs text-purple-600 mt-2">
-                • Redirect to Admin Dashboard
-              </p>
-            </div>
-
-            {/* Regular User Accounts */}
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm font-medium text-blue-900 mb-2">
-                <strong>Regular User Accounts:</strong> (Click to autofill)
-              </p>
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleTestLogin('john@example.com', 'password123')
-                  }
-                  className="text-sm text-blue-700 hover:text-blue-900 hover:underline"
-                >
-                  • john@example.com / password123
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleTestLogin('jane@example.com', 'password123')
-                  }
-                  className="text-sm text-blue-700 hover:text-blue-900 hover:underline"
-                >
-                  • jane@example.com / password123
-                </button>
-              </div>
-              <p className="text-xs text-blue-600 mt-2">
-                • Redirect to Homepage
-              </p>
-            </div>
-          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Address */}
@@ -287,26 +219,6 @@ export default function SignInPage() {
               </Link>
             </div>
           </form>
-
-          {/* Debug Info */}
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
-            <p className="font-medium mb-1">Login Logic:</p>
-            <p>• admin@f1.com → /admin (Admin Dashboard)</p>
-            <p>• Other emails → / (Homepage)</p>
-            <p>• User data saved to localStorage</p>
-            <button
-              onClick={() => {
-                const user = localStorage.getItem('f1_current_user');
-                console.log(
-                  'Current User:',
-                  user ? JSON.parse(user) : 'No user'
-                );
-              }}
-              className="mt-2 text-xs text-blue-600 hover:text-blue-800 underline"
-            >
-              Check Current User
-            </button>
-          </div>
         </div>
       </main>
     </div>

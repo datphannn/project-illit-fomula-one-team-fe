@@ -485,30 +485,6 @@ export default function RegisterPage() {
                 </button>
               </div>
             </form>
-
-            {/* Debug Info (remove in production) */}
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200 text-sm text-gray-600">
-              <p className="font-medium mb-2">Registration Info:</p>
-              <p>• User data saved to localStorage</p>
-              <p>• Auto-login after registration</p>
-              <p>• Redirect to homepage</p>
-              <p>• Default role: user</p>
-              <button
-                onClick={() => {
-                  const users = JSON.parse(
-                    localStorage.getItem('f1_registered_users') || '[]'
-                  );
-                  console.log('Registered Users:', users);
-                  console.log(
-                    'Current User:',
-                    localStorage.getItem('f1_current_user')
-                  );
-                }}
-                className="mt-2 text-xs text-blue-600 hover:text-blue-800 underline"
-              >
-                Check Registered Users
-              </button>
-            </div>
           </div>
         </div>
       </main>

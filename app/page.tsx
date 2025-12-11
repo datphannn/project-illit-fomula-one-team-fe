@@ -435,7 +435,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 md:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
             <div className="flex-1">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">
                 Latest News
               </h2>
               <p className="text-gray-400 text-lg">
@@ -444,12 +444,75 @@ export default function HomePage() {
             </div>
             <button
               onClick={navigateToNews}
-              className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-300 px-6 py-3 rounded-lg font-medium"
+              className="border-2 border-red-600 text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 transition-all duration-300 px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-red-900/50 hover:scale-105"
             >
-              View All News
+              View All News →
             </button>
           </div>
-          <NewsSection news={mockNewsDetailed.slice(0, 6)} />
+
+          {/* News Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockNewsDetailed.slice(0, 6).map(news => (
+              <div
+                key={news.id}
+                className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden border border-gray-700 hover:border-red-500 transition-all duration-300 group"
+              >
+                {/* Image placeholder with gradient overlay */}
+                <div className="relative h-48 bg-gradient-to-br from-red-900/30 to-gray-900 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-6xl"></div>
+                </div>
+
+                <div className="p-6">
+                  {/* Badges */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="bg-red-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase">
+                      {news.category || 'NEWS'}
+                    </span>
+                    <span className="text-gray-400 text-xs">
+                      {news.source || 'F1 Official'}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold mb-3 text-white group-hover:text-red-400 transition-colors duration-300 line-clamp-2">
+                    {news.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-400 text-sm mb-6 line-clamp-2">
+                    {news.description}
+                  </p>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span>📅</span>
+                      <span>{news.date}</span>
+                    </div>
+                    <button className="text-red-400 hover:text-red-300 font-medium flex items-center gap-1 group/btn">
+                      Read more
+                      <span className="group-hover/btn:translate-x-1 transition-transform duration-300">
+                        ›
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Author & Views */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 border-t border-gray-800 pt-4">
+                    <div className="flex items-center gap-1">
+                      <span>👤</span>
+                      <span>{news.author}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span>👁️</span>
+                      <span>{news.views} views</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
