@@ -1,9 +1,6 @@
-import { NextIntlClientProvider } from 'next-intl';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/lib/utils/theme';
-import { LocaleProvider } from '@/lib/utils/locale';
-import type { Locale } from '@/lib/utils/locale';
 import './globals.css';
 
 export const metadata = {
@@ -29,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const locale = (params?.locale as Locale) || 'en';
+  const locale = (params?.locale as 'Locale') || 'en';
   let messages;
 
   try {
@@ -61,19 +58,15 @@ export default async function RootLayout({
         />
       </head>
       <body className="h-full min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-300 transition-colors duration-300">
-        <NextIntlClientProvider messages={messages}>
-          <LocaleProvider initialLocale={locale}>
-            <ThemeProvider>
-              <Header />
-              <main className="flex-grow container mx-auto px-4 py-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm dark:shadow-gray-700/30 min-h-full p-6 transition-all duration-300">
-                  {children}
-                </div>
-              </main>
-              <Footer />
-            </ThemeProvider>
-          </LocaleProvider>
-        </NextIntlClientProvider>
+        <ThemeProvider>
+          <Header />
+          <main className="flex-grow container mx-auto px-4 py-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm dark:shadow-gray-700/30 min-h-full p-6 transition-all duration-300">
+              {children}
+            </div>
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

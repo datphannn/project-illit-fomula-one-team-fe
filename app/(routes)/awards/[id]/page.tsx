@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useLocale } from '@/lib/utils/locale';
 import Link from 'next/link';
 import {
   FaTrophy,
@@ -30,7 +29,6 @@ export default function AwardDetailPage({
 }: {
   params: { id: string; lang: string };
 }) {
-  const { locale } = useLocale() || { locale: 'en' };
   const [award, setAward] = useState<Award | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedAwards, setRelatedAwards] = useState<Award[]>([]);
@@ -108,14 +106,14 @@ export default function AwardDetailPage({
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href={`/${locale}/awards`}
+              href={`/awards`}
               className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors shadow-lg hover:shadow-xl"
             >
               <FaArrowLeft />
               Back to Awards
             </Link>
             <Link
-              href={`/${locale}`}
+              href={`/`}
               className="inline-flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-bold transition-colors"
             >
               Go Home
@@ -140,7 +138,7 @@ export default function AwardDetailPage({
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link
-              href={`/${locale}/awards`}
+              href={`/awards`}
               className="inline-flex items-center gap-3 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-semibold transition-colors group"
             >
               <FaArrowLeft className="group-hover:-translate-x-1 transition-transform text-lg" />
@@ -153,7 +151,7 @@ export default function AwardDetailPage({
                 {award.year} Season
               </span>
               <Link
-                href={`/${locale}/awards?year=${award.year}`}
+                href={`/awards?year=${award.year}`}
                 className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-3 py-1 rounded-full text-xs font-semibold hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
               >
                 View All {award.year} Awards
@@ -362,7 +360,7 @@ export default function AwardDetailPage({
                 </h3>
                 <div className="space-y-3">
                   <Link
-                    href={`/${locale}/awards?year=${award.year}`}
+                    href={`/awards?year=${award.year}`}
                     className="block bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 p-4 rounded-lg border border-red-200 dark:border-red-800 transition-all group hover:border-red-300"
                   >
                     <div className="flex items-center justify-between">
@@ -378,7 +376,7 @@ export default function AwardDetailPage({
                     </div>
                   </Link>
                   <Link
-                    href={`/${locale}/awards`}
+                    href={`/awards`}
                     className="block bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 p-4 rounded-lg border border-gray-200 dark:border-gray-600 transition-all group hover:border-gray-300"
                   >
                     <div className="flex items-center justify-between">
@@ -421,7 +419,7 @@ export default function AwardDetailPage({
                   Other {award.year} Awards
                 </h3>
                 <Link
-                  href={`/${locale}/awards?year=${award.year}`}
+                  href={`/awards?year=${award.year}`}
                   className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-semibold flex items-center gap-2 transition-colors group"
                 >
                   View All
@@ -434,7 +432,7 @@ export default function AwardDetailPage({
                   return (
                     <Link
                       key={relatedAward.id}
-                      href={`/${locale}/awards/${relatedAward.id}`}
+                      href={`/awards/${relatedAward.id}`}
                       className="group bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-red-500 transition-all overflow-hidden hover:shadow-xl hover:-translate-y-1 duration-300"
                     >
                       <div className="bg-gradient-to-br from-red-600 to-red-800 p-5">

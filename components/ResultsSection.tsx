@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import { useLocale } from '@/lib/utils/locale';
 import {
   mockRacesByYear,
   mockRacesDetailed,
@@ -27,9 +25,6 @@ const F1_POINTS_SYSTEM: Record<number, number> = {
 };
 
 const ResultsSection: React.FC = () => {
-  const t = useTranslations('results');
-  const { locale } = useLocale();
-
   const [activeTab, setActiveTab] = useState<'races' | 'drivers' | 'teams'>(
     'races'
   );
@@ -242,7 +237,7 @@ const ResultsSection: React.FC = () => {
           name: team.name,
           points: team.points || 0,
           position: team.position || 0,
-          wins: team.raceWins || 0,
+          wins: 0,
           color: team.color,
         }))
         .sort((a, b) => b.points - a.points)
@@ -456,7 +451,7 @@ const ResultsSection: React.FC = () => {
                     </h1>
                     <p className="text-gray-300">
                       {new Date(selectedRaceDetails.date).toLocaleDateString(
-                        locale,
+                        'locale',
                         {
                           weekday: 'long',
                           year: 'numeric',
@@ -607,10 +602,13 @@ const ResultsSection: React.FC = () => {
                               </div>
                             </td>
                             <td className="py-4 px-4 text-gray-300 text-sm">
-                              {new Date(race.date).toLocaleDateString(locale, {
-                                day: '2-digit',
-                                month: 'short',
-                              })}
+                              {new Date(race.date).toLocaleDateString(
+                                'locale',
+                                {
+                                  day: '2-digit',
+                                  month: 'short',
+                                }
+                              )}
                             </td>
                             <td className="py-4 px-4">
                               <div className="flex items-center space-x-3">

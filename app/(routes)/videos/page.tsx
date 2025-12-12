@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useLocale } from '@/lib/utils/locale';
 import { useRouter } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { mockVideosDetailed } from '@/lib/api/mockData';
 
 export default function VideosPage() {
-  const { locale } = useLocale();
   const router = useRouter();
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,7 +31,7 @@ export default function VideosPage() {
   });
 
   const navigateToVideoDetail = (id: string) => {
-    router.push(`/${locale}/videos/${id}`);
+    router.push(`/videos/${id}`);
   };
 
   return (

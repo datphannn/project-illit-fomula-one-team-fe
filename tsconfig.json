@@ -32,7 +32,6 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "messages/**/*.json",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],

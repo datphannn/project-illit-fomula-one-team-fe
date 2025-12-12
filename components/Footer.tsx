@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
-import { useLocale } from '@/lib/utils/locale';
 import {
   FaFacebookF,
   FaTwitter,
@@ -120,77 +118,42 @@ const LinkSection = ({ title, links, locale }: LinkSectionProps) => (
 );
 
 export default function Footer() {
-  const t = useTranslations('footer');
-  const { locale } = useLocale();
-
   const footerSections = [
     {
-      title: t('navigation') || 'Điều hướng',
+      title: 'Điều hướng',
       links: [
-        { href: '', label: t('home') || 'Trang chủ', key: 'home' },
-        { href: '/news', label: t('news') || 'Tin tức', key: 'news' },
-        {
-          href: '/schedule',
-          label: t('schedule') || 'Lịch đấu',
-          key: 'schedule',
-        },
-        { href: '/results', label: t('results') || 'Kết quả', key: 'results' },
-        { href: '/feedback', label: t('feedback') || 'Góp ý', key: 'feedback' },
+        { href: '/', label: 'Trang chủ', key: 'home' },
+        { href: '/news', label: 'Tin tức', key: 'news' },
+        { href: '/schedule', label: 'Lịch đấu', key: 'schedule' },
+        { href: '/results', label: 'Kết quả', key: 'results' },
+        { href: '/feedback', label: 'Góp ý', key: 'feedback' },
       ],
     },
     {
-      title: t('about') || 'Về chúng tôi',
+      title: 'Về chúng tôi',
       links: [
-        { href: '/about', label: t('our_story') || 'Câu chuyện', key: 'about' },
-        { href: '/team', label: t('our_team') || 'Đội ngũ', key: 'team' },
-        {
-          href: '/careers',
-          label: t('careers') || 'Tuyển dụng',
-          key: 'careers',
-        },
-        { href: '/contact', label: t('contact') || 'Liên hệ', key: 'contact' },
+        { href: '/about', label: 'Câu chuyện', key: 'about' },
+        { href: '/team', label: 'Đội ngũ', key: 'team' },
+        { href: '/careers', label: 'Tuyển dụng', key: 'careers' },
+        { href: '/contact', label: 'Liên hệ', key: 'contact' },
       ],
     },
     {
-      title: t('support') || 'Hỗ trợ',
+      title: 'Hỗ trợ',
       links: [
-        {
-          href: '/help',
-          label: t('help_center') || 'Trung tâm trợ giúp',
-          key: 'help',
-        },
-        { href: '/faq', label: t('faq') || 'FAQ', key: 'faq' },
-        {
-          href: '/customer-service',
-          label: t('customer_service') || 'CSKH',
-          key: 'customer_service',
-        },
-        {
-          href: '/subscribe',
-          label: t('subscribe') || 'Đăng ký',
-          key: 'subscribe',
-        },
+        { href: '/help', label: 'Trung tâm trợ giúp', key: 'help' },
+        { href: '/faq', label: 'FAQ', key: 'faq' },
+        { href: '/customer-service', label: 'CSKH', key: 'customer_service' },
+        { href: '/subscribe', label: 'Đăng ký', key: 'subscribe' },
       ],
     },
     {
-      title: t('legal') || 'Pháp lý',
+      title: 'Pháp lý',
       links: [
-        {
-          href: '/terms',
-          label: t('terms_of_service') || 'Điều khoản',
-          key: 'terms',
-        },
-        {
-          href: '/privacy',
-          label: t('privacy_policy') || 'Bảo mật',
-          key: 'privacy',
-        },
-        {
-          href: '/cookies',
-          label: t('cookie_policy') || 'Cookie',
-          key: 'cookies',
-        },
-        { href: '/sitemap', label: t('sitemap') || 'Sitemap', key: 'sitemap' },
+        { href: '/terms', label: 'Điều khoản', key: 'terms' },
+        { href: '/privacy', label: 'Bảo mật', key: 'privacy' },
+        { href: '/cookies', label: 'Cookie', key: 'cookies' },
+        { href: '/sitemap', label: 'Sitemap', key: 'sitemap' },
       ],
     },
   ];
@@ -210,7 +173,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6 flex flex-col items-center md:items-start">
             <Link
-              href={`/${locale}`}
+              href={`/abc}`}
               className="group relative inline-block hover:scale-105 transition-transform duration-300"
             >
               <div className="absolute -inset-2 bg-gradient-to-r from-red-500 to-blue-600 rounded-lg opacity-0 group-hover:opacity-20 blur transition-all duration-300"></div>
@@ -238,8 +201,8 @@ export default function Footer() {
 
             <div className="space-y-4">
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed max-w-sm">
-                {t('company_description') ||
-                  'Trải nghiệm Formula 1 đỉnh cao với tin tức, kết quả và lịch thi đấu cập nhật mới nhất.'}
+                'Trải nghiệm Formula 1 đỉnh cao với tin tức, kết quả và lịch thi
+                đấu cập nhật mới nhất.'
               </p>
 
               {/* Contact Info */}
@@ -272,7 +235,7 @@ export default function Footer() {
               key={section.title || index}
               title={section.title}
               links={section.links}
-              locale={locale}
+              locale="okx"
             />
           ))}
         </div>
@@ -285,7 +248,7 @@ export default function Footer() {
             {/* Social Media */}
             <div className="text-center space-y-4">
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                {t('follow_us') || 'Theo dõi chúng tôi'}
+                {'Theo dõi chúng tôi'}
               </p>
               <div className="flex justify-center gap-4">
                 {SOCIAL_LINKS.map(({ href, icon: Icon, label, color }) => (
@@ -306,12 +269,11 @@ export default function Footer() {
             {/* Copyright */}
             <div className="text-center space-y-2">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                © {currentYear} {t('company_name') || 'ILLIT F1 Racing'}.{' '}
-                {t('all_rights_reserved') || 'Tất cả quyền được bảo lưu'}.
+                © {currentYear} {'ILLIT F1 Racing'}.{' '}
+                {'Tất cả quyền được bảo lưu'}.
               </p>
               <p className="text-xs text-gray-400 dark:text-gray-500">
-                {t('made_with') || 'Được tạo với'} ❤️{' '}
-                {t('in_vietnam') || 'tại Việt Nam'}
+                {'Được tạo với'} ❤️ {'tại Việt Nam'}
               </p>
             </div>
           </div>
