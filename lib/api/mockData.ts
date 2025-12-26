@@ -235,13 +235,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Australian Grand Prix',
     date: '2025-03-16',
     location: 'Melbourne, Australia',
-    flag: '/images/flags/australia.png',
+    flag: '🇦🇺',
     round: 1,
     status: 'finished',
     circuit: 'Albert Park Circuit',
     laps: 57,
     distance: '306.124 km',
-    winner: 'Lando Norris', // Norris P1 theo điểm
+    winner: 'Lando Norris',
     team: 'McLaren',
     time: '1:42:06.304',
     pole_sitter: 'Oscar Piastri',
@@ -330,7 +330,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: '+35.110s',
         points: 2,
         status: 'Finished',
-      }, // Piastri P9, 2 điểm
+      },
       {
         position: 10,
         driverName: 'Lewis Hamilton',
@@ -439,7 +439,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Chinese Grand Prix',
     date: '2025-03-23',
     location: 'Shanghai, China',
-    flag: '/images/flags/china.png',
+    flag: '🇨🇳',
     round: 2,
     status: 'finished',
     circuit: 'Shanghai International Circuit',
@@ -597,7 +597,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DSQ',
         points: 0,
         status: 'Disqualified',
-      }, // DSQ
+      },
       {
         position: 17,
         driverName: 'Lewis Hamilton',
@@ -606,7 +606,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DSQ',
         points: 0,
         status: 'Disqualified',
-      }, // DSQ
+      },
       {
         position: 18,
         driverName: 'Pierre Gasly',
@@ -615,7 +615,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DSQ',
         points: 0,
         status: 'Disqualified',
-      }, // DSQ
+      },
       {
         position: 19,
         driverName: 'Fernando Alonso',
@@ -643,13 +643,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Japanese Grand Prix',
     date: '2025-04-06',
     location: 'Suzuka, Japan',
-    flag: '/images/flags/japan.png',
+    flag: '🇯🇵',
     round: 3,
     status: 'finished',
     circuit: 'Suzuka International Racing Course',
     laps: 53,
     distance: '307.471 km',
-    winner: 'Max Verstappen', // P1, 25 điểm
+    winner: 'Max Verstappen',
     team: 'Red Bull Racing',
     time: '1:25:42.891',
     pole_sitter: 'Max Verstappen',
@@ -847,7 +847,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Bahrain Grand Prix',
     date: '2025-04-13',
     location: 'Sakhir, Bahrain',
-    flag: '/images/flags/bahrain.png',
+    flag: '🇧🇭',
     round: 4,
     status: 'finished',
     circuit: 'Bahrain International Circuit',
@@ -1032,7 +1032,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DSQ',
         points: 0,
         status: 'Disqualified',
-      }, // DSQ
+      },
       {
         position: 20,
         driverName: 'Franco Colapinto',
@@ -1051,13 +1051,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Saudi Arabian Grand Prix',
     date: '2025-04-20',
     location: 'Jeddah, Saudi Arabia',
-    flag: '/images/flags/saudiarabia.png',
+    flag: '🇸🇦',
     round: 5,
     status: 'finished',
     circuit: 'Jeddah Corniche Circuit',
     laps: 50,
     distance: '308.450 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:18:33.721',
     pole_sitter: 'Oscar Piastri',
@@ -1255,7 +1255,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Miami Grand Prix',
     date: '2025-05-04',
     location: 'Miami, USA',
-    flag: '/images/flags/usa.png',
+    flag: '🇺🇸',
     round: 6,
     status: 'finished',
     circuit: 'Miami International Autodrome',
@@ -1459,7 +1459,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Emilia Romagna Grand Prix',
     date: '2025-05-18',
     location: 'Imola, Italy',
-    flag: '/images/flags/italy.png',
+    flag: '🇮🇹',
     round: 7,
     status: 'finished',
     circuit: 'Autodromo Enzo e Dino Ferrari',
@@ -1663,13 +1663,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Monaco Grand Prix',
     date: '2025-05-25',
     location: 'Monte Carlo, Monaco',
-    flag: '/images/flags/monaco.png',
+    flag: '🇲🇨',
     round: 8,
     status: 'finished',
     circuit: 'Circuit de Monaco',
     laps: 78,
     distance: '260.286 km',
-    winner: 'Lando Norris', // P1, 25 điểm
+    winner: 'Lando Norris',
     team: 'McLaren',
     time: '1:45:18.452',
     pole_sitter: 'Lando Norris',
@@ -1867,13 +1867,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Spanish Grand Prix',
     date: '2025-06-01',
     location: 'Barcelona, Spain',
-    flag: '/images/flags/spain.png',
+    flag: '🇪🇸',
     round: 9,
     status: 'finished',
     circuit: 'Circuit de Barcelona-Catalunya',
     laps: 66,
     distance: '307.104 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:29:45.112',
     pole_sitter: 'Oscar Piastri',
@@ -1971,7 +1971,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: '+33.400s',
         points: 1,
         status: 'Finished',
-      }, // Verstappen P10, 1 điểm
+      },
       {
         position: 11,
         driverName: 'Liam Lawson',
@@ -2071,13 +2071,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Canadian Grand Prix',
     date: '2025-06-15',
     location: 'Montreal, Canada',
-    flag: '/images/flags/canada.png',
+    flag: '🇨🇦',
     round: 10,
     status: 'finished',
     circuit: 'Circuit Gilles Villeneuve',
     laps: 70,
     distance: '305.270 km',
-    winner: 'George Russell', // P1, 25 điểm
+    winner: 'George Russell',
     team: 'Mercedes',
     time: '1:31:52.688',
     pole_sitter: 'George Russell',
@@ -2265,7 +2265,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNF',
         points: 0,
         status: 'Retired',
-      }, // Norris DNF
+      },
     ],
   },
 
@@ -2275,13 +2275,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Austrian Grand Prix',
     date: '2025-06-29',
     location: 'Spielberg, Austria',
-    flag: '/images/flags/austria.png',
+    flag: '🇦🇹',
     round: 11,
     status: 'finished',
     circuit: 'Red Bull Ring',
     laps: 71,
     distance: '306.452 km',
-    winner: 'Lando Norris', // P1, 25 điểm
+    winner: 'Lando Norris',
     team: 'McLaren',
     time: '1:23:47.693',
     pole_sitter: 'Lando Norris',
@@ -2451,7 +2451,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNS',
         points: 0,
         status: 'Did Not Start',
-      }, // Sainz DNS
+      },
       {
         position: 19,
         driverName: 'Kimi Antonelli',
@@ -2479,13 +2479,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'British Grand Prix',
     date: '2025-07-06',
     location: 'Silverstone, UK',
-    flag: '/images/flags/uk.png',
+    flag: '🇬🇧',
     round: 12,
     status: 'finished',
     circuit: 'Silverstone Circuit',
     laps: 52,
     distance: '306.198 km',
-    winner: 'Lando Norris', // P1, 25 điểm
+    winner: 'Lando Norris',
     team: 'McLaren',
     time: '1:25:33.447',
     pole_sitter: 'Lando Norris',
@@ -2673,7 +2673,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNS',
         points: 0,
         status: 'Did Not Start',
-      }, // Colapinto DNS
+      },
     ],
   },
 
@@ -2683,13 +2683,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Belgian Grand Prix',
     date: '2025-07-27',
     location: 'Spa, Belgium',
-    flag: '/images/flags/belgium.png',
+    flag: '🇧🇪',
     round: 13,
     status: 'finished',
     circuit: 'Circuit de Spa-Francorchamps',
     laps: 44,
     distance: '308.052 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:25:22.601',
     pole_sitter: 'Oscar Piastri',
@@ -2887,13 +2887,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Hungarian Grand Prix',
     date: '2025-08-03',
     location: 'Budapest, Hungary',
-    flag: '/images/flags/hungary.png',
+    flag: '🇭🇺',
     round: 14,
     status: 'finished',
     circuit: 'Hungaroring',
     laps: 70,
     distance: '306.630 km',
-    winner: 'Lando Norris', // P1, 25 điểm
+    winner: 'Lando Norris',
     team: 'McLaren',
     time: '1:35:21.231',
     pole_sitter: 'Lando Norris',
@@ -3091,13 +3091,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Dutch Grand Prix',
     date: '2025-08-31',
     location: 'Zandvoort, Netherlands',
-    flag: '/images/flags/netherlands.png',
+    flag: '🇳🇱',
     round: 15,
     status: 'finished',
     circuit: 'Circuit Zandvoort',
     laps: 72,
     distance: '306.587 km',
-    winner: 'Oscar Piastri', // P1, 25 điểm
+    winner: 'Oscar Piastri',
     team: 'McLaren',
     time: '1:38:29.849',
     pole_sitter: 'Oscar Piastri',
@@ -3276,7 +3276,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNF',
         points: 0,
         status: 'Retired',
-      }, // Norris DNF
+      },
       {
         position: 20,
         driverName: 'Oliver Bearman',
@@ -3295,13 +3295,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Italian Grand Prix',
     date: '2025-09-07',
     location: 'Monza, Italy',
-    flag: '/images/flags/italy.png',
+    flag: '🇮🇹',
     round: 16,
     status: 'finished',
     circuit: 'Autodromo Nazionale di Monza',
     laps: 53,
     distance: '306.720 km',
-    winner: 'Max Verstappen', // P1, 25 điểm
+    winner: 'Max Verstappen',
     team: 'Red Bull Racing',
     time: '1:13:24.325',
     pole_sitter: 'Max Verstappen',
@@ -3480,7 +3480,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNS',
         points: 0,
         status: 'Did Not Start',
-      }, // Hülkenberg DNS
+      },
       {
         position: 20,
         driverName: 'Esteban Ocon',
@@ -3499,13 +3499,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Azerbaijan Grand Prix',
     date: '2025-09-21',
     location: 'Baku, Azerbaijan',
-    flag: '/images/flags/azerbaijan.png',
+    flag: '🇦🇿',
     round: 17,
     status: 'finished',
     circuit: 'Baku City Circuit',
     laps: 51,
     distance: '306.049 km',
-    winner: 'Max Verstappen', // P1, 25 điểm
+    winner: 'Max Verstappen',
     team: 'Red Bull Racing',
     time: '1:33:26.408',
     pole_sitter: 'Max Verstappen',
@@ -3693,7 +3693,7 @@ export const mockRacesDetailed: Race[] = [
         timeOrGap: 'DNF',
         points: 0,
         status: 'Retired',
-      }, // Piastri không tham dự
+      },
     ],
   },
 
@@ -3703,13 +3703,13 @@ export const mockRacesDetailed: Race[] = [
     name: 'Singapore Grand Prix',
     date: '2025-10-05',
     location: 'Singapore, Singapore',
-    flag: '/images/flags/singapore.png',
+    flag: '🇸🇬',
     round: 18,
     status: 'finished',
     circuit: 'Marina Bay Street Circuit',
     laps: 62,
     distance: '305.337 km',
-    winner: 'George Russell', // P1, 25 điểm
+    winner: 'George Russell',
     team: 'Mercedes',
     time: '1:40:22.367',
     pole_sitter: 'George Russell',
@@ -3907,7 +3907,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'United States Grand Prix',
     date: '2025-10-19',
     location: 'Austin, USA',
-    flag: '/images/flags/usa.png',
+    flag: '🇺🇸',
     round: 19,
     status: 'upcoming',
     circuit: 'Circuit of the Americas',
@@ -3920,7 +3920,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Mexico City Grand Prix',
     date: '2025-10-26',
     location: 'Mexico City, Mexico',
-    flag: '/images/flags/mexico.png',
+    flag: '🇲🇽',
     round: 20,
     status: 'upcoming',
     circuit: 'Autódromo Hermanos Rodríguez',
@@ -3933,7 +3933,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Brazilian Grand Prix',
     date: '2025-11-09',
     location: 'Sao Paulo, Brazil',
-    flag: '/images/flags/brazil.png',
+    flag: '🇧🇷',
     round: 21,
     status: 'upcoming',
     circuit: 'Interlagos',
@@ -3946,7 +3946,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Las Vegas Grand Prix',
     date: '2025-11-22',
     location: 'Las Vegas, USA',
-    flag: '/images/flags/usa.png',
+    flag: '🇺🇸',
     round: 22,
     status: 'upcoming',
     circuit: 'Las Vegas Strip Circuit',
@@ -3959,7 +3959,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Qatar Grand Prix',
     date: '2025-11-30',
     location: 'Lusail, Qatar',
-    flag: '/images/flags/qatar.png',
+    flag: '🇶🇦',
     round: 23,
     status: 'upcoming',
     circuit: 'Lusail International Circuit',
@@ -3972,7 +3972,7 @@ export const mockRacesDetailed: Race[] = [
     name: 'Abu Dhabi Grand Prix',
     date: '2025-12-07',
     location: 'Yas Island, UAE',
-    flag: '/images/flags/uae.png',
+    flag: '🇦🇪',
     round: 24,
     status: 'upcoming',
     circuit: 'Yas Marina Circuit',
@@ -5776,7 +5776,8 @@ Starting from second on the grid, Norris made a brilliant start and managed his 
 "Absolutely incredible! The car was phenomenal today," said an emotional Norris after the race. "The team made the perfect strategy calls, and I'm so proud of everyone at McLaren. This is exactly the start we needed for the season."
 
 The victory marks Norris's fifth career win and sets up an exciting championship battle ahead. Teammate Oscar Piastri finished fourth, giving McLaren valuable constructor points and signaling their return to championship contention.`,
-    image: 'https://images.unsplash.com/photo-1591130271131-6e4c1d27eb48?w=800',
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'F1 Official',
     category: 'race',
     relatedId: 'australian-gp-2025',
@@ -5796,7 +5797,8 @@ In a session that was interrupted by two red flags, Verstappen remained composed
 "The car felt amazing today," Verstappen commented. "Suzuka is one of those tracks where you need to have perfect balance, and we absolutely nailed the setup. The team has done an incredible job, and this gives us a great starting position for tomorrow's race."
 
 Ferrari's Charles Leclerc will start alongside Verstappen on the front row, with Mercedes' Lewis Hamilton and McLaren's Lando Norris completing the top four. The stage is set for an exciting race with mixed weather conditions forecast for Sunday.`,
-    image: 'https://images.unsplash.com/photo-1589407382127-79547ea1bfb6?w=800',
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'BBC Sport',
     category: 'race',
     relatedId: 'japanese-gp-2025',
@@ -5816,7 +5818,8 @@ The new car features revolutionary aerodynamic concepts, including completely re
 "We've taken some calculated risks with this design," explained technical director Peter Prodromou. "The MCL39 represents a fundamental rethink of our aerodynamic philosophy. Every component has been optimized for the new regulations, with particular focus on improving our performance in slow-speed corners where we struggled last season."
 
 Drivers Lando Norris and Oscar Piastri were both present at the launch and expressed their excitement about the new package. "From what I've seen in the simulator, this car is a big step forward," said Norris. "I can't wait to get it out on track and see what we can achieve."`,
-    image: 'https://images.unsplash.com/photo-1629996528416-ce9869884d2d?w=800',
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'Autosport',
     category: 'team',
     relatedId: 'mclaren',
@@ -5836,6 +5839,8 @@ The season will commence with the traditional opener in Bahrain on March 2nd and
 "We're excited to present what promises to be the most thrilling Formula 1 season yet," said F1 CEO Stefano Domenicali. "The 2025 calendar strikes the perfect balance between traditional circuits and new venues, while also considering the wellbeing of our teams with better geographical grouping of races."
 
 The calendar features several back-to-back race weekends, including the popular triple-header of Belgium, Netherlands, and Italy in August. Teams have welcomed the improved scheduling, which reduces long-haul travel and provides more efficient logistics throughout the season.`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'F1 Official',
     category: 'general',
     relatedId: 'calendar-2025',
@@ -5855,6 +5860,8 @@ The new deal, reportedly worth over £40 million per season, makes Hamilton the 
 "I still have the fire and determination to compete at the highest level," Hamilton stated. "The progress we've made with the W16 gives me confidence that we can fight for victories again. I believe in this team, and I'm excited about what we can achieve together in the coming years."
 
 Hamilton's decision to stay with Mercedes comes after months of negotiations and speculation linking him with moves to Ferrari and Red Bull. The extension means the British driver could potentially break Michael Schumacher's record for most seasons in Formula 1 if he continues beyond 2027.`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     category: 'driver',
     relatedId: 'hamilton',
     description: 'Seven-time champion extends Mercedes stay in multi-year deal',
@@ -5872,6 +5879,8 @@ The 45-year-old Italian brings extensive experience and innovative thinking to M
 "Marco is one of the brightest engineering minds in Formula 1," Vasseur stated. "His track record speaks for itself, and his understanding of the current regulations is second to none. This appointment is a crucial step in our journey back to the front of the grid."
 
 Adami will oversee all technical operations at Ferrari, working closely with existing technical staff to develop the SF-25 and future cars. His arrival has been welcomed by drivers Charles Leclerc and Carlos Sainz, both of whom expressed excitement about the new direction.`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'Sky Sports F1',
     category: 'team',
     relatedId: 'ferrari',
@@ -5891,7 +5900,8 @@ The race was turned on its head by a sudden downpour on lap 28, with Piastri mak
 "I'm lost for words," an emotional Piastri said after the race. "What an incredible team performance. The conditions were so tricky out there, but we made the right calls at the right time. To get my first win in these conditions means everything."
 
 The victory marks a significant milestone in Piastri's career and continues McLaren's strong start to the 2025 season. Team principal Andrea Stella praised his driver's maturity: "Oscar showed today why we have so much faith in him. His race craft in difficult conditions was exceptional."`,
-    image: 'https://images.unsplash.com/photo-1591130271131-6e4c1d27eb48?w=800',
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'F1 Official',
     category: 'race',
     relatedId: 'chinese-gp-2025',
@@ -5911,6 +5921,8 @@ The most striking feature is the complete reimagining of the sidepod and cooling
 "Every component on this car has been optimized for performance," explained chief technical officer Adrian Newey. "We've taken some risks with the RB21, but the simulation data suggests these innovations will give us a significant advantage. The focus has been on creating a car that works well across all types of circuits."
 
 Defending champion Max Verstappen was impressed after his first simulator sessions: "The car feels like a big step forward from last year. The balance is incredible, and it seems to have solved the low-speed issues we struggled with previously."`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     category: 'team',
     relatedId: 'red-bull',
     description:
@@ -5929,6 +5941,8 @@ Key changes include the introduction of a "rolling restart" procedure that allow
 "These changes are designed to make races more dynamic and unpredictable," explained FIA President Mohammed Ben Sulayem. "We've listened to feedback from teams, drivers, and fans, and believe these updates will enhance the spectacle while maintaining safety as our top priority."
 
 The new regulations also address the controversial issue of "lucky" safety car timing, which has sometimes unfairly benefited certain drivers. Under the new system, all cars will be required to maintain minimum time gaps during safety car periods to prevent teams from gaining undue advantages through pit stop timing.`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     source: 'FIA Official',
     category: 'general',
     relatedId: 'safety-car-2025',
@@ -5948,6 +5962,8 @@ The partnership will see the team rebranded as "Aston Martin CyberDynamics" from
 "This partnership is a game-changer for our team," said team owner Lawrence Stroll. "CyberDynamics shares our ambition to win world championships, and their technological expertise will be invaluable as we continue our journey to the front of the grid."
 
 The additional funding will allow Aston Martin to expand their technical department and accelerate the development of their new factory facilities. Drivers Fernando Alonso and Lance Stroll both welcomed the news, with Alonso stating: "This shows the team's commitment to success. I'm excited about what we can achieve together."`,
+    image:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/fom-website/2025/Lifestyle/ADHOC/SauberHERO_v1.webp',
     category: 'team',
     relatedId: 'aston-martin',
     description:
@@ -5963,7 +5979,8 @@ export const mockVideosDetailed: Video[] = [
   {
     id: '1',
     title: 'Highlights: Australian GP 2025',
-    thumbnail: '/images/videos/australia-highlights.png',
+    thumbnail:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/content/dam/fom-website/2018-redesign-assets/Racehub%20header%20images%2016x9/Las%20Vegas.webp',
     duration: '8:30',
     date: '2025-03-16',
     url: 'https://example.com/videos/australia-2025',
@@ -5972,7 +5989,8 @@ export const mockVideosDetailed: Video[] = [
   {
     id: '2',
     title: 'Onboard: Verstappen in Azerbaijan',
-    thumbnail: '/images/videos/verstappen-azerbaijan.png',
+    thumbnail:
+      'https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000000/content/dam/fom-website/2018-redesign-assets/Racehub%20header%20images%2016x9/Brazil.webp',
     duration: '6:15',
     date: '2025-09-21',
     url: 'https://example.com/videos/verstappen-azerbaijan',
@@ -5986,19 +6004,241 @@ export const mockVideosDetailed: Video[] = [
 export const mockStoriesDetailed: Story[] = [
   {
     id: '1',
-    title: 'Behind the Scenes at Australian GP',
-    image: '/images/stories/australia-behind.png',
-    link: '/stories/australia-2025',
-    summary: 'Exclusive paddock access.',
-    content: 'Interviews with McLaren team...',
+    title: 'Verstappen Dominates Monaco GP with Stunning Performance',
+    image:
+      'https://img.redbull.com/images/c_fill,g_auto,w_450,h_300/q_auto,f_auto/redbullcom/2023/2/25/ayngofbdvbiatbhqvwnz/the-pit-crew-are-back-at-it',
+    link: '/stories/verstappen-monaco-domination',
+    summary:
+      'Red Bull driver Max Verstappen delivers a masterclass in Monaco, leading from start to finish in challenging wet conditions.',
+    content: 'Full story content about Verstappen...',
+    category: 'Race Report',
+    publishedAt: '2024-05-26',
+    author: 'John Doe',
+    readTime: 5,
   },
   {
     id: '2',
-    title: "Red Bull's 2025 Strategy",
-    image: '/images/stories/redbull-strategy.png',
-    link: '/stories/redbull-2025',
-    summary: 'How Red Bull plans to fight back.',
-    content: "Analysis of Red Bull's approach...",
+    title: 'Ferrari Reveals Major Upgrade Package for Canadian GP',
+    image:
+      'https://cdn-1.motorsport.com/images/amp/6O1a4VN2/s1000/enrico-cardile-head-of-chassis.jpg',
+    link: '/stories/ferrari-canada-upgrade',
+    summary:
+      'Scuderia Ferrari introduces significant aerodynamic updates aimed at closing the gap to Red Bull in the championship fight.',
+    content: 'Full story content about Ferrari upgrades...',
+    category: 'Technical',
+    publishedAt: '2024-05-25',
+    author: 'Sarah Smith',
+    readTime: 4,
+  },
+  {
+    id: '3',
+    title: 'Hamilton Signs New Multi-Year Contract with Mercedes',
+    image:
+      'https://images.ps-aws.com/c?url=https%3A%2F%2Fd3cm515ijfiu6w.cloudfront.net%2Fwp-content%2Fuploads%2F2023%2F08%2F31132157%2FLewis-hamilton-toto-wolff-mercedes-f1.jpg',
+    link: '/stories/hamilton-mercedes-contract',
+    summary:
+      'Seven-time world champion Lewis Hamilton commits his future to Mercedes with a new contract extending through 2026.',
+    content: 'Full story content about Hamilton contract...',
+    category: 'News',
+    publishedAt: '2024-05-24',
+    author: 'Mike Johnson',
+    readTime: 6,
+  },
+  {
+    id: '4',
+    title: 'Alpine Introduces Revolutionary Sidepod Design',
+    image:
+      'https://www.amalgamcollection.com/cdn/shop/files/M6362-SC1website_45_WIDEEDIT_2000x850_crop_center.jpg?v=1763739723',
+    link: '/stories/alpine-innovation',
+    summary:
+      'French team Alpine surprises paddock with innovative sidepod concept that could change F1 aerodynamics.',
+    content: 'Full story content about Alpine design...',
+    category: 'Technical',
+    publishedAt: '2024-05-23',
+    author: 'Admin',
+    readTime: 7,
+  },
+  {
+    id: '5',
+    title: 'Young Driver Test: Who Impressed at Silverstone?',
+    image:
+      'https://images.unsplash.com/photo-1591439653790-8ad3ed46c7e0?auto=format&fit=crop&w=800&q=80',
+    link: '/stories/young-driver-silverstone',
+    summary:
+      'Analysis of the young driver test session with standout performances from F2 and F3 prospects.',
+    content: 'Full story content about young drivers...',
+    category: 'Analysis',
+    publishedAt: '2024-05-22',
+    author: 'Sarah Smith',
+    readTime: 5,
+  },
+  {
+    id: '6',
+    title: 'Technical Analysis: How Red Bull Maintains Advantage',
+    image:
+      'https://img.redbull.com/images/c_fill,g_auto,w_450,h_300/q_auto,f_auto/redbullcom/2023/2/25/ayngofbdvbiatbhqvwnz/the-pit-crew-are-back-at-it',
+    link: '/stories/red-bull-technical-edge',
+    summary:
+      'Deep dive into the technical innovations that keep Red Bull Racing ahead of the competition.',
+    content: 'Full story content about Red Bull technology...',
+    category: 'Technical',
+    publishedAt: '2024-05-21',
+    author: 'Tech Team',
+    readTime: 8,
+  },
+  {
+    id: '7',
+    title: 'Norris: "We Can Challenge for Wins This Season"',
+    image:
+      'https://static.standard.co.uk/2025/03/16/8/52/SEI244057977.jpg?trim=115,0,116,0&quality=75&auto=webp&width=1000',
+    link: '/stories/norris-interview',
+    summary:
+      'McLaren star Lando Norris confident about team progress and believes victories are within reach.',
+    content: 'Full interview content with Norris...',
+    category: 'Interview',
+    publishedAt: '2024-05-20',
+    author: 'Interview Team',
+    readTime: 4,
+  },
+  {
+    id: '8',
+    title: 'Sustainable Fuel: F1 Leads Motorsport Revolution',
+    image:
+      'https://img.redbull.com/images/c_fill,g_auto,w_450,h_300/q_auto,f_auto/redbullcom/2023/2/25/ayngofbdvbiatbhqvwnz/the-pit-crew-are-back-at-it',
+    link: '/stories/f1-sustainable-fuel',
+    summary:
+      'How Formula 1 is pioneering sustainable fuel technology that could benefit the entire automotive industry.',
+    content: 'Full story about sustainable fuel...',
+    category: 'Feature',
+    publishedAt: '2024-05-19',
+    author: 'Environmental Desk',
+    readTime: 6,
+  },
+  {
+    id: '9',
+    title: 'Behind the Scenes: Race Control Operation',
+    image:
+      'https://images.unsplash.com/photo-1591439653790-8ad3ed46c7e0?auto=format&fit=crop&w=800&q=80',
+    link: '/stories/race-control-inside',
+    summary:
+      'Exclusive look at how race control manages complex F1 events with multiple stakeholders and split-second decisions.',
+    content: 'Full behind the scenes content...',
+    category: 'Exclusive',
+    publishedAt: '2024-05-18',
+    author: 'Race Officials',
+    readTime: 7,
+  },
+  {
+    id: '10',
+    title: 'Zhou Guanyu Makes History with First Podium',
+    image:
+      'https://images.unsplash.com/photo-1591439653790-8ad3ed46c7e0?auto=format&fit=crop&w=800&q=80',
+    link: '/stories/zhou-historic-podium',
+    summary:
+      'Chinese driver Zhou Guanyu scores his maiden F1 podium in dramatic Austrian Grand Prix finish.',
+    content: 'Full story about Zhou podium...',
+    category: 'Race Report',
+    publishedAt: '2024-05-17',
+    author: 'Asia Desk',
+    readTime: 5,
+  },
+  {
+    id: '11',
+    title: 'Pirelli Explains 2025 Tire Compound Changes',
+    image:
+      'https://images.unsplash.com/photo-1591439653790-8ad3ed46c7e0?auto=format&fit=crop&w=800&q=80',
+    link: '/stories/pirelli-2025-tires',
+    summary:
+      'Tire manufacturer Pirelli details upcoming changes to compound selection for the 2025 season.',
+    content: 'Full story about Pirelli tires...',
+    category: 'Technical',
+    publishedAt: '2024-05-16',
+    author: 'Technical Team',
+    readTime: 6,
+  },
+  {
+    id: '12',
+    title: 'Haas Reveals New Team Principal',
+    image:
+      'https://images.unsplash.com/photo-1591439653790-8ad3ed46c7e0?auto=format&fit=crop&w=800&q=80',
+    link: '/stories/haas-new-principal',
+    summary:
+      'American team Haas F1 announces surprise appointment of new team principal ahead of summer break.',
+    content: 'Full story about Haas appointment...',
+    category: 'News',
+    publishedAt: '2024-05-15',
+    author: 'News Desk',
+    readTime: 4,
+  },
+  {
+    id: 'featured-1',
+    title: 'Lando Norris Wins Australian Grand Prix 2025',
+    image:
+      'https://static.standard.co.uk/2025/03/16/8/52/SEI244057977.jpg?trim=115,0,116,0&quality=75&auto=webp&width=1000',
+    link: '/stories/norris-australia-win-2025',
+    summary:
+      'McLaren driver Lando Norris claims his first victory of the 2025 season with a dominant performance at Albert Park, beating championship leader Max Verstappen.',
+    content: 'Full race report content...',
+    category: 'Race Report',
+    publishedAt: '2025-03-16',
+    author: 'Race Analysis Team',
+    readTime: 8,
+  },
+  {
+    id: 'featured-2',
+    title: 'Max Verstappen Dominates Japanese GP Qualifying',
+    image:
+      'https://www.hindustantimes.com/ht-img/img/2023/09/23/550x309/TOPSHOT-AUTO-PRIX-F1-JPN-QUALIFYING-4_1695472428994_1695472496086.jpg',
+    link: '/stories/verstappen-japan-qualifying',
+    summary:
+      'Red Bull driver Max Verstappen demolishes the competition in Suzuka qualifying, taking pole position by over half a second under challenging weather conditions.',
+    content: 'Full qualifying analysis...',
+    category: 'Qualifying',
+    publishedAt: '2025-04-05',
+    author: 'Qualifying Team',
+    readTime: 6,
+  },
+  {
+    id: 'popular-1',
+    title: 'McLaren Unveils Upgraded MCL39 for 2025 Season',
+    image:
+      'https://www.amalgamcollection.com/cdn/shop/files/M6362-SC1website_45_WIDEEDIT_2000x850_crop_center.jpg?v=1763739723',
+    link: '/stories/mclaren-mcl39-2025-upgrade',
+    summary:
+      'McLaren reveals comprehensive upgrades to their MCL39 challenger, featuring innovative aerodynamics aimed at challenging Red Bull for the championship.',
+    content: 'Full technical analysis of MCL39...',
+    category: 'Technical',
+    publishedAt: '2025-02-15',
+    author: 'Technical Analysis',
+    readTime: 9,
+  },
+  {
+    id: 'popular-2',
+    title: 'F1 2025 Calendar Finalized with 24 Races',
+    image:
+      'https://corp.formula1.com/wp-content/uploads/2024/04/2025-final.png',
+    link: '/stories/f1-2025-calendar-24-races',
+    summary:
+      'Formula 1 announces the finalized 2025 calendar featuring a record 24 races, including return of historic circuits and new venues.',
+    content: 'Full calendar analysis...',
+    category: 'News',
+    publishedAt: '2025-01-20',
+    author: 'Calendar Team',
+    readTime: 7,
+  },
+  {
+    id: 'popular-3',
+    title: 'Hamilton Signs Contract Extension with Mercedes',
+    image:
+      'https://images.ps-aws.com/c?url=https%3A%2F%2Fd3cm515ijfiu6w.cloudfront.net%2Fwp-content%2Fuploads%2F2023%2F08%2F31132157%2FLewis-hamilton-toto-wolff-mercedes-f1.jpg',
+    link: '/stories/hamilton-mercedes-extension-2025',
+    summary:
+      'Lewis Hamilton confirms contract extension with Mercedes, committing to the team through the 2027 season and new regulations era.',
+    content: 'Full contract details...',
+    category: 'News',
+    publishedAt: '2025-02-10',
+    author: 'Contract News',
+    readTime: 6,
   },
 ];
 
