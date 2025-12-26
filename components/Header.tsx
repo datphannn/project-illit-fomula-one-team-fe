@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
@@ -134,7 +135,7 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   {
     key: 'results',
     label: 'Results',
-    href: '/drivers',
+    href: '/results',
     type: 'tabs',
     icon: FaTrophy,
     dropdown: [
@@ -229,6 +230,7 @@ export default function Header() {
   );
   const [locale, setLocale] = useState('en');
   const [showComingSoon, setShowComingSoon] = useState<string | null>(null);
+  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -277,7 +279,9 @@ export default function Header() {
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
+      if (!isHoveringDropdown) {
+        setActiveDropdown(null);
+      }
     }, 200);
   };
 
@@ -285,12 +289,24 @@ export default function Header() {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+    setIsHoveringDropdown(true);
   };
 
   const handleDropdownMouseLeave = () => {
+    setIsHoveringDropdown(false);
     timeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
     }, 200);
+  };
+
+  // Handler để toggle dropdown bằng click
+  const handleNavItemClick = (key: string) => {
+    if (activeDropdown === key) {
+      setActiveDropdown(null);
+      setIsHoveringDropdown(false);
+    } else {
+      setActiveDropdown(key);
+    }
   };
 
   // --- RENDER FUNCTIONS với Detailed Data và hình ảnh ---
@@ -326,6 +342,10 @@ export default function Header() {
               <Link
                 key={race.id}
                 href={`/schedule/${race.id}`}
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
                 className="group relative flex flex-col rounded-xl border border-gray-700/50 hover:border-red-500/80 transition-all duration-300 overflow-hidden"
               >
                 {/* Race image/flag - ĐƠN GIẢN */}
@@ -423,6 +443,10 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/schedule"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
                 className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-6 py-2 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-xs flex items-center gap-2 overflow-hidden"
               >
                 <span>View All Races</span>
@@ -436,6 +460,7 @@ export default function Header() {
       </div>
     );
   };
+
   const renderDriversContent = (dropdown: DropdownItem[]) => {
     const drivers = dropdown[0]?.drivers?.slice(0, 5) || [];
     if (drivers.length === 0) return null;
@@ -466,18 +491,20 @@ export default function Header() {
               <Link
                 key={driver.id}
                 href={`/drivers/${driver.id}`}
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
                 className="group relative flex flex-col items-center"
               >
-                {/* Driver image - PHÓNG TO và chỉ lấy phần trên của ảnh */}
+                {/* Driver image - DÙNG img TAG */}
                 <div className="relative w-32 h-32 mb-4 rounded-full overflow-hidden border-2 border-gray-700 group-hover:border-red-500 transition-all duration-500">
                   {driver.image ? (
                     <div className="relative w-full h-full overflow-hidden">
-                      <Image
+                      <img
                         src={driver.image}
                         alt={driver.name}
-                        fill
-                        className="object-cover object-top transform group-hover:scale-110 transition-transform duration-700"
-                        sizes="128px"
+                        className="object-cover object-top transform group-hover:scale-110 transition-transform duration-700 w-full h-full"
                         style={{ objectPosition: 'center top' }}
                       />
                       {/* Gradient overlay để đảm bảo nhìn rõ khuôn mặt */}
@@ -560,13 +587,16 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/drivers"
-                className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-8 py-3 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-sm flex items-center gap-3 overflow-hidden shadow-xl hover:shadow-red-900/50"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
+                className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-6 py-2 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-xs flex items-center gap-2 overflow-hidden"
               >
                 <span>View All Drivers</span>
                 <span className="transform group-hover:translate-x-1 transition-transform duration-300">
                   →
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </Link>
             </div>
           </div>
@@ -603,9 +633,13 @@ export default function Header() {
           {teams.map((team: Team) => {
             return (
               <div key={team.id} className="text-center">
-                {/* Team logo - PHÓNG TO và đơn giản */}
+                {/* Team logo - DÙNG img TAG */}
                 <Link
                   href={`/teams/${team.id}`}
+                  onClick={() => {
+                    setActiveDropdown(null);
+                    setIsHoveringDropdown(false);
+                  }}
                   className="group relative block mb-4"
                 >
                   <div
@@ -617,12 +651,10 @@ export default function Header() {
                   >
                     {team.logo ? (
                       <div className="relative w-24 h-24">
-                        <Image
+                        <img
                           src={team.logo}
                           alt={`${team.name} logo`}
-                          fill
-                          className="object-contain p-2"
-                          sizes="96px"
+                          className="object-contain p-2 w-full h-full"
                         />
                       </div>
                     ) : (
@@ -646,7 +678,14 @@ export default function Header() {
 
                 {/* Team name - ĐƠN GIẢN */}
                 <div>
-                  <Link href={`/teams/${team.id}`} className="group block">
+                  <Link
+                    href={`/teams/${team.id}`}
+                    onClick={() => {
+                      setActiveDropdown(null);
+                      setIsHoveringDropdown(false);
+                    }}
+                    className="group block"
+                  >
                     <h4 className="font-bold text-white group-hover:text-red-400 transition-colors duration-300 text-sm mb-1">
                       {team.name}
                     </h4>
@@ -672,13 +711,16 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/teams"
-                className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-8 py-3 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-sm flex items-center gap-3 overflow-hidden shadow-xl hover:shadow-red-900/50"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
+                className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-6 py-2 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-xs flex items-center gap-2 overflow-hidden"
               >
                 <span>View All Teams</span>
                 <span className="transform group-hover:translate-x-1 transition-transform duration-300">
                   →
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </Link>
             </div>
           </div>
@@ -714,7 +756,11 @@ export default function Header() {
               <Link
                 key={item.id}
                 href={`/news/${item.id}`}
-                className="group relative flex flex-col rounded-xl border border-gray-700/50 hover:border-red-500/80 transition-all duration-500 hover:scale-[1.02] overflow-hidden"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
+                className="group relative flex flex-col rounded-xl border border-gray-700/50 hover:border-red-500/80 transition-all duration-300 overflow-hidden"
               >
                 {/* News image - ĐƠN GIẢN */}
                 <div className="h-32 relative overflow-hidden">
@@ -781,6 +827,10 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/news"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
                 className="group relative bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 text-white px-6 py-2 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-xs flex items-center gap-2 overflow-hidden"
               >
                 <span>View All News</span>
@@ -822,7 +872,11 @@ export default function Header() {
               <Link
                 key={award.id}
                 href={`/awards/${award.id}`}
-                className="group relative flex flex-col items-center rounded-xl border border-gray-700/50 hover:border-yellow-500/80 transition-all duration-500 hover:scale-[1.02] overflow-hidden bg-gray-900/50 p-4"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
+                className="group relative flex flex-col items-center rounded-xl border border-gray-700/50 hover:border-yellow-500/80 transition-all duration-300 overflow-hidden bg-gray-900/50 p-4"
               >
                 {/* Icon award thay vì ảnh */}
                 <div className="relative mb-3">
@@ -876,6 +930,10 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/awards"
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setIsHoveringDropdown(false);
+                }}
                 className="group relative bg-gradient-to-r from-yellow-600 via-yellow-700 to-yellow-600 hover:from-yellow-700 hover:via-yellow-800 hover:to-yellow-700 text-white px-6 py-2 rounded-lg transition-all duration-500 hover:scale-105 font-bold text-xs flex items-center gap-2 overflow-hidden"
               >
                 <FaCrown className="text-xs" />
@@ -927,28 +985,32 @@ export default function Header() {
             <Link
               key={tab.key}
               href={tab.href || '/'}
-              className={`group relative p-6 rounded-xl text-center transition-all duration-500 hover:scale-[1.02] overflow-hidden border-2 ${
+              onClick={() => {
+                setActiveDropdown(null);
+                setIsHoveringDropdown(false);
+              }}
+              className={`group relative p-4 rounded-xl text-center transition-all duration-500 hover:scale-[1.02] overflow-hidden border-2 ${
                 tab.active
-                  ? 'bg-gradient-to-r from-red-600/90 to-red-700/90 text-white border-red-600 shadow-2xl'
-                  : 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 text-gray-200 border-gray-700/50 hover:border-red-500 hover:shadow-xl hover:shadow-red-900/20'
+                  ? 'bg-gradient-to-r from-red-600/90 to-red-700/90 text-white border-red-600'
+                  : 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 text-gray-200 border-gray-700/50 hover:border-red-500'
               }`}
             >
               <div className="relative z-10">
-                <div className="text-lg font-bold mb-2">{tab.label}</div>
-                <div className="text-xs text-gray-300/70 mb-4">
+                <div className="text-sm font-bold mb-2">{tab.label}</div>
+                <div className="text-xs text-gray-300/70 mb-3">
                   View Details
                 </div>
                 <div
-                  className={`w-12 h-12 rounded-full mx-auto flex items-center justify-center ${
+                  className={`w-10 h-10 rounded-full mx-auto flex items-center justify-center ${
                     tab.active
                       ? 'bg-white/20'
                       : 'bg-gray-700/50 group-hover:bg-red-600/20'
                   }`}
                 >
                   {tab.active ? (
-                    <FaTrophy className="text-xl text-yellow-300" />
+                    <FaTrophy className="text-lg text-yellow-300" />
                   ) : (
-                    <FaChevronDown className="text-lg text-gray-300 group-hover:text-red-300" />
+                    <FaChevronDown className="text-md text-gray-300 group-hover:text-red-300" />
                   )}
                 </div>
               </div>
@@ -990,15 +1052,15 @@ export default function Header() {
 
     return (
       <div
-        className="fixed left-0 right-0 top-[6.5rem] bg-gradient-to-b from-gray-900 via-gray-900/95 to-gray-900 backdrop-blur-md border-t border-red-600 shadow-2xl z-30"
+        className="nav-item-container fixed left-0 right-0 top-[6.5rem] bg-gradient-to-b from-gray-900 via-gray-900/95 to-gray-900 backdrop-blur-md border-t border-red-600 shadow-2xl z-30"
         onMouseEnter={handleDropdownMouseEnter}
         onMouseLeave={handleDropdownMouseLeave}
         ref={dropdownRef}
       >
-        <div className="container mx-auto px-8 py-8">
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-              {item.icon && <item.icon className="text-red-500" />}
+        <div className="container mx-auto px-8 py-6">
+          <div className="mb-4">
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              {item.icon && <item.icon className="text-red-500 text-lg" />}
               {item.label}
             </h3>
           </div>
@@ -1008,26 +1070,37 @@ export default function Header() {
     );
   };
 
-  // Cleanup effects
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (comingSoonTimerRef.current) clearTimeout(comingSoonTimerRef.current);
-    };
-  }, []);
-
+  // Cleanup effects và click outside handling
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as HTMLElement;
+      const isClickInsideDropdown = dropdownRef.current?.contains(target);
+      const isClickOnNavItem = target.closest('.nav-item-container');
+
+      if (!isClickInsideDropdown && !isClickOnNavItem) {
         setActiveDropdown(null);
+        setIsHoveringDropdown(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Đóng dropdown khi route thay đổi
+  useEffect(() => {
+    setActiveDropdown(null);
+    setIsHoveringDropdown(false);
+  }, [pathname]);
+
+  // Cleanup timers
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (comingSoonTimerRef.current) clearTimeout(comingSoonTimerRef.current);
+      setActiveDropdown(null);
+      setIsHoveringDropdown(false);
+    };
   }, []);
 
   return (
@@ -1204,7 +1277,7 @@ export default function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
+            <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center">
               {MAIN_NAV_ITEMS.map(
                 ({ key, label, href, dropdown, icon: Icon }) => {
                   const isActive = isNavItemActive(href);
@@ -1213,26 +1286,40 @@ export default function Header() {
                   return (
                     <div
                       key={key}
-                      className="relative h-full flex items-center"
+                      className="relative h-full flex items-center nav-item-container"
                       onMouseEnter={() => handleMouseEnter(key)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <Link
-                        href={href}
-                        className={`flex items-center gap-2 hover:text-red-600 dark:hover:text-red-400 font-bold text-sm uppercase tracking-wide transition-all duration-300 py-6 border-b-2 ${
-                          isActive || isDropdownActive
-                            ? 'text-red-600 dark:text-red-400 border-red-600'
-                            : 'text-gray-900 dark:text-gray-100 border-transparent hover:border-red-600'
-                        }`}
-                      >
-                        {Icon && <Icon className="text-xs" />}
-                        {label}
-                        {dropdown && (
-                          <FaChevronDown
-                            className={`text-xs transition-transform duration-300 ${isDropdownActive ? 'rotate-180' : ''}`}
-                          />
-                        )}
-                      </Link>
+                      <div className="flex items-center">
+                        <Link
+                          href={href}
+                          onClick={() => {
+                            setActiveDropdown(null);
+                            setIsHoveringDropdown(false);
+                          }}
+                          className={`flex items-center gap-1 hover:text-red-600 dark:hover:text-red-400 font-bold text-xs uppercase tracking-wide transition-all duration-300 py-6 border-b-2 ${
+                            isActive || isDropdownActive
+                              ? 'text-red-600 dark:text-red-400 border-red-600'
+                              : 'text-gray-900 dark:text-gray-100 border-transparent hover:border-red-600'
+                          }`}
+                        >
+                          {Icon && <Icon className="text-xs mr-1" />}
+                          <span className="whitespace-nowrap">{label}</span>
+                          {dropdown && (
+                            <button
+                              onClick={e => {
+                                e.preventDefault();
+                                handleNavItemClick(key);
+                              }}
+                              className="ml-1 focus:outline-none"
+                            >
+                              <FaChevronDown
+                                className={`text-xs transition-transform duration-300 ${isDropdownActive ? 'rotate-180' : ''}`}
+                              />
+                            </button>
+                          )}
+                        </Link>
+                      </div>
 
                       {/* Dropdown Content */}
                       {dropdown &&
@@ -1329,15 +1416,18 @@ export default function Header() {
                       <div className="flex items-center justify-between">
                         <Link
                           href={href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={`flex-1 py-3 text-base font-bold uppercase flex items-center gap-3 transition-colors ${
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setActiveDropdown(null);
+                          }}
+                          className={`flex-1 py-3 text-sm font-bold uppercase flex items-center gap-2 transition-colors ${
                             isActive
                               ? 'text-red-600 dark:text-red-400'
                               : 'text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400'
                           }`}
                         >
-                          {Icon && <Icon className="text-sm" />}
-                          {label}
+                          {Icon && <Icon className="text-xs" />}
+                          <span className="whitespace-nowrap">{label}</span>
                         </Link>
                         {dropdown && (
                           <button
@@ -1360,7 +1450,7 @@ export default function Header() {
                               key={item.key}
                               href={item.href || href}
                               onClick={() => setIsMobileMenuOpen(false)}
-                              className="block py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                              className="block py-2 text-xs text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                             >
                               {item.label}
                             </Link>
@@ -1375,7 +1465,7 @@ export default function Header() {
 
             {/* Top nav items in mobile */}
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-              <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase">
+              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase">
                 Other Services
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -1386,11 +1476,11 @@ export default function Header() {
                         <button
                           key={key}
                           onClick={() => handleComingSoon(key)}
-                          className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 transition-all duration-300 relative"
+                          className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 transition-all duration-300 relative"
                         >
                           {Icon && <Icon className="text-xs" />}
-                          {label}
-                          <span className="text-[8px] text-yellow-500 absolute top-2 right-2">
+                          <span className="whitespace-nowrap">{label}</span>
+                          <span className="text-[6px] text-yellow-500 absolute top-1 right-1">
                             ●
                           </span>
                         </button>
@@ -1403,20 +1493,20 @@ export default function Header() {
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-900 dark:text-white transition-all duration-300"
+                        className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-xs font-medium text-gray-900 dark:text-white transition-all duration-300"
                       >
                         {Icon && <Icon className="text-xs" />}
-                        {label}
+                        <span className="whitespace-nowrap">{label}</span>
                       </a>
                     ) : (
                       <Link
                         key={key}
                         href={href || '#'}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-sm font-medium text-gray-900 dark:text-white transition-all duration-300"
+                        className="flex items-center gap-2 justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 p-3 rounded-lg text-xs font-medium text-gray-900 dark:text-white transition-all duration-300"
                       >
                         {Icon && <Icon className="text-xs" />}
-                        {label}
+                        <span className="whitespace-nowrap">{label}</span>
                       </Link>
                     );
                   }
