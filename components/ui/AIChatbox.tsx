@@ -12,6 +12,7 @@ import {
   FaCar,
   FaFlagCheckered,
 } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -63,60 +64,50 @@ const AIChatbox = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(
-      () => {
-        const aiResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          text: getAIResponse(inputValue),
-          sender: 'ai',
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, aiResponse]);
-        setIsTyping(false);
-      },
-      1000 + Math.random() * 1000
-    );
-  };
+    try {
+      // Gọi API chatbot của bạn
+      const response = await fetch('https://himbo22.me/api/chatbot/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputValue,
+        }),
+      });
 
-  const getAIResponse = (userInput: string): string => {
-    const input = userInput.toLowerCase();
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
 
-    // F1 responses
-    if (input.includes('verstappen') || input.includes('max')) {
-      return '🏎️ Max Verstappen is the current World Champion, racing for Red Bull Racing. He dominated the 2023 season with record-breaking performances!';
-    }
-    if (input.includes('ferrari')) {
-      return "🔴 Ferrari is the oldest F1 team with 16 Constructors' Championships. Charles Leclerc and Carlos Sainz are their current drivers.";
-    }
-    if (input.includes('mercedes')) {
-      return "⚫ Mercedes-AMG dominated 2014-2020 with 8 consecutive Constructors' titles. Lewis Hamilton drives for them.";
-    }
-    if (
-      input.includes('schedule') ||
-      input.includes('race') ||
-      input.includes('next')
-    ) {
-      return '📅 Check the Race Schedule section for the complete F1 calendar, upcoming races, and session timings!';
-    }
-    if (input.includes('ticket') || input.includes('buy')) {
-      return '🎫 Visit our Ticket Sales section to purchase race tickets, VIP packages, and hospitality experiences!';
-    }
-    if (input.includes('fantasy') || input.includes('game')) {
-      return '🎮 Join our Fantasy League! Pick your team, earn points, and compete with other F1 fans for prizes!';
-    }
-    if (input.includes('news') || input.includes('article')) {
-      return '📰 Check the Content section for latest F1 news, race analysis, technical updates, and exclusive interviews!';
-    }
-    if (input.includes('hi') || input.includes('hello')) {
-      return '👋 Hello! Welcome to F1 AI Assistant! Ask me anything about Formula 1!';
-    }
-    if (input.includes('thanks') || input.includes('thank')) {
-      return "😊 You're welcome! Feel free to ask me anything else about F1! 🏎️💨";
-    }
+      const data = await response.json();
 
-    // Default
-    return '🤔 Interesting question! I can help you with:\n• Drivers & Teams info\n• Race schedules\n• Buy tickets\n• Fantasy leagues\n• Latest F1 news\n\nWhat would you like to know?';
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text:
+          data.response ||
+          data.error ||
+          'Xin lỗi, tôi không thể trả lời ngay lúc này.',
+        sender: 'ai',
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, aiResponse]);
+      setIsTyping(false);
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+
+      // Fallback response nếu API lỗi
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Xin lỗi, kết nối đến chatbot đang gặp sự cố. Vui lòng thử lại sau.',
+        sender: 'ai',
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, aiResponse]);
+      setIsTyping(false);
+    }
   };
 
   const handleClearChat = () => {
@@ -246,7 +237,7 @@ const AIChatbox = () => {
                       }`}
                     >
                       <p className="text-sm whitespace-pre-wrap">
-                        {message.text}
+                        <ReactMarkdown>{message.text}</ReactMarkdown>
                       </p>
                       <p className="text-xs opacity-50 mt-2">
                         {message.timestamp.toLocaleTimeString([], {
