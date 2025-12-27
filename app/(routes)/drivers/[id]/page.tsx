@@ -1,3 +1,6 @@
+// File: app/drivers/[id]/page.tsx
+'use client';
+
 import { mockDriversDetailed, mockTeamsDetailed } from '@/lib/api/mockData';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -14,8 +17,10 @@ import {
   TrendingUp,
   User,
 } from 'lucide-react';
+import CommentSystem, { Comment } from '@/components/CommentSystem';
+import { useState } from 'react';
 
-export default async function DriverDetailPage({
+export default function DriverDetailPage({
   params,
 }: {
   params: { id: string };
@@ -30,6 +35,119 @@ export default async function DriverDetailPage({
   const teamColor = team?.color || '#e10600';
   const seasonStats = driver.seasonStats;
   const careerStats = driver.careerStats;
+
+  // State để quản lý comments
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: 'comment-1',
+      user: {
+        id: 'user-101',
+        name: 'F1 Analyst',
+        role: 'editor',
+        avatar: '/avatars/analyst.jpg',
+      },
+      content: `${driver.name} has been exceptional this season! Their consistency in qualifying has been a key factor in their success. What do you think about their performance so far?`,
+      timestamp: new Date('2024-01-20T10:30:00'),
+      likes: 67,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-1',
+          user: {
+            id: 'user-102',
+            name: 'Team Supporter',
+            role: 'user',
+          },
+          content:
+            'I agree! The way they manage tires during races is phenomenal. Best strategist on the grid!',
+          timestamp: new Date('2024-01-20T12:45:00'),
+          likes: 24,
+          isLiked: true,
+        },
+        {
+          id: 'reply-2',
+          user: {
+            id: 'user-103',
+            name: 'Technical Expert',
+            role: 'moderator',
+            avatar: '/avatars/tech-expert.jpg',
+          },
+          content:
+            'The data shows their cornering speed has improved by 2.3% compared to last season. Impressive development.',
+          timestamp: new Date('2024-01-20T14:20:00'),
+          likes: 31,
+          isLiked: false,
+        },
+      ],
+    },
+    {
+      id: 'comment-2',
+      user: {
+        id: 'user-104',
+        name: 'New Fan',
+        role: 'user',
+      },
+      content: `Just started following F1 this season, and ${driver.name.split(' ').pop()} quickly became my favorite driver! The overtake in Monaco was incredible.`,
+      timestamp: new Date('2024-01-19T08:15:00'),
+      likes: 42,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-3',
+          user: {
+            id: 'user-101',
+            name: 'F1 Analyst',
+            role: 'editor',
+            avatar: '/avatars/analyst.jpg',
+          },
+          content:
+            'Welcome to the sport! That Monaco overtake will be remembered for years to come.',
+          timestamp: new Date('2024-01-19T09:30:00'),
+          likes: 15,
+          isLiked: false,
+        },
+      ],
+    },
+    {
+      id: 'comment-3',
+      user: {
+        id: 'user-105',
+        name: 'Race Historian',
+        role: 'admin',
+        avatar: '/avatars/historian.jpg',
+      },
+      content: `With ${careerStats?.careerWins || 0} career wins, ${driver.name} is now among the top 20 winners in F1 history. Historic achievement!`,
+      timestamp: new Date('2024-01-18T16:45:00'),
+      likes: 89,
+      isLiked: true,
+    },
+    {
+      id: 'comment-4',
+      user: {
+        id: 'user-106',
+        name: 'Season Predictor',
+        role: 'user',
+      },
+      content: `I predict ${driver.name} will finish the season in P${seasonStats?.seasonPosition || 3}. Their current form is outstanding!`,
+      timestamp: new Date('2024-01-17T11:20:00'),
+      likes: 38,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-4',
+          user: {
+            id: 'user-107',
+            name: 'Stats Master',
+            role: 'editor',
+          },
+          content: `Based on current performance metrics, I project P${(seasonStats?.seasonPosition || 3) - 1} if they maintain this pace.`,
+          timestamp: new Date('2024-01-17T13:45:00'),
+          likes: 22,
+          isLiked: false,
+        },
+      ],
+    },
+  ]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -57,6 +175,136 @@ export default async function DriverDetailPage({
   const getExperience = (debutYear: number) => {
     const currentYear = new Date().getFullYear();
     return currentYear - debutYear;
+  };
+
+  // Handler cho thêm comment mới
+  const handleAddComment = async (content: string): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newComment: Comment = {
+          id: `comment-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+          replies: [],
+        };
+        setComments(prev => [newComment, ...prev]);
+        resolve(newComment);
+      }, 500);
+    });
+  };
+
+  // Handler cho like comment
+  const handleLikeComment = async (
+    commentId: string
+  ): Promise<{ likes: number } | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              const updatedLikes = comment.isLiked
+                ? comment.likes - 1
+                : comment.likes + 1;
+              return {
+                ...comment,
+                likes: updatedLikes,
+                isLiked: !comment.isLiked,
+              };
+            }
+            return comment;
+          })
+        );
+        resolve({ likes: 45 });
+      }, 300);
+    });
+  };
+
+  // Handler cho thêm reply
+  const handleAddReply = async (
+    commentId: string,
+    content: string
+  ): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newReply: Comment = {
+          id: `reply-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+        };
+
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                replies: [...(comment.replies || []), newReply],
+              };
+            }
+            return comment;
+          })
+        );
+        resolve(newReply);
+      }, 500);
+    });
+  };
+
+  // Handler cho edit comment
+  const handleEditComment = async (
+    commentId: string,
+    content: string
+  ): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const updateCommentInTree = (commentsList: Comment[]): Comment[] => {
+          return commentsList.map(comment => {
+            if (comment.id === commentId) {
+              return { ...comment, content };
+            }
+            if (comment.replies) {
+              return {
+                ...comment,
+                replies: updateCommentInTree(comment.replies),
+              };
+            }
+            return comment;
+          });
+        };
+        setComments(prev => updateCommentInTree(prev));
+        resolve(undefined);
+      }, 500);
+    });
+  };
+
+  // Handler cho delete comment
+  const handleDeleteComment = async (commentId: string): Promise<void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const removeCommentFromTree = (commentsList: Comment[]): Comment[] => {
+          return commentsList
+            .filter(comment => comment.id !== commentId)
+            .map(comment => ({
+              ...comment,
+              replies: comment.replies
+                ? removeCommentFromTree(comment.replies)
+                : [],
+            }));
+        };
+        setComments(prev => removeCommentFromTree(prev));
+        resolve();
+      }, 500);
+    });
   };
 
   return (
@@ -376,6 +624,37 @@ export default async function DriverDetailPage({
                 </div>
               </div>
             )}
+
+            {/* ========== COMMENT SECTION ========== */}
+            <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-2xl p-8 border border-gray-700/50 backdrop-blur-sm">
+              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                <div
+                  className="w-1 h-8 rounded-full"
+                  style={{ backgroundColor: teamColor }}
+                />
+                Fan Discussion
+              </h2>
+
+              <CommentSystem
+                comments={comments}
+                title={`Discuss ${driver.name.split(' ').pop()}'s Performance`}
+                placeholder={`Share your thoughts about ${driver.name}'s performance, stats, or future predictions...`}
+                emptyMessage="No discussions yet. Be the first to share your opinion about this driver!"
+                onAddComment={handleAddComment}
+                onEditComment={handleEditComment}
+                onDeleteComment={handleDeleteComment}
+                onLikeComment={handleLikeComment}
+                onAddReply={handleAddReply}
+                maxLength={800}
+                allowReplies={true}
+                allowLikes={true}
+                allowEditing={true}
+                allowDeleting={true}
+                showTitle={false} // Đã có title riêng
+                showCommentForm={true}
+                className="mt-4 bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-700/30"
+              />
+            </div>
           </div>
 
           {/* Sidebar */}
@@ -563,6 +842,59 @@ export default async function DriverDetailPage({
                 </div>
               </div>
             )}
+
+            {/* Comment Stats */}
+            <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Discussion Stats
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Total Comments</span>
+                  <span className="text-white font-semibold">
+                    {comments.reduce(
+                      (total, comment) =>
+                        total + 1 + (comment.replies?.length || 0),
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Active Discussions</span>
+                  <span className="text-white font-semibold">
+                    {
+                      comments.filter(c => c.replies && c.replies.length > 0)
+                        .length
+                    }
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Total Likes</span>
+                  <span className="text-white font-semibold">
+                    {comments.reduce(
+                      (total, comment) => total + comment.likes,
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="pt-3 border-t border-gray-700/50">
+                  <div className="text-gray-400 text-sm mb-2">
+                    Most Active Roles
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+                      Editor
+                    </span>
+                    <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">
+                      Moderator
+                    </span>
+                    <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">
+                      Admin
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

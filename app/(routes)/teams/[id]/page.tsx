@@ -1,5 +1,7 @@
 // File: app/teams/[id]/page.tsx
 
+'use client';
+
 import { mockTeamsDetailed } from '@/lib/api/mockData';
 import { mockDriversDetailed } from '@/lib/api/mockData';
 import { notFound } from 'next/navigation';
@@ -15,20 +17,19 @@ import {
   Award,
   Wrench,
   Gauge,
+  MessageSquare,
 } from 'lucide-react';
+import CommentSystem, { Comment } from '@/components/CommentSystem';
+import { useState } from 'react';
 
-export default async function TeamDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function TeamDetailPage({ params }: { params: { id: string } }) {
   const team = mockTeamsDetailed.find(t => t.id === params.id);
 
   if (!team) {
     notFound();
   }
 
-  // Lấy thông tin drivers của team - SỬA LẠI THEO teamId
+  // Lấy thông tin drivers của team
   const teamDrivers =
     mockDriversDetailed?.filter(d => d.teamId === team.id) || [];
 
@@ -38,6 +39,148 @@ export default async function TeamDetailPage({
   const championships = team.teamStats?.worldChampionships || 0;
   const totalRaces = team.teamStats?.grandPrixEntered || team.totalRaces || 0;
   const debutYear = team.debutYear || 0;
+  const careerPoints = team.teamStats?.teamPoints || 0;
+
+  // State để quản lý comments
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: 'comment-1',
+      user: {
+        id: 'user-201',
+        name: 'F1 Strategist',
+        role: 'editor',
+        avatar: '/avatars/strategist.jpg',
+      },
+      content: `${team.name} has shown incredible progress this season! Their mid-season upgrade package seems to be working perfectly. What are your thoughts on their development strategy?`,
+      timestamp: new Date('2024-01-22T14:30:00'),
+      likes: 45,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-1',
+          user: {
+            id: 'user-202',
+            name: 'Tech Analyst',
+            role: 'moderator',
+            avatar: '/avatars/tech-expert.jpg',
+          },
+          content:
+            'The new floor design has reduced drag by 3.2% according to the telemetry data. Impressive engineering work!',
+          timestamp: new Date('2024-01-22T16:45:00'),
+          likes: 28,
+          isLiked: true,
+        },
+      ],
+    },
+    {
+      id: 'comment-2',
+      user: {
+        id: 'user-204',
+        name: 'New Follower',
+        role: 'user',
+      },
+      content: `Just started following F1 and ${team.name} caught my attention with their amazing livery and team spirit. Which driver should I pay more attention to?`,
+      timestamp: new Date('2024-01-21T09:15:00'),
+      likes: 33,
+      isLiked: false,
+    },
+    {
+      id: 'comment-3',
+      user: {
+        id: 'user-205',
+        name: 'History Buff',
+        role: 'admin',
+        avatar: '/avatars/historian.jpg',
+      },
+      content: `${team.name} has ${championships} Constructors' Championships. Their legacy in F1 is truly remarkable. Do you think they can add another one this season?`,
+      timestamp: new Date('2024-01-20T13:45:00'),
+      likes: 67,
+      isLiked: true,
+    },
+  ]);
+
+  // Handler cho thêm comment mới
+  const handleAddComment = async (content: string): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newComment: Comment = {
+          id: `comment-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+          replies: [],
+        };
+        setComments(prev => [newComment, ...prev]);
+        resolve(newComment);
+      }, 500);
+    });
+  };
+
+  // Handler cho like comment
+  const handleLikeComment = async (
+    commentId: string
+  ): Promise<{ likes: number } | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              const updatedLikes = comment.isLiked
+                ? comment.likes - 1
+                : comment.likes + 1;
+              return {
+                ...comment,
+                likes: updatedLikes,
+                isLiked: !comment.isLiked,
+              };
+            }
+            return comment;
+          })
+        );
+        resolve({ likes: 50 });
+      }, 300);
+    });
+  };
+
+  // Handler cho thêm reply
+  const handleAddReply = async (
+    commentId: string,
+    content: string
+  ): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newReply: Comment = {
+          id: `reply-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+        };
+
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                replies: [...(comment.replies || []), newReply],
+              };
+            }
+            return comment;
+          })
+        );
+        resolve(newReply);
+      }, 500);
+    });
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -317,6 +460,48 @@ export default async function TeamDetailPage({
                 )}
               </div>
             </div>
+
+            {/* ========== COMMENT SECTION ========== */}
+            <div className="bg-gray-900 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-1 h-8 rounded-full"
+                    style={{ backgroundColor: team.color }}
+                  />
+                  <h2 className="text-3xl font-bold text-white flex items-center gap-2">
+                    <MessageSquare className="w-7 h-7" />
+                    Fan Discussions
+                  </h2>
+                </div>
+                <div className="text-gray-400 text-sm">
+                  {comments.reduce(
+                    (total, comment) =>
+                      total + 1 + (comment.replies?.length || 0),
+                    0
+                  )}{' '}
+                  comments
+                </div>
+              </div>
+
+              <CommentSystem
+                comments={comments}
+                title={`Discuss ${team.name}'s Performance`}
+                placeholder={`Share your thoughts about ${team.name}'s strategy, performance, drivers, or technical developments...`}
+                emptyMessage="No discussions yet. Be the first to share your opinion about this team!"
+                onAddComment={handleAddComment}
+                onLikeComment={handleLikeComment}
+                onAddReply={handleAddReply}
+                maxLength={800}
+                allowReplies={true}
+                allowLikes={true}
+                allowEditing={true}
+                allowDeleting={true}
+                showTitle={false}
+                showCommentForm={true}
+                className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-700/30"
+              />
+            </div>
           </div>
 
           {/* Sidebar */}
@@ -339,6 +524,10 @@ export default async function TeamDetailPage({
                 <div className="flex justify-between items-center pb-3 border-b border-gray-800">
                   <span className="text-gray-400">Race Wins</span>
                   <span className="text-white font-bold">{raceWins}</span>
+                </div>
+                <div className="flex justify-between items-center pb-3 border-b border-gray-800">
+                  <span className="text-gray-400">Career Points</span>
+                  <span className="text-white font-bold">{careerPoints}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400">Championships</span>
@@ -491,6 +680,47 @@ export default async function TeamDetailPage({
                       {team.color.toUpperCase()}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Discussion Stats */}
+            <div className="bg-gray-900 rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <MessageSquare
+                  className="w-5 h-5"
+                  style={{ color: team.color }}
+                />
+                Discussion Stats
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Total Comments</span>
+                  <span className="text-white font-semibold">
+                    {comments.reduce(
+                      (total, comment) =>
+                        total + 1 + (comment.replies?.length || 0),
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Active Topics</span>
+                  <span className="text-white font-semibold">
+                    {
+                      comments.filter(c => c.replies && c.replies.length > 0)
+                        .length
+                    }
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Total Likes</span>
+                  <span className="text-white font-semibold">
+                    {comments.reduce(
+                      (total, comment) => total + comment.likes,
+                      0
+                    )}
+                  </span>
                 </div>
               </div>
             </div>

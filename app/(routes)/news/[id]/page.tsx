@@ -1,20 +1,109 @@
 // File: app/news/[id]/page.tsx
+'use client';
 
 import { mockNewsDetailed } from '@/lib/api/mockData';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Calendar, User, Eye, ArrowLeft } from 'lucide-react';
+import CommentSystem, { Comment } from '@/components/CommentSystem';
+import { useState } from 'react';
 
-export default async function NewsDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function NewsDetailPage({ params }: { params: { id: string } }) {
   const item = mockNewsDetailed.find(n => n.id === params.id);
 
   if (!item) {
     notFound();
   }
+
+  // State để quản lý comments
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: 'comment-1',
+      user: {
+        id: 'user-123',
+        name: 'F1 Fanatic',
+        role: 'editor',
+        avatar: '/avatars/f1-fan.jpg',
+      },
+      content:
+        'Great analysis! The race in Monaco was truly spectacular this year. What did everyone think about the pit strategy?',
+      timestamp: new Date('2024-01-15T14:30:00'),
+      likes: 42,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-1',
+          user: {
+            id: 'user-456',
+            name: 'Strategy Expert',
+            role: 'moderator',
+            avatar: '/avatars/expert.jpg',
+          },
+          content:
+            'The two-stop strategy was definitely the right call given the tire degradation. Mercedes made a brilliant decision.',
+          timestamp: new Date('2024-01-15T15:45:00'),
+          likes: 18,
+          isLiked: true,
+        },
+        {
+          id: 'reply-2',
+          user: {
+            id: 'user-789',
+            name: 'Racing Fan',
+            role: 'user',
+          },
+          content:
+            'I think Ferrari should have pitted earlier. Lost crucial track position there.',
+          timestamp: new Date('2024-01-15T16:20:00'),
+          likes: 8,
+          isLiked: false,
+        },
+      ],
+    },
+    {
+      id: 'comment-2',
+      user: {
+        id: 'user-999',
+        name: 'New F1 Fan',
+        role: 'user',
+      },
+      content:
+        'As a new fan, this article helped me understand the technical aspects better. Looking forward to more content like this!',
+      timestamp: new Date('2024-01-14T09:15:00'),
+      likes: 25,
+      isLiked: false,
+      replies: [
+        {
+          id: 'reply-3',
+          user: {
+            id: 'user-123',
+            name: 'F1 Fanatic',
+            role: 'editor',
+            avatar: '/avatars/f1-fan.jpg',
+          },
+          content:
+            'Welcome to the world of F1! Feel free to ask any questions.',
+          timestamp: new Date('2024-01-14T10:30:00'),
+          likes: 12,
+          isLiked: false,
+        },
+      ],
+    },
+    {
+      id: 'comment-3',
+      user: {
+        id: 'user-555',
+        name: 'Tech Analyst',
+        role: 'admin',
+        avatar: '/avatars/admin.jpg',
+      },
+      content:
+        'The aerodynamic upgrades mentioned here are fascinating. The CFD simulations must have been incredibly complex.',
+      timestamp: new Date('2024-01-13T11:20:00'),
+      likes: 56,
+      isLiked: true,
+    },
+  ]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -43,6 +132,143 @@ export default async function NewsDetailPage({
   const relatedNews = mockNewsDetailed
     .filter(n => n.id !== item.id && n.category === item.category)
     .slice(0, 2);
+
+  // Handler cho thêm comment mới
+  const handleAddComment = async (content: string): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newComment: Comment = {
+          id: `comment-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+          replies: [],
+        };
+        setComments(prev => [newComment, ...prev]);
+        resolve(newComment);
+      }, 500);
+    });
+  };
+
+  // Handler cho like comment
+  const handleLikeComment = async (
+    commentId: string
+  ): Promise<{ likes: number } | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              const updatedLikes = comment.isLiked
+                ? comment.likes - 1
+                : comment.likes + 1;
+              return {
+                ...comment,
+                likes: updatedLikes,
+                isLiked: !comment.isLiked,
+              };
+            }
+            return comment;
+          })
+        );
+        // Tìm comment để lấy số likes
+        const targetComment = comments.find(c => c.id === commentId);
+        const currentLikes = targetComment ? targetComment.likes : 0;
+        resolve({
+          likes: commentId.includes('comment')
+            ? currentLikes + 1
+            : currentLikes,
+        });
+      }, 300);
+    });
+  };
+
+  // Handler cho thêm reply
+  const handleAddReply = async (
+    commentId: string,
+    content: string
+  ): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newReply: Comment = {
+          id: `reply-${Date.now()}`,
+          user: {
+            id: 'current-user-id',
+            name: 'You',
+            role: 'user',
+          },
+          content,
+          timestamp: new Date(),
+          likes: 0,
+        };
+
+        setComments(prev =>
+          prev.map(comment => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                replies: [...(comment.replies || []), newReply],
+              };
+            }
+            return comment;
+          })
+        );
+        resolve(newReply);
+      }, 500);
+    });
+  };
+
+  // Handler cho edit comment
+  const handleEditComment = async (
+    commentId: string,
+    content: string
+  ): Promise<Comment | void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const updateCommentInTree = (commentsList: Comment[]): Comment[] => {
+          return commentsList.map(comment => {
+            if (comment.id === commentId) {
+              return { ...comment, content };
+            }
+            if (comment.replies) {
+              return {
+                ...comment,
+                replies: updateCommentInTree(comment.replies),
+              };
+            }
+            return comment;
+          });
+        };
+        setComments(prev => updateCommentInTree(prev));
+        resolve(undefined);
+      }, 500);
+    });
+  };
+
+  // Handler cho delete comment
+  const handleDeleteComment = async (commentId: string): Promise<void> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const removeCommentFromTree = (commentsList: Comment[]): Comment[] => {
+          return commentsList
+            .filter(comment => comment.id !== commentId)
+            .map(comment => ({
+              ...comment,
+              replies: comment.replies
+                ? removeCommentFromTree(comment.replies)
+                : [],
+            }));
+        };
+        setComments(prev => removeCommentFromTree(prev));
+        resolve();
+      }, 500);
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0f15] to-[#1a1a2e]">
@@ -141,6 +367,29 @@ export default async function NewsDetailPage({
               </p>
             </div>
           )}
+
+          {/* ========== COMMENT SECTION ========== */}
+          <div className="mt-16 pt-12 border-t border-gray-700/50">
+            <CommentSystem
+              comments={comments}
+              title={`Discussion: ${item.title}`}
+              placeholder={`Share your thoughts about this ${item.category} news...`}
+              emptyMessage="No comments yet. Be the first to share your opinion!"
+              onAddComment={handleAddComment}
+              onEditComment={handleEditComment}
+              onDeleteComment={handleDeleteComment}
+              onLikeComment={handleLikeComment}
+              onAddReply={handleAddReply}
+              maxLength={1000}
+              allowReplies={true}
+              allowLikes={true}
+              allowEditing={true}
+              allowDeleting={true}
+              className="mt-8 bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-700/30"
+              showTitle={true}
+              showCommentForm={true}
+            />
+          </div>
 
           {/* Related News */}
           {relatedNews.length > 0 && (
