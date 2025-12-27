@@ -36,7 +36,7 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
           user: {
             id: 'user-456',
             name: 'Strategy Expert',
-            role: 'moderator',
+            role: 'editor',
             avatar: '/avatars/expert.jpg',
           },
           content:
@@ -51,6 +51,7 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
             id: 'user-789',
             name: 'Racing Fan',
             role: 'user',
+            avatar: '/avatars/strategist.jpg',
           },
           content:
             'I think Ferrari should have pitted earlier. Lost crucial track position there.',
@@ -66,6 +67,7 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
         id: 'user-999',
         name: 'New F1 Fan',
         role: 'user',
+        avatar: '/avatars/strategist.jpg',
       },
       content:
         'As a new fan, this article helped me understand the technical aspects better. Looking forward to more content like this!',

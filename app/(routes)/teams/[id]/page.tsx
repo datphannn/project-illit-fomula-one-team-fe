@@ -61,8 +61,8 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
           user: {
             id: 'user-202',
             name: 'Tech Analyst',
-            role: 'moderator',
-            avatar: '/avatars/tech-expert.jpg',
+            role: 'editor',
+            avatar: '/avatars/strategist.jpg',
           },
           content:
             'The new floor design has reduced drag by 3.2% according to the telemetry data. Impressive engineering work!',
@@ -78,6 +78,7 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
         id: 'user-204',
         name: 'New Follower',
         role: 'user',
+        avatar: '/avatars/strategist.jpg',
       },
       content: `Just started following F1 and ${team.name} caught my attention with their amazing livery and team spirit. Which driver should I pay more attention to?`,
       timestamp: new Date('2024-01-21T09:15:00'),

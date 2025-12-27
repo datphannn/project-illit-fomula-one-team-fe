@@ -57,6 +57,7 @@ export default function DriverDetailPage({
             id: 'user-102',
             name: 'Team Supporter',
             role: 'user',
+            avatar: '/avatars/strategist.jpg',
           },
           content:
             'I agree! The way they manage tires during races is phenomenal. Best strategist on the grid!',
@@ -69,7 +70,7 @@ export default function DriverDetailPage({
           user: {
             id: 'user-103',
             name: 'Technical Expert',
-            role: 'moderator',
+            role: 'user',
             avatar: '/avatars/tech-expert.jpg',
           },
           content:
@@ -86,6 +87,7 @@ export default function DriverDetailPage({
         id: 'user-104',
         name: 'New Fan',
         role: 'user',
+        avatar: '/avatars/strategist.jpg',
       },
       content: `Just started following F1 this season, and ${driver.name.split(' ').pop()} quickly became my favorite driver! The overtake in Monaco was incredible.`,
       timestamp: new Date('2024-01-19T08:15:00'),
@@ -127,6 +129,7 @@ export default function DriverDetailPage({
         id: 'user-106',
         name: 'Season Predictor',
         role: 'user',
+        avatar: '/avatars/strategist.jpg',
       },
       content: `I predict ${driver.name} will finish the season in P${seasonStats?.seasonPosition || 3}. Their current form is outstanding!`,
       timestamp: new Date('2024-01-17T11:20:00'),
@@ -139,6 +142,7 @@ export default function DriverDetailPage({
             id: 'user-107',
             name: 'Stats Master',
             role: 'editor',
+            avatar: '/avatars/strategist.jpg',
           },
           content: `Based on current performance metrics, I project P${(seasonStats?.seasonPosition || 3) - 1} if they maintain this pace.`,
           timestamp: new Date('2024-01-17T13:45:00'),

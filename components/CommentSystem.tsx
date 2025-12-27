@@ -18,13 +18,18 @@ import {
 import { useAuthStore } from '@/lib/store/authStore';
 
 // ========== TYPES ==========
-export type UserRole = 'admin' | 'user' | 'editor' | 'moderator';
+export type UserRole = 'admin' | 'user' | 'editor';
 
+// Interface CommentUser phù hợp với User interface của bạn
 export interface CommentUser {
   id: string;
   name: string;
   avatar?: string;
   role?: UserRole;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  country?: string;
 }
 
 export interface Comment {
@@ -76,25 +81,24 @@ export interface CommentSystemProps {
   isSubmitting?: boolean;
 }
 
-// Helper để convert auth user từ store
-interface AuthUser {
-  id: string;
-  name: string;
-  email?: string;
-  role?: string;
-  avatar?: string;
-}
-
+// Helper để convert auth user từ store sang CommentUser
 const convertAuthUserToCommentUser = (
-  authUser: AuthUser | null
+  authUser: any | null
 ): CommentUser | null => {
   if (!authUser) return null;
 
   return {
     id: authUser.id,
-    name: authUser.name,
+    name:
+      authUser.name ||
+      `${authUser.firstName || ''} ${authUser.lastName || ''}`.trim() ||
+      'User',
+    email: authUser.email,
     avatar: authUser.avatar,
     role: authUser.role as UserRole,
+    firstName: authUser.firstName,
+    lastName: authUser.lastName,
+    country: authUser.country,
   };
 };
 
@@ -120,34 +124,36 @@ const formatDate = (date: Date | string): string => {
   });
 };
 
-const getUserIcon = (role?: string | null, avatar?: string) => {
-  if (avatar) {
+// Cải thiện hàm getUserIcon để xử lý avatar fallback tốt hơn
+const getUserIcon = (user: CommentUser) => {
+  // Ưu tiên dùng avatar
+  if (user.avatar) {
     return (
       <img
-        src={avatar}
-        alt="User avatar"
+        src={user.avatar}
+        alt={`${user.name}'s avatar`}
         className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
         onError={e => {
-          (e.target as HTMLImageElement).src = '';
+          // Nếu ảnh lỗi, chuyển sang icon
           (e.target as HTMLImageElement).style.display = 'none';
         }}
       />
     );
   }
 
-  switch (role as UserRole) {
+  // Nếu không có avatar, dùng icon dựa trên role
+  switch (user.role) {
     case 'admin':
       return <FaCrown className="w-8 h-8 text-yellow-500" />;
     case 'editor':
-    case 'moderator':
       return <FaEditor className="w-8 h-8 text-blue-500" />;
     default:
       return <FaUserCircle className="w-8 h-8 text-gray-400" />;
   }
 };
 
-const getUserBadge = (role?: string | null) => {
-  switch (role as UserRole) {
+const getUserBadge = (role?: UserRole) => {
+  switch (role) {
     case 'admin':
       return (
         <span className="text-[10px] bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-2 py-0.5 rounded-full font-bold">
@@ -158,12 +164,6 @@ const getUserBadge = (role?: string | null) => {
       return (
         <span className="text-[10px] bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-0.5 rounded-full font-bold">
           EDITOR
-        </span>
-      );
-    case 'moderator':
-      return (
-        <span className="text-[10px] bg-gradient-to-r from-green-500 to-green-600 text-white px-2 py-0.5 rounded-full font-bold">
-          MOD
         </span>
       );
     default:
@@ -236,14 +236,18 @@ export default function CommentSystem({
           setComments(prev => [result as Comment, ...prev]);
         }
       } else {
-        // Fallback: Create comment locally
+        // Fallback: Create comment locally với đầy đủ thông tin user
         const newCommentObj: Comment = {
           id: `comment-${Date.now()}`,
           user: {
             id: user.id,
             name: user.name,
-            role: user.role,
+            email: user.email,
             avatar: user.avatar,
+            role: user.role,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            country: user.country,
           },
           content: newComment,
           timestamp: new Date(),
@@ -392,8 +396,12 @@ export default function CommentSystem({
           user: {
             id: user.id,
             name: user.name,
-            role: user.role,
+            email: user.email,
             avatar: user.avatar,
+            role: user.role,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            country: user.country,
           },
           content: replyContent,
           timestamp: new Date(),
@@ -428,9 +436,10 @@ export default function CommentSystem({
     const isReplying = replyingTo === comment.id;
 
     const canEdit = allowEditing && isOwner;
+    // Chỉ admin và editor có thể xóa comment của người khác
     const canDelete =
       allowDeleting &&
-      (isOwner || user?.role === 'admin' || user?.role === 'moderator');
+      (isOwner || user?.role === 'admin' || user?.role === 'editor');
     const canReply = allowReplies && user && depth < 3;
 
     const maxWidth = `calc(100% - ${depth * 40}px)`;
@@ -443,9 +452,7 @@ export default function CommentSystem({
       >
         <div className="flex items-start">
           {/* Avatar */}
-          <div className="flex-shrink-0 mr-3">
-            {getUserIcon(comment.user.role, comment.user.avatar)}
-          </div>
+          <div className="flex-shrink-0 mr-3">{getUserIcon(comment.user)}</div>
 
           {/* Content */}
           <div className="flex-1 min-w-0">
@@ -456,6 +463,11 @@ export default function CommentSystem({
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-semibold text-sm text-gray-900 dark:text-white">
                       {comment.user.name}
+                      {comment.user.country && (
+                        <span className="text-gray-500 text-xs ml-2">
+                          ({comment.user.country})
+                        </span>
+                      )}
                     </h4>
                     {getUserBadge(comment.user.role)}
                   </div>
@@ -588,9 +600,7 @@ export default function CommentSystem({
             {isReplying && user && (
               <div className="mt-3">
                 <div className="flex gap-2">
-                  <div className="flex-shrink-0">
-                    {getUserIcon(user.role, user.avatar)}
-                  </div>
+                  <div className="flex-shrink-0">{getUserIcon(user)}</div>
                   <div className="flex-1">
                     <textarea
                       value={replyContent}
@@ -695,9 +705,7 @@ export default function CommentSystem({
       {showCommentForm && user ? (
         <div className="mb-6">
           <div className="flex gap-3">
-            <div className="flex-shrink-0">
-              {getUserIcon(user.role, user.avatar)}
-            </div>
+            <div className="flex-shrink-0">{getUserIcon(user)}</div>
             <div className="flex-1">
               <textarea
                 value={newComment}
